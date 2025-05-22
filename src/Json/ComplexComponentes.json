@@ -1,0 +1,227 @@
+{
+  "Type": "TForm",
+  "Name": "FrmCadastroCliente",
+  "Caption": "Cadastro de Cliente",
+  "Width": 800,
+  "Height": 900,
+  "Children": [
+    {
+      "Type": "TPanel",
+      "Name": "PnlCabecalho",
+      "Caption": "",
+      "Position": { "X": 0, "Y": 0 },
+      "Width": 800,
+      "Height": 60,
+      "Align": "Top",
+      "BevelOuter": "bvNone",
+      "Color": "#F5F5F5",
+      "Children": [
+        {
+          "Type": "TLabel",
+          "Text": "Cadastro de Cliente",
+          "Position": { "X": 20, "Y": 15 },
+          "Width": 300,
+          "Height": 30,
+          "FontSize": 16,
+          "FontStyle": ["Bold"]
+        }
+      ]
+    },
+    {
+      "Type": "TPanel",
+      "Name": "PnlDadosPessoais",
+      "Caption": "Dados Pessoais",
+      "Position": { "X": 10, "Y": 70 },
+      "Width": 780,
+      "Height": 300,
+      "BevelOuter": "bvLowered",
+      "Children": [
+        {
+          "Type": "TRadioGroup",
+          "Name": "RgTipoPessoa",
+          "Caption": "Tipo de Pessoa",
+          "Position": { "X": 10, "Y": 20 },
+          "Width": 200,
+          "Height": 80,
+          "Items": ["Pessoa Física", "Pessoa Jurídica"],
+          "ItemIndex": 0
+        },
+        {
+          "Type": "TLabel",
+          "Text": "Nome Completo:",
+          "Position": { "X": 220, "Y": 20 },
+          "Width": 300,
+          "Height": 20
+        },
+        {
+          "Type": "TEdit",
+          "Name": "EdtNome",
+          "Text": "",
+          "Position": { "X": 220, "Y": 40 },
+          "Width": 300,
+          "Height": 30
+        },
+        {
+          "Type": "TLabel",
+          "Text": "Data Nascimento:",
+          "Position": { "X": 220, "Y": 80 },
+          "Width": 150,
+          "Height": 20
+        },
+        {
+          "Type": "TDateTimePicker",
+          "Name": "DtNascimento",
+          "Position": { "X": 220, "Y": 100 },
+          "Width": 150,
+          "Height": 30,
+          "DateFormat": "dd/MM/yyyy"
+        },
+        {
+          "Type": "TCheckBox",
+          "Name": "CkAceitaTermos",
+          "Text": "Aceito os termos de uso",
+          "Position": { "X": 220, "Y": 140 },
+          "Width": 200,
+          "Height": 20,
+          "Checked": false
+        },
+        {
+          "Type": "TComboBox",
+          "Name": "CbEstadoCivil",
+          "Text": "Estado Civil",
+          "Position": { "X": 10, "Y": 120 },
+          "Width": 200,
+          "Height": 30,
+          "Items": ["Solteiro(a)", "Casado(a)", "Divorciado(a)", "Viúvo(a)"],
+          "ItemIndex": 0
+        }
+      ]
+    },
+    {
+      "Type": "TPanel",
+      "Name": "PnlEndereco",
+      "Caption": "Endereço",
+      "Position": { "X": 10, "Y": 380 },
+      "Width": 780,
+      "Height": 250,
+      "BevelOuter": "bvLowered",
+      "Children": [
+        {
+          "Type": "TLabel",
+          "Text": "CEP:",
+          "Position": { "X": 10, "Y": 30 },
+          "Width": 100,
+          "Height": 20
+        },
+        {
+          "Type": "TEdit",
+          "Name": "EdtCEP",
+          "Text": "",
+          "Position": { "X": 10, "Y": 50 },
+          "Width": 100,
+          "Height": 30
+        },
+        {
+          "Type": "TButton",
+          "Name": "BtnBuscarCEP",
+          "Text": "Buscar",
+          "Position": { "X": 120, "Y": 50 },
+          "Width": 80,
+          "Height": 30
+        },
+        {
+          "Type": "TStringGrid",
+          "Name": "GridEnderecos",
+          "Position": { "X": 10, "Y": 100 },
+          "Width": 760,
+          "Height": 120,
+          "ColCount": 5,
+          "RowCount": 2,
+          "FixedCols": 0,
+          "Options": ["goRowSelect", "goColSizing"],
+          "Columns": [
+            { "Title": "CEP", "Width": 100 },
+            { "Title": "Logradouro", "Width": 250 },
+            { "Title": "Número", "Width": 80 },
+            { "Title": "Bairro", "Width": 150 },
+            { "Title": "Cidade", "Width": 180 }
+          ]
+        }
+      ]
+    },
+    {
+      "Type": "TPanel",
+      "Name": "PnlContatos",
+      "Caption": "Contatos",
+      "Position": { "X": 10, "Y": 640 },
+      "Width": 780,
+      "Height": 150,
+      "BevelOuter": "bvLowered",
+      "Children": [
+        {
+          "Type": "TRadioButton",
+          "Name": "RbEmail",
+          "Text": "E-mail",
+          "Position": { "X": 20, "Y": 30 },
+          "Width": 100,
+          "Height": 20,
+          "Checked": true
+        },
+        {
+          "Type": "TRadioButton",
+          "Name": "RbTelefone",
+          "Text": "Telefone",
+          "Position": { "X": 20, "Y": 60 },
+          "Width": 100,
+          "Height": 20
+        },
+        {
+          "Type": "TRadioButton",
+          "Name": "RbWhatsApp",
+          "Text": "WhatsApp",
+          "Position": { "X": 20, "Y": 90 },
+          "Width": 100,
+          "Height": 20
+        },
+        {
+          "Type": "TEdit",
+          "Name": "EdtContato",
+          "Text": "",
+          "Position": { "X": 150, "Y": 50 },
+          "Width": 300,
+          "Height": 30
+        }
+      ]
+    },
+    {
+      "Type": "TPanel",
+      "Name": "PnlAcoes",
+      "Caption": "",
+      "Position": { "X": 0, "Y": 800 },
+      "Width": 800,
+      "Height": 60,
+      "Align": "Bottom",
+      "BevelOuter": "bvNone",
+      "Children": [
+        {
+          "Type": "TButton",
+          "Name": "BtnSalvar",
+          "Text": "Salvar",
+          "Position": { "X": 600, "Y": 10 },
+          "Width": 90,
+          "Height": 40,
+          "ModalResult": 1
+        },
+        {
+          "Type": "TButton",
+          "Name": "BtnCancelar",
+          "Text": "Cancelar",
+          "Position": { "X": 700, "Y": 10 },
+          "Width": 90,
+          "Height": 40,
+          "ModalResult": 2
+        }
+      ]
+    }
+  ]
+}

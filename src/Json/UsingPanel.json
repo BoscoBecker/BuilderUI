@@ -1,0 +1,300 @@
+
+{
+  "Type": "TForm",
+  "Name": "FrmCadastroCliente",
+  "Align": "Client",
+  "Children": [
+    {
+      "Type": "TPanel",
+      "Text": "Profissão:",
+      "Position": { "X": 500, "Y":20 },
+      "Width": 300,
+      "Height": 200
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Cadastro de Cliente",
+      "Position": { "X": 5, "Y": 10 },
+      "Width": 300,
+      "Height": 30,
+      "FontSize": 16,
+      "FontStyle": ["Bold"]
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Informações Pessoais",
+      "Position": { "X": 5, "Y": 50 },
+      "Width": 300,
+      "Height": 20,
+      "FontStyle": ["Underline"]
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Nome Completo:",
+      "Position": { "X": 5, "Y": 80 },
+      "Width": 300,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 5, "Y": 100 },
+      "Width": 300,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Data de Nascimento:",
+      "Position": { "X": 5, "Y": 140 },
+      "Width": 300,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 5, "Y": 160 },
+      "Width": 150,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "CPF:",
+      "Position": { "X": 165, "Y": 140 },
+      "Width": 100,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 165, "Y": 160 },
+      "Width": 140,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "RG:",
+      "Position": { "X": 5, "Y": 200 },
+      "Width": 100,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 5, "Y": 220 },
+      "Width": 140,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Telefone:",
+      "Position": { "X": 165, "Y": 200 },
+      "Width": 100,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 165, "Y": 220 },
+      "Width": 140,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "E-mail:",
+      "Position": { "X": 5, "Y": 260 },
+      "Width": 300,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 5, "Y": 280 },
+      "Width": 300,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Endereço",
+      "Position": { "X": 5, "Y": 320 },
+      "Width": 300,
+      "Height": 20,
+      "FontStyle": ["Underline"]
+    },
+    {
+      "Type": "TLabel",
+      "Text": "CEP:",
+      "Position": { "X": 5, "Y": 350 },
+      "Width": 100,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 5, "Y": 370 },
+      "Width": 100,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Logradouro:",
+      "Position": { "X": 115, "Y": 350 },
+      "Width": 190,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 115, "Y": 370 },
+      "Width": 190,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Número:",
+      "Position": { "X": 5, "Y": 410 },
+      "Width": 80,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 5, "Y": 430 },
+      "Width": 80,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Complemento:",
+      "Position": { "X": 95, "Y": 410 },
+      "Width": 210,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 95, "Y": 430 },
+      "Width": 210,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Bairro:",
+      "Position": { "X": 5, "Y": 470 },
+      "Width": 150,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 5, "Y": 490 },
+      "Width": 150,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Cidade:",
+      "Position": { "X": 165, "Y": 470 },
+      "Width": 140,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 165, "Y": 490 },
+      "Width": 140,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Estado:",
+      "Position": { "X": 5, "Y": 530 },
+      "Width": 80,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 5, "Y": 550 },
+      "Width": 80,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "País:",
+      "Position": { "X": 95, "Y": 530 },
+      "Width": 210,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 95, "Y": 550 },
+      "Width": 210,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Informações Profissionais",
+      "Position": { "X": 5, "Y": 590 },
+      "Width": 300,
+      "Height": 20,
+      "FontStyle": ["Underline"]
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Profissão:",
+      "Position": { "X": 5, "Y": 620 },
+      "Width": 300,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 5, "Y": 640 },
+      "Width": 300,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Empresa:",
+      "Position": { "X": 5, "Y": 680 },
+      "Width": 300,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 5, "Y": 700 },
+      "Width": 300,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Renda Mensal:",
+      "Position": { "X": 5, "Y": 740 },
+      "Width": 150,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 5, "Y": 760 },
+      "Width": 150,
+      "Height": 30
+    },
+    {
+      "Type": "TButton",
+      "Text": "Salvar Cadastro",
+      "Position": { "X": 5, "Y": 800 },
+      "Width": 150,
+      "Height": 40
+    },
+    {
+      "Type": "TButton",
+      "Text": "Cancelar",
+      "Position": { "X": 165, "Y": 800 },
+      "Width": 140,
+      "Height": 40
+    }
+  ]
+}

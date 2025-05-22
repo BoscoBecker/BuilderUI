@@ -1,0 +1,129 @@
+{
+  "Forms": [
+    {
+      "Name": "FrmCadastroCliente",
+      "Caption": "Cadastro de Cliente",
+      "Type": "TForm",
+      "Align": "Client",
+      "Children": [
+        {
+          "Type": "TLabel",
+          "Text": "Cadastro de Cliente",
+          "Position": { "X": 5, "Y": 10 },
+          "Width": 300,
+          "Height": 30,
+          "FontSize": 16,
+          "FontStyle": ["Bold"]
+        },
+        {
+          "Type": "TLabel",
+          "Text": "Nome Completo:",
+          "Position": { "X": 5, "Y": 50 },
+          "Width": 300,
+          "Height": 20
+        },
+        {
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 5, "Y": 70 },
+          "Width": 300,
+          "Height": 30
+        },
+        {
+          "Type": "TLabel",
+          "Text": "Telefone:",
+          "Position": { "X": 5, "Y": 110 },
+          "Width": 300,
+          "Height": 20
+        },
+        {
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 5, "Y": 130 },
+          "Width": 300,
+          "Height": 30
+        },
+        {
+          "Type": "TButton",
+          "Text": "Salvar",
+          "Position": { "X": 5, "Y": 180 },
+          "Width": 140,
+          "Height": 40
+        },
+        {
+          "Type": "TButton",
+          "Text": "Cancelar",
+          "Position": { "X": 165, "Y": 180 },
+          "Width": 140,
+          "Height": 40
+        }
+      ]
+    },
+    {
+      "Name": "FrmEnderecoCliente",
+      "Caption": "Endereço do Cliente",
+      "Type": "TForm",
+      "Align": "Client",
+      "Children": [
+        {
+          "Type": "TLabel",
+          "Text": "Endereço do Cliente",
+          "Position": { "X": 5, "Y": 10 },
+          "Width": 300,
+          "Height": 30,
+          "FontSize": 16,
+          "FontStyle": ["Bold"]
+        },
+        {
+          "Type": "TLabel",
+          "Text": "Logradouro:",
+          "Position": { "X": 5, "Y": 50 },
+          "Width": 300,
+          "Height": 20
+        },
+        {
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 5, "Y": 70 },
+          "Width": 300,
+          "Height": 30
+        },
+        {
+          "Type": "TLabel",
+          "Text": "Número:",
+          "Position": { "X": 5, "Y": 110 },
+          "Width": 150,
+          "Height": 20
+        },
+        {
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 5, "Y": 130 },
+          "Width": 150,
+          "Height": 30
+        },
+        {
+          "Type": "TLabel",
+          "Text": "Cidade:",
+          "Position": { "X": 5, "Y": 170 },
+          "Width": 150,
+          "Height": 20
+        },
+        {
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 5, "Y": 190 },
+          "Width": 150,
+          "Height": 30
+        },
+        {
+          "Type": "TButton",
+          "Text": "Salvar Endereço",
+          "Position": { "X": 5, "Y": 240 },
+          "Width": 150,
+          "Height": 40
+        }
+      ]
+    }
+  ]
+}

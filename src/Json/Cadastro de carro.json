@@ -1,0 +1,305 @@
+{
+  "Type": "TForm",
+  "Align": "Client",
+  "Children": [
+    {
+      "Type": "TLabel",
+      "Text": "Cadastro de Veículo",
+      "Position": { "X": 5, "Y": 10 },
+      "Width": 300,
+      "Height": 30,
+      "FontSize": 16,
+      "FontStyle": ["Bold"]
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Informações Básicas",
+      "Position": { "X": 5, "Y": 50 },
+      "Width": 300,
+      "Height": 20,
+      "FontStyle": ["Underline"]
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Placa:",
+      "Position": { "X": 5, "Y": 80 },
+      "Width": 100,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 5, "Y": 100 },
+      "Width": 100,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Chassi:",
+      "Position": { "X": 115, "Y": 80 },
+      "Width": 190,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 115, "Y": 100 },
+      "Width": 190,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Marca/Modelo:",
+      "Position": { "X": 5, "Y": 140 },
+      "Width": 300,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 5, "Y": 160 },
+      "Width": 300,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Ano de Fabricação:",
+      "Position": { "X": 5, "Y": 200 },
+      "Width": 150,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 5, "Y": 220 },
+      "Width": 150,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Ano do Modelo:",
+      "Position": { "X": 165, "Y": 200 },
+      "Width": 140,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 165, "Y": 220 },
+      "Width": 140,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Cor:",
+      "Position": { "X": 5, "Y": 260 },
+      "Width": 100,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 5, "Y": 280 },
+      "Width": 100,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Tipo de Combustível:",
+      "Position": { "X": 115, "Y": 260 },
+      "Width": 190,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 115, "Y": 280 },
+      "Width": 190,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Informações Técnicas",
+      "Position": { "X": 5, "Y": 320 },
+      "Width": 300,
+      "Height": 20,
+      "FontStyle": ["Underline"]
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Motor:",
+      "Position": { "X": 5, "Y": 350 },
+      "Width": 150,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 5, "Y": 370 },
+      "Width": 150,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Potência (cv):",
+      "Position": { "X": 165, "Y": 350 },
+      "Width": 140,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 165, "Y": 370 },
+      "Width": 140,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Câmbio:",
+      "Position": { "X": 5, "Y": 410 },
+      "Width": 150,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 5, "Y": 430 },
+      "Width": 150,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Tração:",
+      "Position": { "X": 165, "Y": 410 },
+      "Width": 140,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 165, "Y": 430 },
+      "Width": 140,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Portas:",
+      "Position": { "X": 5, "Y": 470 },
+      "Width": 100,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 5, "Y": 490 },
+      "Width": 100,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Capacidade do Tanque:",
+      "Position": { "X": 115, "Y": 470 },
+      "Width": 190,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 115, "Y": 490 },
+      "Width": 190,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Documentação",
+      "Position": { "X": 5, "Y": 530 },
+      "Width": 300,
+      "Height": 20,
+      "FontStyle": ["Underline"]
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Renavam:",
+      "Position": { "X": 5, "Y": 560 },
+      "Width": 150,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 5, "Y": 580 },
+      "Width": 150,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Data de Licenciamento:",
+      "Position": { "X": 165, "Y": 560 },
+      "Width": 140,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 165, "Y": 580 },
+      "Width": 140,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Proprietário Atual:",
+      "Position": { "X": 5, "Y": 620 },
+      "Width": 300,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 5, "Y": 640 },
+      "Width": 300,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Valor de Mercado:",
+      "Position": { "X": 5, "Y": 680 },
+      "Width": 150,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 5, "Y": 700 },
+      "Width": 150,
+      "Height": 30
+    },
+    {
+      "Type": "TLabel",
+      "Text": "Status do Veículo:",
+      "Position": { "X": 165, "Y": 680 },
+      "Width": 140,
+      "Height": 20
+    },
+    {
+      "Type": "TEdit",
+      "Text": "",
+      "Position": { "X": 165, "Y": 700 },
+      "Width": 140,
+      "Height": 30
+    },
+    {
+      "Type": "TButton",
+      "Text": "Salvar Veículo",
+      "Position": { "X": 5, "Y": 740 },
+      "Width": 150,
+      "Height": 40
+    },
+    {
+      "Type": "TButton",
+      "Text": "Cancelar",
+      "Position": { "X": 165, "Y": 740 },
+      "Width": 140,
+      "Height": 40
+    }
+  ]
+}

@@ -7,6 +7,7 @@
       "Align": "Client",
       "Children": [
         {
+          "Name": "LblTituloCliente",
           "Type": "TLabel",
           "Text": "Cadastro de Cliente",
           "Position": { "X": 5, "Y": 10 },
@@ -16,6 +17,7 @@
           "FontStyle": ["Bold"]
         },
         {
+          "Name": "LblNomeCompleto",
           "Type": "TLabel",
           "Text": "Nome Completo:",
           "Position": { "X": 5, "Y": 50 },
@@ -23,6 +25,7 @@
           "Height": 20
         },
         {
+          "Name": "EdtNomeCompleto",
           "Type": "TEdit",
           "Text": "",
           "Position": { "X": 5, "Y": 70 },
@@ -30,6 +33,7 @@
           "Height": 30
         },
         {
+          "Name": "LblTelefone",
           "Type": "TLabel",
           "Text": "Telefone:",
           "Position": { "X": 5, "Y": 110 },
@@ -37,6 +41,7 @@
           "Height": 20
         },
         {
+          "Name": "EdtTelefone",
           "Type": "TEdit",
           "Text": "",
           "Position": { "X": 5, "Y": 130 },
@@ -44,6 +49,7 @@
           "Height": 30
         },
         {
+          "Name": "BtnSalvarCliente",
           "Type": "TButton",
           "Text": "Salvar",
           "Position": { "X": 5, "Y": 180 },
@@ -51,6 +57,7 @@
           "Height": 40
         },
         {
+          "Name": "BtnCancelarCliente",
           "Type": "TButton",
           "Text": "Cancelar",
           "Position": { "X": 165, "Y": 180 },
@@ -66,6 +73,7 @@
       "Align": "Client",
       "Children": [
         {
+          "Name": "LblTituloEndereco",
           "Type": "TLabel",
           "Text": "Endereço do Cliente",
           "Position": { "X": 5, "Y": 10 },
@@ -75,6 +83,7 @@
           "FontStyle": ["Bold"]
         },
         {
+          "Name": "LblLogradouro",
           "Type": "TLabel",
           "Text": "Logradouro:",
           "Position": { "X": 5, "Y": 50 },
@@ -82,6 +91,7 @@
           "Height": 20
         },
         {
+          "Name": "EdtLogradouro",
           "Type": "TEdit",
           "Text": "",
           "Position": { "X": 5, "Y": 70 },
@@ -89,6 +99,7 @@
           "Height": 30
         },
         {
+          "Name": "LblNumero",
           "Type": "TLabel",
           "Text": "Número:",
           "Position": { "X": 5, "Y": 110 },
@@ -96,6 +107,7 @@
           "Height": 20
         },
         {
+          "Name": "EdtNumero",
           "Type": "TEdit",
           "Text": "",
           "Position": { "X": 5, "Y": 130 },
@@ -103,6 +115,7 @@
           "Height": 30
         },
         {
+          "Name": "LblCidade",
           "Type": "TLabel",
           "Text": "Cidade:",
           "Position": { "X": 5, "Y": 170 },
@@ -110,6 +123,7 @@
           "Height": 20
         },
         {
+          "Name": "EdtCidade",
           "Type": "TEdit",
           "Text": "",
           "Position": { "X": 5, "Y": 190 },
@@ -117,6 +131,7 @@
           "Height": 30
         },
         {
+          "Name": "BtnSalvarEndereco",
           "Type": "TButton",
           "Text": "Salvar Endereço",
           "Position": { "X": 5, "Y": 240 },

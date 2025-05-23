@@ -1,4 +1,3 @@
-
 {
   "Type": "TForm",
   "Name": "FrmCadastroCliente",
@@ -6,13 +5,15 @@
   "Children": [
     {
       "Type": "TPanel",
+      "Name": "PnlProfissao",
       "Text": "Profissão:",
-      "Position": { "X": 500, "Y":20 },
+      "Position": { "X": 500, "Y": 20 },
       "Width": 300,
       "Height": 200
     },
     {
       "Type": "TLabel",
+      "Name": "LblTitulo",
       "Text": "Cadastro de Cliente",
       "Position": { "X": 5, "Y": 10 },
       "Width": 300,
@@ -22,6 +23,7 @@
     },
     {
       "Type": "TLabel",
+      "Name": "LblInfoPessoais",
       "Text": "Informações Pessoais",
       "Position": { "X": 5, "Y": 50 },
       "Width": 300,
@@ -30,6 +32,7 @@
     },
     {
       "Type": "TLabel",
+      "Name": "LblNomeCompleto",
       "Text": "Nome Completo:",
       "Position": { "X": 5, "Y": 80 },
       "Width": 300,
@@ -37,6 +40,7 @@
     },
     {
       "Type": "TEdit",
+      "Name": "EdtNomeCompleto",
       "Text": "",
       "Position": { "X": 5, "Y": 100 },
       "Width": 300,
@@ -44,6 +48,7 @@
     },
     {
       "Type": "TLabel",
+      "Name": "LblNascimento",
       "Text": "Data de Nascimento:",
       "Position": { "X": 5, "Y": 140 },
       "Width": 300,
@@ -51,6 +56,7 @@
     },
     {
       "Type": "TEdit",
+      "Name": "EdtNascimento",
       "Text": "",
       "Position": { "X": 5, "Y": 160 },
       "Width": 150,
@@ -58,6 +64,7 @@
     },
     {
       "Type": "TLabel",
+      "Name": "LblCPF",
       "Text": "CPF:",
       "Position": { "X": 165, "Y": 140 },
       "Width": 100,
@@ -65,6 +72,7 @@
     },
     {
       "Type": "TEdit",
+      "Name": "EdtCPF",
       "Text": "",
       "Position": { "X": 165, "Y": 160 },
       "Width": 140,
@@ -72,6 +80,7 @@
     },
     {
       "Type": "TLabel",
+      "Name": "LblRG",
       "Text": "RG:",
       "Position": { "X": 5, "Y": 200 },
       "Width": 100,
@@ -79,6 +88,7 @@
     },
     {
       "Type": "TEdit",
+      "Name": "EdtRG",
       "Text": "",
       "Position": { "X": 5, "Y": 220 },
       "Width": 140,
@@ -86,6 +96,7 @@
     },
     {
       "Type": "TLabel",
+      "Name": "LblTelefone",
       "Text": "Telefone:",
       "Position": { "X": 165, "Y": 200 },
       "Width": 100,
@@ -93,6 +104,7 @@
     },
     {
       "Type": "TEdit",
+      "Name": "EdtTelefone",
       "Text": "",
       "Position": { "X": 165, "Y": 220 },
       "Width": 140,
@@ -100,6 +112,7 @@
     },
     {
       "Type": "TLabel",
+      "Name": "LblEmail",
       "Text": "E-mail:",
       "Position": { "X": 5, "Y": 260 },
       "Width": 300,
@@ -107,6 +120,7 @@
     },
     {
       "Type": "TEdit",
+      "Name": "EdtEmail",
       "Text": "",
       "Position": { "X": 5, "Y": 280 },
       "Width": 300,
@@ -114,6 +128,7 @@
     },
     {
       "Type": "TLabel",
+      "Name": "LblEndereco",
       "Text": "Endereço",
       "Position": { "X": 5, "Y": 320 },
       "Width": 300,
@@ -122,6 +137,7 @@
     },
     {
       "Type": "TLabel",
+      "Name": "LblCEP",
       "Text": "CEP:",
       "Position": { "X": 5, "Y": 350 },
       "Width": 100,
@@ -129,6 +145,7 @@
     },
     {
       "Type": "TEdit",
+      "Name": "EdtCEP",
       "Text": "",
       "Position": { "X": 5, "Y": 370 },
       "Width": 100,
@@ -136,6 +153,7 @@
     },
     {
       "Type": "TLabel",
+      "Name": "LblLogradouro",
       "Text": "Logradouro:",
       "Position": { "X": 115, "Y": 350 },
       "Width": 190,
@@ -143,6 +161,7 @@
     },
     {
       "Type": "TEdit",
+      "Name": "EdtLogradouro",
       "Text": "",
       "Position": { "X": 115, "Y": 370 },
       "Width": 190,
@@ -150,6 +169,7 @@
     },
     {
       "Type": "TLabel",
+      "Name": "LblNumero",
       "Text": "Número:",
       "Position": { "X": 5, "Y": 410 },
       "Width": 80,
@@ -157,6 +177,7 @@
     },
     {
       "Type": "TEdit",
+      "Name": "EdtNumero",
       "Text": "",
       "Position": { "X": 5, "Y": 430 },
       "Width": 80,
@@ -164,6 +185,7 @@
     },
     {
       "Type": "TLabel",
+      "Name": "LblComplemento",
       "Text": "Complemento:",
       "Position": { "X": 95, "Y": 410 },
       "Width": 210,
@@ -171,6 +193,7 @@
     },
     {
       "Type": "TEdit",
+      "Name": "EdtComplemento",
       "Text": "",
       "Position": { "X": 95, "Y": 430 },
       "Width": 210,
@@ -178,6 +201,7 @@
     },
     {
       "Type": "TLabel",
+      "Name": "LblBairro",
       "Text": "Bairro:",
       "Position": { "X": 5, "Y": 470 },
       "Width": 150,
@@ -185,6 +209,7 @@
     },
     {
       "Type": "TEdit",
+      "Name": "EdtBairro",
       "Text": "",
       "Position": { "X": 5, "Y": 490 },
       "Width": 150,
@@ -192,6 +217,7 @@
     },
     {
       "Type": "TLabel",
+      "Name": "LblCidade",
       "Text": "Cidade:",
       "Position": { "X": 165, "Y": 470 },
       "Width": 140,
@@ -199,6 +225,7 @@
     },
     {
       "Type": "TEdit",
+      "Name": "EdtCidade",
       "Text": "",
       "Position": { "X": 165, "Y": 490 },
       "Width": 140,
@@ -206,6 +233,7 @@
     },
     {
       "Type": "TLabel",
+      "Name": "LblEstado",
       "Text": "Estado:",
       "Position": { "X": 5, "Y": 530 },
       "Width": 80,
@@ -213,6 +241,7 @@
     },
     {
       "Type": "TEdit",
+      "Name": "EdtEstado",
       "Text": "",
       "Position": { "X": 5, "Y": 550 },
       "Width": 80,
@@ -220,6 +249,7 @@
     },
     {
       "Type": "TLabel",
+      "Name": "LblPais",
       "Text": "País:",
       "Position": { "X": 95, "Y": 530 },
       "Width": 210,
@@ -227,6 +257,7 @@
     },
     {
       "Type": "TEdit",
+      "Name": "EdtPais",
       "Text": "",
       "Position": { "X": 95, "Y": 550 },
       "Width": 210,
@@ -234,6 +265,7 @@
     },
     {
       "Type": "TLabel",
+      "Name": "LblInfoProfissionais",
       "Text": "Informações Profissionais",
       "Position": { "X": 5, "Y": 590 },
       "Width": 300,
@@ -242,6 +274,7 @@
     },
     {
       "Type": "TLabel",
+      "Name": "LblProfissao",
       "Text": "Profissão:",
       "Position": { "X": 5, "Y": 620 },
       "Width": 300,
@@ -249,6 +282,7 @@
     },
     {
       "Type": "TEdit",
+      "Name": "EdtProfissao",
       "Text": "",
       "Position": { "X": 5, "Y": 640 },
       "Width": 300,
@@ -256,6 +290,7 @@
     },
     {
       "Type": "TLabel",
+      "Name": "LblEmpresa",
       "Text": "Empresa:",
       "Position": { "X": 5, "Y": 680 },
       "Width": 300,
@@ -263,6 +298,7 @@
     },
     {
       "Type": "TEdit",
+      "Name": "EdtEmpresa",
       "Text": "",
       "Position": { "X": 5, "Y": 700 },
       "Width": 300,
@@ -270,6 +306,7 @@
     },
     {
       "Type": "TLabel",
+      "Name": "LblRendaMensal",
       "Text": "Renda Mensal:",
       "Position": { "X": 5, "Y": 740 },
       "Width": 150,
@@ -277,6 +314,7 @@
     },
     {
       "Type": "TEdit",
+      "Name": "EdtRendaMensal",
       "Text": "",
       "Position": { "X": 5, "Y": 760 },
       "Width": 150,
@@ -284,6 +322,7 @@
     },
     {
       "Type": "TButton",
+      "Name": "BtnSalvarCadastro",
       "Text": "Salvar Cadastro",
       "Position": { "X": 5, "Y": 800 },
       "Width": 150,
@@ -291,6 +330,7 @@
     },
     {
       "Type": "TButton",
+      "Name": "BtnCancelar",
       "Text": "Cancelar",
       "Position": { "X": 165, "Y": 800 },
       "Width": 140,

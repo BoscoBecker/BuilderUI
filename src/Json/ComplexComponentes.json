@@ -18,6 +18,7 @@
       "Children": [
         {
           "Type": "TLabel",
+          "Name": "LblTituloCabecalho",
           "Text": "Cadastro de Cliente",
           "Position": { "X": 20, "Y": 15 },
           "Width": 300,
@@ -48,6 +49,7 @@
         },
         {
           "Type": "TLabel",
+          "Name": "LblNomeCompleto",
           "Text": "Nome Completo:",
           "Position": { "X": 220, "Y": 20 },
           "Width": 300,
@@ -63,6 +65,7 @@
         },
         {
           "Type": "TLabel",
+          "Name": "LblDataNascimento",
           "Text": "Data Nascimento:",
           "Position": { "X": 220, "Y": 80 },
           "Width": 150,
@@ -108,6 +111,7 @@
       "Children": [
         {
           "Type": "TLabel",
+          "Name": "LblCEP",
           "Text": "CEP:",
           "Position": { "X": 10, "Y": 30 },
           "Width": 100,

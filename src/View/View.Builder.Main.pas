@@ -8,25 +8,72 @@ uses
   Vcl.ExtCtrls,
 
   Adapter.TreeViewAdapter,
-  Builder.UIBuilderEngine;
+  Builder.UIBuilderEngine, System.Skia, Vcl.Skia, System.Types, System.UITypes,
+  Vcl.Imaging.pngimage, Vcl.WinXCtrls,
+  Util.Json  ;
 
 type
   TForm2 = class(TForm)
-    TreeView1: TTreeView;
-    Panel1: TPanel;
-    Splitter1: TSplitter;
     StatusBar1: TStatusBar;
-    Panel2: TPanel;
-    Button1: TButton;
+    PanelRenderJson: TPanel;
+    BtnRender: TButton;
     Memo: TMemo;
     Splitter2: TSplitter;
-    procedure Button1Click(Sender: TObject);
+    SplitView1: TSplitView;
+    Panel6: TPanel;
+    Image6: TImage;
+    Panel9: TPanel;
+    Image9: TImage;
+    Panel10: TPanel;
+    Image10: TImage;
+    Panel4: TPanel;
+    Image1: TImage;
+    Panel5: TPanel;
+    Image2: TImage;
+    Panel7: TPanel;
+    Image3: TImage;
+    Panel8: TPanel;
+    Image4: TImage;
+    Panel12: TPanel;
+    Image8: TImage;
+    lblOpenModel: TLabel;
+    lblTreeJson: TLabel;
+    lblRenderJson: TLabel;
+    PanelTree: TPanel;
+    Panel11: TPanel;
+    Image5: TImage;
+    Image7: TImage;
+    SkLabel1: TSkLabel;
+    TreeView1: TTreeView;
+    PanelValidateJson: TPanel;
+    SkLblVerify: TSkLabel;
+    Panel13: TPanel;
+    Image12: TImage;
+    SkLabel3: TSkLabel;
+    SkPaintBackground: TSkPaintBox;
+    Splitter1: TSplitter;
+    Panel2: TPanel;
+    Panel1: TPanel;
+    procedure BtnRenderClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure SkPaintBox1Draw(ASender: TObject; const ACanvas: ISkCanvas;
+      const ADest: TRectF; const AOpacity: Single);
+    procedure SkPaintBox2Draw(ASender: TObject; const ACanvas: ISkCanvas;
+      const ADest: TRectF; const AOpacity: Single);
+    procedure Image6Click(Sender: TObject);
+    procedure Image9Click(Sender: TObject);
+    procedure Image5Click(Sender: TObject);
+    procedure MemoChange(Sender: TObject);
+    procedure Image3Click(Sender: TObject);
+    procedure Image12Click(Sender: TObject);
+    procedure SkPaintBackgroundDraw(ASender: TObject; const ACanvas: ISkCanvas;
+      const ADest: TRectF; const AOpacity: Single);
   private
     FBuilder : TUIBuilderEngine;
     FCreatedForms: TObjectList<TForm>;
     procedure CloseFormsCreated;
     procedure AddJSONToTreeView(JSONValue: TJSONValue; ParentNode: TTreeNode; NodeName: string; TreeView: TTreeView );
+    procedure ValidateAndProcessJSON(const AJSON: string);
   public
     { Public declarations }
   end;
@@ -91,7 +138,7 @@ begin
   end;
 end;
 
-procedure TForm2.Button1Click(Sender: TObject);
+procedure TForm2.BtnRenderClick(Sender: TObject);
 begin
   var UIControl: TControl;
   var JsonText := Memo.Text;
@@ -156,5 +203,244 @@ begin
    FCreatedForms := TObjectList<TForm>.Create(False);
 end;
 
+
+
+procedure TForm2.Image12Click(Sender: TObject);
+begin
+  PanelRenderJson.Visible:= False;
+end;
+
+procedure TForm2.Image3Click(Sender: TObject);
+begin
+  PanelRenderJson.Visible:= True;
+end;
+
+procedure TForm2.Image5Click(Sender: TObject);
+begin
+  PanelTree.Visible:= False;
+end;
+
+procedure TForm2.Image6Click(Sender: TObject);
+begin
+  if not SplitView1.Opened then
+  begin
+    lblRenderJson.Visible:= True;
+    lblOpenModel.Visible:= True;
+    lblTreeJson.Visible:= True;
+  end else
+  begin
+    lblRenderJson.Visible:= False;
+    lblOpenModel.Visible:= False;
+    lblTreeJson.Visible:= False;
+  end;
+
+  SplitView1.Opened := not SplitView1.Opened;
+end;
+
+procedure TForm2.Image9Click(Sender: TObject);
+begin
+  PanelTree.Visible:= not PanelTree.Visible;
+end;
+
+procedure TForm2.MemoChange(Sender: TObject);
+begin
+  BtnRender.Enabled:= false;
+  try
+    try
+      ValidateAndProcessJSON(Memo.Lines.Text);
+    except
+      BtnRender.Enabled:= true;
+    end;
+  finally
+    BtnRender.Enabled:= true;
+  end;
+end;
+
+procedure TForm2.SkPaintBackgroundDraw(ASender: TObject;
+  const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
+const
+  GridSize = 20; // espaçamento entre linhas
+var
+  Paint: ISkPaint;
+  X, Y: Single;
+begin
+  // Cor de fundo
+  ACanvas.Clear($FFF5F5F5); // cor clara tipo Delphi Panel
+
+  // Configura o pincel
+  Paint := TSkPaint.Create;
+  Paint.Style := TSkPaintStyle.Stroke;
+  Paint.Color := $FFDDDDDD;
+  Paint.StrokeWidth := 1;
+
+  // Linhas verticais
+  X := ADest.Left;
+  while X <= ADest.Right do
+  begin
+    ACanvas.DrawLine(X, ADest.Top, X, ADest.Bottom, Paint);
+    X := X + GridSize;
+  end;
+
+  // Linhas horizontais
+  Y := ADest.Top;
+  while Y <= ADest.Bottom do
+  begin
+    ACanvas.DrawLine(ADest.Left, Y, ADest.Right, Y, Paint);
+    Y := Y + GridSize;
+  end;
+
+end;
+
+procedure TForm2.SkPaintBox1Draw(ASender: TObject; const ACanvas: ISkCanvas;
+  const ADest: TRectF; const AOpacity: Single);
+const
+  GridSize = 20; // espaçamento entre linhas
+var
+  Paint: ISkPaint;
+  X, Y: Single;
+begin
+  // Cor de fundo
+  ACanvas.Clear($FFF5F5F5); // cor clara tipo Delphi Panel
+
+  // Configura o pincel
+  Paint := TSkPaint.Create;
+  Paint.Style := TSkPaintStyle.Stroke;
+  Paint.Color := $FFDDDDDD;
+  Paint.StrokeWidth := 1;
+
+  // Linhas verticais
+  X := ADest.Left;
+  while X <= ADest.Right do
+  begin
+    ACanvas.DrawLine(X, ADest.Top, X, ADest.Bottom, Paint);
+    X := X + GridSize;
+  end;
+
+  // Linhas horizontais
+  Y := ADest.Top;
+  while Y <= ADest.Bottom do
+  begin
+    ACanvas.DrawLine(ADest.Left, Y, ADest.Right, Y, Paint);
+    Y := Y + GridSize;
+  end;
+end;
+
+
+
+//procedure TForm2.SkPaintBox1Draw(ASender: TObject; const ACanvas: ISkCanvas;
+//  const ADest: TRectF; const AOpacity: Single);
+//var
+//  LBorderPaint, LPanelPaint: ISkPaint;
+//  LOuterRect, LInnerRect: TRectF;
+//  LShader: ISkShader;
+//  BorderWidth, CornerRadius: Single;
+//begin
+//  BorderWidth := 6;         // espessura da borda
+//  CornerRadius := 6;        // cantos suavemente arredondados
+//
+//  // Área total do componente
+//  LOuterRect := ADest;
+//  InflateRect(LOuterRect, -2, -2); // margens externas para evitar corte
+//
+//  // Criando gradiente sweep na borda
+//  LShader := TSkShader.MakeGradientSweep(
+//    PointF(LOuterRect.CenterPoint.X, LOuterRect.CenterPoint.Y),
+//    [$FFFCE68D, $FFF7CAA5, $FF2EBBC1, $FFFCE68D]
+//  );
+//
+//  // Pintura da borda
+//  LBorderPaint := TSkPaint.Create;
+//  //LBorderPaint.IsAntialias := True;
+//  LBorderPaint.Shader := LShader;
+//  ACanvas.DrawRoundRect(LOuterRect, CornerRadius, CornerRadius, LBorderPaint);
+//
+//  // Área interna do "painel"
+//  LInnerRect := LOuterRect;
+//  InflateRect(LInnerRect, -BorderWidth, -BorderWidth);
+//
+//  // Pintura do conteúdo (como se fosse o fundo do painel)
+//  LPanelPaint := TSkPaint.Create;
+//  LPanelPaint.Color := $FFF5F5F5; // cor padrão de panel mais clara
+//  //LPanelPaint.IsAntialias := True;
+//
+//  ACanvas.DrawRoundRect(LInnerRect, CornerRadius, CornerRadius, LPanelPaint);
+//end;
+
+procedure TForm2.SkPaintBox2Draw(ASender: TObject; const ACanvas: ISkCanvas;
+  const ADest: TRectF; const AOpacity: Single);
+var
+  LBorderPaint, LPanelPaint: ISkPaint;
+  LOuterRect, LInnerRect: TRectF;
+  LShader: ISkShader;
+  BorderWidth, CornerRadius: Single;
+begin
+  BorderWidth := 6;         // espessura da borda
+  CornerRadius := 6;        // cantos suavemente arredondados
+
+  // Área total do componente
+  LOuterRect := ADest;
+  InflateRect(LOuterRect, -2, -2); // margens externas para evitar corte
+
+  // Criando gradiente sweep na borda
+  LShader := TSkShader.MakeGradientSweep(
+    PointF(LOuterRect.CenterPoint.X, LOuterRect.CenterPoint.Y),
+    [$FFFCE68D, $FFF7CAA5, $FF2EBBC1, $FFFCE68D]
+  );
+
+  // Pintura da borda
+  LBorderPaint := TSkPaint.Create;
+  //LBorderPaint.IsAntialias := True;
+  LBorderPaint.Shader := LShader;
+  ACanvas.DrawRoundRect(LOuterRect, CornerRadius, CornerRadius, LBorderPaint);
+
+  // Área interna do "painel"
+  LInnerRect := LOuterRect;
+  InflateRect(LInnerRect, -BorderWidth, -BorderWidth);
+
+  // Pintura do conteúdo (como se fosse o fundo do painel)
+  LPanelPaint := TSkPaint.Create;
+  LPanelPaint.Color := $FFFFFFFF;; // cor padrão de panel mais clara
+  //LPanelPaint.IsAntialias := True;
+
+  ACanvas.DrawRoundRect(LInnerRect, CornerRadius, CornerRadius, LPanelPaint);
+end;
+
+procedure TForm2.ValidateAndProcessJSON(const AJSON: string);
+begin
+    TThread.CreateAnonymousThread(
+    procedure
+    var
+      IsValid: Boolean;
+      ErrorMsg: string;
+    begin
+      SkLblVerify.Caption:= 'Analizing json ... ';
+      try
+        TThread.Queue(nil,
+          procedure
+          begin
+            IsValid := TJSONHelper.ValidateJSON(AJSON, ErrorMsg);
+            if IsValid then
+            begin
+              SkLblVerify.Caption:= 'Valid (RFC 8259)';
+              Self.PanelValidateJson.Color:= clgreen;
+              Self.PanelValidateJson.Repaint;
+            end else
+            begin
+              SkLblVerify.Caption:= 'InValid Valid (RFC 8259)';
+              Self.PanelValidateJson.Color:= clred;
+              Self.PanelValidateJson.repaint;
+            end;
+          end);
+      except
+        on E: Exception do
+          TThread.Queue(nil,
+            procedure
+            begin
+              ShowMessage('Erro: ' + E.Message);
+            end);
+      end;
+    end).Start;
+
+  end;
 
 end.

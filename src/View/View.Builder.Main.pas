@@ -11,26 +11,6 @@ uses
   Builder.UIBuilderEngine, System.Skia, Vcl.Skia, System.Types, System.UITypes,
   Vcl.Imaging.pngimage, Vcl.WinXCtrls,
   Util.Json ;
-type
-  TTreeViewIndexer = class
-  private
-    FIndex: TDictionary<string, TTreeNode>;
-    FTreeView: TTreeView;
-    procedure BuildIndex;
-  public
-    constructor Create(ATreeView: TTreeView);
-    destructor Destroy; override;
-    function FindNodeByComponentName(const AName: string): TTreeNode;
-    function SelectComponentByName(const AName: string) : String;
-    procedure RefreshIndex;
-    property TreeView: TTreeView read FTreeView;
-  end;
-
-type
-  TSkCachedBox = class(TSkCustomControl)
-  protected
-    procedure Draw(const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single); override;
-  end;
 
 type
   TForm2 = class(TForm)
@@ -46,24 +26,14 @@ type
     Image9: TImage;
     Panel10: TPanel;
     Image10: TImage;
-    Panel4: TPanel;
-    Image1: TImage;
-    Panel5: TPanel;
-    Image2: TImage;
     Panel7: TPanel;
-    Image3: TImage;
-    Panel8: TPanel;
-    Image4: TImage;
+    ImageRenderJson: TImage;
     Panel12: TPanel;
-    Image8: TImage;
-    lblOpenModel: TLabel;
-    lblTreeJson: TLabel;
-    lblRenderJson: TLabel;
+    ImageOpenTemplate: TImage;
     PanelTree: TPanel;
     Panel11: TPanel;
-    Image5: TImage;
-    Image7: TImage;
-    SkLabel1: TSkLabel;
+    ImageExpand: TImage;
+    ImageColapse: TImage;
     TreeView1: TTreeView;
     PanelValidateJson: TPanel;
     SkLblVerify: TSkLabel;
@@ -77,45 +47,71 @@ type
     SearchBoxComponents: TSearchBox;
     ActivityIndicatorSearch: TActivityIndicator;
     SkPaintBackground: TSkPaintBox;
-    PanelPaleta: TPanel;
+    PanelToolPalette: TPanel;
     Image6: TImage;
     Image11: TImage;
     Image13: TImage;
     Image14: TImage;
     Image15: TImage;
     Image16: TImage;
+    PanelSettings: TPanel;
+    SkLabelSettings: TSkLabel;
+    Panel3: TPanel;
+    Image1: TImage;
+    Image2: TImage;
+    SkLabel2: TSkLabel;
+    SkPaintBox1: TSkPaintBox;
     procedure BtnRenderClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure SkPaintBox2Draw(ASender: TObject; const ACanvas: ISkCanvas;
       const ADest: TRectF; const AOpacity: Single);
     procedure ImgSettingsClick(Sender: TObject);
     procedure Image9Click(Sender: TObject);
-    procedure Image5Click(Sender: TObject);
     procedure MemoChange(Sender: TObject);
-    procedure Image3Click(Sender: TObject);
+    procedure ImageRenderJsonClick(Sender: TObject);
     procedure Image12Click(Sender: TObject);
     procedure SkPaintBackgroundDraw(ASender: TObject; const ACanvas: ISkCanvas;
       const ADest: TRectF; const AOpacity: Single);
-    procedure Image7Click(Sender: TObject);
     procedure SearchBoxComponentsChange(Sender: TObject);
     procedure SkPaintBackgroundResize(Sender: TObject);
-    procedure PanelPaletaMouseDown(Sender: TObject; Button: TMouseButton;
+    procedure PanelToolPaletteMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
-    procedure PanelPaletaMouseUp(Sender: TObject; Button: TMouseButton;
+    procedure PanelToolPaletteMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
-    procedure PanelPaletaMouseMove(Sender: TObject; Shift: TShiftState; X,
+    procedure PanelToolPaletteMouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
+    procedure FormShow(Sender: TObject);
+    procedure FormCanResize(Sender: TObject; var NewWidth, NewHeight: Integer;
+      var Resize: Boolean);
+    procedure TreeView1Click(Sender: TObject);
+    procedure ImageExpandClick(Sender: TObject);
+    procedure ImageColapseClick(Sender: TObject);
+    procedure Image2Click(Sender: TObject);
+    procedure SkPaintBox1Draw(ASender: TObject; const ACanvas: ISkCanvas;
+      const ADest: TRectF; const AOpacity: Single);
+    procedure SkPaintBox1MouseMove(Sender: TObject; Shift: TShiftState; X,
+      Y: Integer);
+    procedure SkPaintBox1MouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure SkPaintBox1MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   private
     FBuilder : TUIBuilderEngine;
     FCreatedForms: TObjectList<TForm>;
-    FTreeIndexer :TTreeViewIndexer;
     FDragging: Boolean;
     FDragOffset: TPoint;
+    FGridBackground: ISkPicture;
+    FSelecionadoShape: TShape;
+
     procedure RenderJson(const Atext : string);
     procedure CloseFormsCreated;
     procedure AddJSONToTreeView(JSONValue: TJSONValue; ParentNode: TTreeNode; NodeName: string; TreeView: TTreeView );
-    procedure ValidateAndProcessJSON(const AJSON: string);
+    function FindNodeRecursive(ParentNode: TTreeNode; const AText: string): TTreeNode;
 
+    function EncontrarNoPorComponente(TreeView: TTreeView; const NomeComponente: string): TTreeNode;
+    procedure PesquisarFormularioDinamico(const ATerm: string );
+    procedure ExpandirPais(Node: TTreeNode);
+    procedure ValidateAndProcessJSON(const AJSON: string);
   public
     destructor Destroy; override;
   end;
@@ -199,17 +195,115 @@ end;
 
 destructor TForm2.Destroy;
 begin
-  FTreeIndexer.Free;
   FCreatedForms.Free;
   FBuilder.Free;
   inherited;
 end;
 
+
+function TForm2.EncontrarNoPorComponente(TreeView: TTreeView;const NomeComponente: string): TTreeNode;
+begin
+  Result := nil;
+  // Percorre todos os nós do TreeView
+  for var i := 0 to TreeView.Items.Count - 1 do
+  begin
+    var NodeText := TreeView.Items[i].Text;
+
+    // Remove o prefixo "Name: " se existir
+    if NodeText.StartsWith('Name: ') then
+      NodeText := Copy(NodeText, 7, Length(NodeText));
+
+    // Verifica se o texto do nó corresponde ao nome do componente
+    if SameText(NodeText, NomeComponente) then
+    begin
+      // Verifica se o nó tem um componente associado (opcional)
+      if (TreeView.Items[i].Data <> nil) and (TObject(TreeView.Items[i].Data) is TComponent) then
+      begin
+        Result := TreeView.Items[i];
+        Exit;
+      end
+      else if TreeView.Items[i].Data = nil then
+      begin
+        // Se não há data associada, mas o nome bate, retorna mesmo assim
+        Result := TreeView.Items[i];
+        Exit;
+      end;
+    end;
+  end;
+end;
+
+
+procedure TForm2.ExpandirPais(Node: TTreeNode);
+var
+  ParentNode: TTreeNode;
+begin
+  if Node = nil then Exit;
+
+  ParentNode := Node.Parent;
+  while ParentNode <> nil do
+  begin
+    ParentNode.Expand(False);
+    ParentNode := ParentNode.Parent;
+  end;
+end;
+
+
+function TForm2.FindNodeRecursive(ParentNode: TTreeNode;
+  const AText: string): TTreeNode;
+var
+  Child: TTreeNode;
+begin
+  Result := nil;
+
+  if SameText(ParentNode.Text, AText) then
+    Exit(ParentNode);
+
+  Child := ParentNode.GetFirstChild;
+  while Assigned(Child) do
+  begin
+    Result := FindNodeRecursive(Child, AText);
+    if Assigned(Result) then
+      Exit;
+    Child := Child.GetNextSibling;
+  end;
+end;
+
+procedure TForm2.FormCanResize(Sender: TObject; var NewWidth,
+  NewHeight: Integer; var Resize: Boolean);
+begin
+  if not FDragging then
+  begin
+    PanelToolPalette.Left := (ClientWidth - PanelToolPalette.Width) div 2;
+    PanelToolPalette.Top := ClientHeight - PanelToolPalette.Height -60;
+  end;
+end;
+
 procedure TForm2.FormCreate(Sender: TObject);
+var
+  Recorder: ISkPictureRecorder;
+  Canvas: ISkCanvas;
 begin
    FCreatedForms := TObjectList<TForm>.Create(False);
-   FTreeIndexer:= TTreeViewIndexer.Create(TreeView1);
    Self.DoubleBuffered := True;
+  Recorder := TSkPictureRecorder.Create;
+  Canvas := Recorder.BeginRecording(TRectF.Create(0, 0, SkPaintBackground.Width, SkPaintBackground.Height));
+
+  // Desenha um grid 20x20 por exemplo
+  Canvas.Save;
+  for var I := 0 to Trunc(SkPaintBackground.Width / 20) do
+    Canvas.DrawLine(I * 20, 0, I * 20, SkPaintBackground.Height, TSkPaint.Create);
+  for var I := 0 to Trunc(SkPaintBackground.Height / 20) do
+    Canvas.DrawLine(0, I * 20, SkPaintBackground.Width, I * 20, TSkPaint.Create);
+  Canvas.Restore;
+
+  FGridBackground := Recorder.FinishRecording;
+end;
+
+procedure TForm2.FormShow(Sender: TObject);
+begin
+
+//  PanelToolPalette.Left := (ClientWidth - PanelToolPalette.Width) div 2;
+//  PanelToolPalette.Top := ClientHeight - PanelToolPalette.Height -5;
 end;
 
 procedure TForm2.Image12Click(Sender: TObject);
@@ -217,41 +311,50 @@ begin
   PanelRenderJson.Visible:= False;
 end;
 
-procedure TForm2.Image3Click(Sender: TObject);
-begin
-  PanelRenderJson.Visible:= True;
-end;
-
-procedure TForm2.Image5Click(Sender: TObject);
-begin
-  PanelTree.Visible:= False;
-end;
-
-procedure TForm2.Image7Click(Sender: TObject);
+procedure TForm2.Image2Click(Sender: TObject);
 begin
   PanelSearchComponents.Visible:= not PanelSearchComponents.Visible;
+end;
+
+procedure TForm2.ImageRenderJsonClick(Sender: TObject);
+begin
+  PanelRenderJson.Visible:= True;
 end;
 
 procedure TForm2.ImgSettingsClick(Sender: TObject);
 begin
   if not SplitView1.Opened then
-  begin
-    lblRenderJson.Visible:= True;
-    lblOpenModel.Visible:= True;
-    lblTreeJson.Visible:= True;
-  end else
-  begin
-    lblRenderJson.Visible:= False;
-    lblOpenModel.Visible:= False;
-    lblTreeJson.Visible:= False;
-  end;
-
+    PanelSettings.Visible:= True
+  else
+    PanelSettings.Visible:= False;
   SplitView1.Opened := not SplitView1.Opened;
 end;
 
 procedure TForm2.Image9Click(Sender: TObject);
 begin
   PanelTree.Visible:= not PanelTree.Visible;
+end;
+
+procedure TForm2.ImageColapseClick(Sender: TObject);
+begin
+  TreeView1.Items.BeginUpdate;
+  try
+    for var i := 0 to TreeView1.Items.Count - 1 do
+      TreeView1.Items[i].Collapse(True); // True para colapsar recursivamente
+  finally
+    TreeView1.Items.EndUpdate;
+  end;
+end;
+
+procedure TForm2.ImageExpandClick(Sender: TObject);
+begin
+  TreeView1.Items.BeginUpdate;
+  try
+    for var i := 0 to TreeView1.Items.Count - 1 do
+      TreeView1.Items[i].Expand(True); // True para expandir recursivamente
+  finally
+    TreeView1.Items.EndUpdate;
+  end;
 end;
 
 procedure TForm2.MemoChange(Sender: TObject);
@@ -268,47 +371,60 @@ begin
   end;
 end;
 
-procedure TForm2.PanelPaletaMouseDown(Sender: TObject; Button: TMouseButton;
+procedure TForm2.PanelToolPaletteMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
   if Button = mbLeft then
   begin
     FDragging := True;
     FDragOffset := Point(X, Y);
-    PanelPaleta.Cursor := crSizeAll;
+    PanelToolPalette.Cursor := crSizeAll;
   end;
 end;
 
-procedure TForm2.PanelPaletaMouseMove(Sender: TObject; Shift: TShiftState; X,
+procedure TForm2.PanelToolPaletteMouseMove(Sender: TObject; Shift: TShiftState; X,
   Y: Integer);
 begin
   if FDragging then
   begin
-    PanelPaleta.Left := PanelPaleta.Left + (X - FDragOffset.X);
-    PanelPaleta.Top := PanelPaleta.Top + (Y - FDragOffset.Y);
+    PanelToolPalette.Left := PanelToolPalette.Left + (X - FDragOffset.X);
+    PanelToolPalette.Top := PanelToolPalette.Top + (Y - FDragOffset.Y);
   end;
 end;
 
-procedure TForm2.PanelPaletaMouseUp(Sender: TObject; Button: TMouseButton;
+procedure TForm2.PanelToolPaletteMouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
   if Button = mbLeft then
   begin
     FDragging := False;
-    PanelPaleta.Cursor := crDefault;
+    PanelToolPalette.Cursor := crDefault;
+  end;
+end;
+
+procedure TForm2.PesquisarFormularioDinamico(const ATerm: string);
+var
+  NoEncontrado: TTreeNode;
+begin
+  NoEncontrado:= EncontrarNoPorComponente(TreeView1, ATerm);
+
+  if NoEncontrado <> nil then
+  begin
+    ExpandirPais(NoEncontrado);
+    TreeView1.Selected := NoEncontrado;
+    NoEncontrado.MakeVisible;
+    TreeView1.SetFocus;
   end;
 end;
 
 procedure TForm2.RenderJson(const Atext : string);
 begin
-  var UIControl: TControl;
   var JsonText := Atext;
   var Json := TJSONObject.ParseJSONValue(JsonText) as TJSONObject;
   var MyForm: TForm;
   var FormsArray: TJSONArray;
   var FormJson: TJSONObject;
   var Node: TTreeNode;
-  UIControl:= Nil;
   CloseFormsCreated;
   TreeView1.Items.Clear;
   TFormCloseAdapter.TreeView := TreeView1;
@@ -319,7 +435,7 @@ begin
       for var I := 0 to FormsArray.Count - 1 do
       begin
         FormJson := FormsArray.Items[I] as TJSONObject;
-        MyForm := FBuilder.CreateFormFromJson(Application, FormJson);
+        MyForm := FBuilder.CreateFormFromJson(SkPaintBackground, FormJson);
 
         Node := TreeView1.Items.Add(nil, FormJson.GetValue<string>('Name'));
         Node.Data := MyForm;
@@ -332,7 +448,7 @@ begin
     end else
     begin
       Node := TreeView1.Items.Add(nil, Json.GetValue<string>('Name'));
-      MyForm := FBuilder.CreateFormFromJson(Application, Json);
+      MyForm := FBuilder.CreateFormFromJson(SkPaintBackground, Json);
       Node.Data := MyForm;
       AddJSONToTreeView(Json,Node,'root',TreeView1);
 
@@ -343,32 +459,24 @@ begin
   finally
     TreeView1.AutoExpand:= True;
     Json.Free;
-    FTreeIndexer.RefreshIndex;
   end
 end;
 
 procedure TForm2.SearchBoxComponentsChange(Sender: TObject);
 begin
   if String(SearchBoxComponents.Text).Equals('') then Exit;
+
+  ActivityIndicatorSearch.Animate:= True;
   try
-    ActivityIndicatorSearch.Animate:= True;
-    TThread.Queue(TThread.CurrentThread,
-    procedure
-    begin
-       FTreeIndexer.SelectComponentByName(SearchBoxComponents.Text);
-    end)
+    PesquisarFormularioDinamico(SearchBoxComponents.Text);
   finally
     ActivityIndicatorSearch.Animate:= False;
   end;
 end;
 
-procedure TForm2.SkPaintBackgroundDraw(ASender: TObject;
-  const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
-const
-  GridSize = 20; // espaçamento entre linhas
-var
-  Paint: ISkPaint;
-  X, Y: Single;
+procedure TForm2.SkPaintBackgroundDraw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
+const GridSize = 20; // espaçamento entre linhas
+var Paint: ISkPaint;
 begin
   // Cor de fundo
   ACanvas.Clear($FFF5F5F5); // cor clara tipo Delphi Panel
@@ -380,7 +488,7 @@ begin
   Paint.StrokeWidth := 1;
 
   // Linhas verticais
-  X := ADest.Left;
+  var X := ADest.Left;
   while X <= ADest.Right do
   begin
     ACanvas.DrawLine(X, ADest.Top, X, ADest.Bottom, Paint);
@@ -388,20 +496,19 @@ begin
   end;
 
   // Linhas horizontais
-  Y := ADest.Top;
+  var Y := ADest.Top;
   while Y <= ADest.Bottom do
   begin
     ACanvas.DrawLine(ADest.Left, Y, ADest.Right, Y, Paint);
     Y := Y + GridSize;
   end;
-
 end;
 
 
 
 procedure TForm2.SkPaintBackgroundResize(Sender: TObject);
 begin
-   SkPaintBackground.Invalidate;
+
 end;
 
 //procedure TForm2.SkPaintBox1Draw(ASender: TObject; const ACanvas: ISkCanvas;
@@ -443,171 +550,214 @@ end;
 //  ACanvas.DrawRoundRect(LInnerRect, CornerRadius, CornerRadius, LPanelPaint);
 //end;
 
-procedure TForm2.SkPaintBox2Draw(ASender: TObject; const ACanvas: ISkCanvas;
+procedure TForm2.SkPaintBox1Draw(ASender: TObject; const ACanvas: ISkCanvas;
   const ADest: TRectF; const AOpacity: Single);
-var
-  LBorderPaint, LPanelPaint: ISkPaint;
-  LOuterRect, LInnerRect: TRectF;
-  LShader: ISkShader;
-  BorderWidth, CornerRadius: Single;
 begin
-  BorderWidth := 6;         // espessura da borda
-  CornerRadius := 6;        // cantos suavemente arredondados
-
-  // Área total do componente
-  LOuterRect := ADest;
-  InflateRect(LOuterRect, -2, -2); // margens externas para evitar corte
-
-  // Criando gradiente sweep na borda
-  LShader := TSkShader.MakeGradientSweep(
-    PointF(LOuterRect.CenterPoint.X, LOuterRect.CenterPoint.Y),
-    [$FFFCE68D, $FFF7CAA5, $FF2EBBC1, $FFFCE68D]
-  );
-
-  // Pintura da borda
-  LBorderPaint := TSkPaint.Create;
-  //LBorderPaint.IsAntialias := True;
-  LBorderPaint.Shader := LShader;
-  ACanvas.DrawRoundRect(LOuterRect, CornerRadius, CornerRadius, LBorderPaint);
-
-  // Área interna do "painel"
-  LInnerRect := LOuterRect;
-  InflateRect(LInnerRect, -BorderWidth, -BorderWidth);
-
-  // Pintura do conteúdo (como se fosse o fundo do painel)
-  LPanelPaint := TSkPaint.Create;
-  LPanelPaint.Color := $FFFFFFFF;; // cor padrão de panel mais clara
-  //LPanelPaint.IsAntialias := True;
-
-  ACanvas.DrawRoundRect(LInnerRect, CornerRadius, CornerRadius, LPanelPaint);
+  var LPaint: ISkPaint := TSkPaint.Create;
+  LPaint.Shader := TSkShader.MakeGradientSweep(ADest.CenterPoint,
+  [$FFF2F2F2, $FFCCCCCC, $FF999999, $FFCCCCCC, $FFF2F2F2]);
+  ACanvas.DrawPaint(LPaint);
 end;
 
-procedure TForm2.ValidateAndProcessJSON(const AJSON: string);
+procedure TForm2.SkPaintBox1MouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
 begin
-    TThread.CreateAnonymousThread(
-    procedure
-    var
-      IsValid: Boolean;
-      ErrorMsg: string;
-    begin
-      SkLblVerify.Caption:= 'Analizing json ... ';
-      try
-        TThread.Queue(nil,
-          procedure
-          begin
-            IsValid := TJSONHelper.ValidateJSON(AJSON, ErrorMsg);
-            if IsValid then
-            begin
-              SkLblVerify.Caption:= 'Valid (RFC 8259)';
-              Self.PanelValidateJson.Color:= clgreen;
-              Self.PanelValidateJson.Repaint;
-            end else
-            begin
-              SkLblVerify.Caption:= 'InValid Valid (RFC 8259)';
-              Self.PanelValidateJson.Color:= clred;
-              Self.PanelValidateJson.repaint;
-            end;
-          end);
-      except
-        on E: Exception do
-          TThread.Queue(nil,
-            procedure
-            begin
-              ShowMessage('Erro: ' + E.Message);
-            end);
-      end;
-    end).Start;
+  FDragging := True;
+  FDragOffset := Point(Round(X), Round(Y));
+end;
 
+procedure TForm2.SkPaintBox1MouseMove(Sender: TObject; Shift: TShiftState; X,
+  Y: Integer);
+var
+  NewLeft, NewTop: Integer;
+begin
+  if FDragging then
+  begin
+    NewLeft := SkPaintBox1.Left + Round(X) - FDragOffset.X;
+    NewTop := SkPaintBox1.Top + Round(Y) - FDragOffset.Y;
+    SkPaintBox1.SetBounds(NewLeft, NewTop, SkPaintBox1.Width, SkPaintBox1.Height);
+  end;
+end;
+
+procedure TForm2.SkPaintBox1MouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  FDragging := False;
+end;
+
+procedure TForm2.SkPaintBox2Draw(ASender: TObject; const ACanvas: ISkCanvas;
+  const ADest: TRectF; const AOpacity: Single);
+//var
+//  LBorderPaint, LPanelPaint: ISkPaint;
+//  LOuterRect, LInnerRect: TRectF;
+//  LShader: ISkShader;
+//  BorderWidth, CornerRadius: Single;
+begin
+//  BorderWidth := 6;         // espessura da borda
+//  CornerRadius := 6;        // cantos suavemente arredondados
+//
+//  // Área total do componente
+//  LOuterRect := ADest;
+//  InflateRect(LOuterRect, -2, -2); // margens externas para evitar corte
+//
+//  // Criando gradiente sweep na borda
+//  LShader := TSkShader.MakeGradientSweep(
+//    PointF(LOuterRect.CenterPoint.X, LOuterRect.CenterPoint.Y),
+//    [$FFFCE68D, $FFF7CAA5, $FF2EBBC1, $FFFCE68D]
+//  );
+//
+//  // Pintura da borda
+//  LBorderPaint := TSkPaint.Create;
+//  //LBorderPaint.IsAntialias := True;
+//  LBorderPaint.Shader := LShader;
+//  ACanvas.DrawRoundRect(LOuterRect, CornerRadius, CornerRadius, LBorderPaint);
+//
+//  // Área interna do "painel"
+//  LInnerRect := LOuterRect;
+//  InflateRect(LInnerRect, -BorderWidth, -BorderWidth);
+//
+//  // Pintura do conteúdo (como se fosse o fundo do painel)
+//  LPanelPaint := TSkPaint.Create;
+//  LPanelPaint.Color := $FFFFFFFF;; // cor padrão de panel mais clara
+//  //LPanelPaint.IsAntialias := True;
+//
+//  ACanvas.DrawRoundRect(LInnerRect, CornerRadius, CornerRadius, LPanelPaint);
+end;
+
+procedure TForm2.TreeView1Click(Sender: TObject);
+var
+  Node: TTreeNode;
+  NomeReal: string;
+  C: TComponent;
+
+  function BuscarComponentePorNome(Root: TComponent; const Nome: string): TComponent;
+
+    function BuscaRecursivaComponente(Comp: TComponent): TComponent;
+    var
+      I: Integer;
+    begin
+      Result := nil;
+
+      if SameText(Comp.Name, Nome) then
+        Exit(Comp);
+
+      if Comp is TWinControl then
+      begin
+        for I := 0 to TWinControl(Comp).ControlCount - 1 do
+        begin
+          Result := BuscaRecursivaComponente(TWinControl(Comp).Controls[I]);
+          if Assigned(Result) then
+            Exit;
+        end;
+      end;
+
+      for I := 0 to Comp.ComponentCount - 1 do
+      begin
+        Result := BuscaRecursivaComponente(Comp.Components[I]);
+        if Assigned(Result) then
+          Exit;
+      end;
+    end;
+
+  begin
+    Result := BuscaRecursivaComponente(Root);
   end;
 
-{ TTreeViewIndexer }
-
-procedure TTreeViewIndexer.BuildIndex;
-var
-  LNode: TTreeNode;
-  LComponent: TComponent;
-begin
-  FIndex.Clear;
-
-  for var i := 0 to FTreeView.Items.Count - 1 do
+  procedure CriarMarcador(AOwner: TForm);
   begin
-    LNode := FTreeView.Items[i];
-
-    // Verifica se o nó está associado a um componente
-    if (LNode.Data <> nil) and (TObject(LNode.Data) is TComponent) then
+    if not Assigned(FSelecionadoShape) then
     begin
-      LComponent := TComponent(LNode.Data);
+      FSelecionadoShape := TShape.Create(AOwner);
+      FSelecionadoShape.Parent := AOwner;
+      FSelecionadoShape.Visible := False;
+    end;
+  end;
 
-      // Indexa pelo nome do componente
-      if LComponent.Name <> '' then
-        FIndex.AddOrSetValue(LComponent.Name, LNode);
+  procedure DestacarComponenteSelecionado(Control: TControl);
+    begin
+      CriarMarcador(Self); // ou o form atual
+
+      FSelecionadoShape.SetBounds(
+        Control.Left - 2,
+        Control.Top - 2,
+        Control.Width + 4,
+        Control.Height + 4
+      );
+      FSelecionadoShape.Parent := Control.Parent;
+      FSelecionadoShape.Brush.Style := bsClear;
+      FSelecionadoShape.Pen.Color := clGrayText;
+      FSelecionadoShape.Pen.Width := 1;
+      FSelecionadoShape.Pen.Mode:= pmMask;
+      FSelecionadoShape.Pen.Style := psDot;
+      FSelecionadoShape.Visible := True;
+      FSelecionadoShape.BringToFront;
+    end;
+
+begin
+  Node := TreeView1.Selected;
+  if Node <> nil then
+  begin
+    NomeReal := Node.Text;
+    if Pos('Name: ', NomeReal) = 1 then
+    begin
+      NomeReal := Copy(NomeReal, 7, Length(NomeReal));
+      C := BuscarComponentePorNome(SkPaintBackground, NomeReal);
+      if Assigned(C) then
+      begin
+        if C is TControl then
+        begin
+          begin
+            if TWinControl(C) is TForm then
+            begin
+              if Assigned(FSelecionadoShape) then
+                TWinControl(C).BringToFront;
+              FSelecionadoShape.Visible := False;
+            end else
+              DestacarComponenteSelecionado(TControl(C));
+          end;
+        end;
+      end;
     end;
   end;
 end;
 
-constructor TTreeViewIndexer.Create(ATreeView: TTreeView);
+procedure TForm2.ValidateAndProcessJSON(const AJSON: string);
 begin
-  inherited Create;
-  FTreeView := ATreeView;
-  FIndex := TDictionary<string, TTreeNode>.Create;
-  BuildIndex;
-end;
-
-destructor TTreeViewIndexer.Destroy;
-begin
-  FIndex.Free;
-  inherited;
-end;
-
-function TTreeViewIndexer.FindNodeByComponentName(const AName: string): TTreeNode;
-begin
-  if not FIndex.TryGetValue(AName.ToLower, Result) then
-    Result := nil;
-end;
-
-procedure TTreeViewIndexer.RefreshIndex;
-begin
-//  TTask.Run(procedure
-//            begin
-//              BuildIndex;
-//            end);
-  BuildIndex;
-end;
-
-function TTreeViewIndexer.SelectComponentByName(const AName: string): string;
-var
-  LNode: TTreeNode;
-begin
-  LNode := FindNodeByComponentName(AName);
-  if Assigned(LNode) then
+  TThread.CreateAnonymousThread(
+  procedure
+  var
+    IsValid: Boolean;
+    ErrorMsg: string;
   begin
-    FTreeView.Selected := LNode;
-    LNode.MakeVisible;
-    FTreeView.SetFocus;
-  end;
+    SkLblVerify.Caption:= 'Analizing json ... ';
+    try
+      TThread.Queue(nil,
+        procedure
+        begin
+          IsValid := TJSONHelper.ValidateJSON(AJSON, ErrorMsg);
+          if IsValid then
+          begin
+            SkLblVerify.Caption:= 'Valid (RFC 8259)';
+            Self.PanelValidateJson.Color:= clgreen;
+            Self.PanelValidateJson.Repaint;
+            Self.BtnRender.Click();
+          end else
+          begin
+            SkLblVerify.Caption:= 'InValid Valid (RFC 8259)';
+            Self.PanelValidateJson.Color:= clred;
+            Self.PanelValidateJson.repaint;
+          end;
+        end);
+    except
+      on E: Exception do
+        TThread.Queue(nil,
+          procedure
+          begin
+            ShowMessage('Erro: ' + E.Message);
+          end);
+    end;
+  end).Start;
 end;
 
-{ TSkCachedBox }
-
-procedure TSkCachedBox.Draw(const ACanvas: ISkCanvas; const ADest: TRectF;
-  const AOpacity: Single);
-var
-  Paint: ISkPaint;
-  Shader: ISkShader;
-  Radius: Single;
-begin
-  Radius := 10;
-
-  Shader := TSkShader.MakeGradientSweep(
-    PointF(ADest.CenterPoint.X, ADest.CenterPoint.Y),
-    [$FFAAAAAA, $FFCCCCCC, $FFEFEFEF, $FFCCCCCC, $FFAAAAAA]
-  );
-
-  Paint := TSkPaint.Create;
-  Paint.Shader := Shader;
-  //Paint.IsAntialias := True;
-
-  ACanvas.DrawRoundRect(ADest, Radius, Radius, Paint);
-end;
 
 end.

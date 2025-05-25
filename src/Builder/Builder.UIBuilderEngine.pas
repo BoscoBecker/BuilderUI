@@ -11,11 +11,6 @@ uses
   Vcl.Controls, Vcl.StdCtrls,Vcl.DBGrids, Vcl.Grids, Vcl.ComCtrls,
   Vcl.ExtCtrls, Windows, Messages;
 
-type
-  TDragData = record
-    IsDragging: Boolean;
-    OffsetX, OffsetY: Integer;
-  end;
 
 type
   TUIBuilderEngine = class(TInterfacedObject, IUIBuilder)
@@ -23,7 +18,6 @@ type
     FDragControl: TControl;
     FDragOffset: TPoint;
   public
-    DragInfo: TDragData;
     function CreateFormFromJson(AOwner: TComponent; Json: TJSONObject): TForm;
     function CreateControlFromJson(AOwner: TComponent; AParent: TWinControl; Json: TJSONObject): TControl;
     procedure CtrlMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);

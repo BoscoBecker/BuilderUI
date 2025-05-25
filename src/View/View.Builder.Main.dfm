@@ -18,7 +18,6 @@ object Form2: TForm2
   OnCanResize = FormCanResize
   OnClick = BtnRenderClick
   OnCreate = FormCreate
-  OnShow = FormShow
   TextHeight = 15
   object Splitter2: TSplitter
     Left = 789
@@ -43,7 +42,6 @@ object Form2: TForm2
     Width = 507
     Height = 610
     Align = alClient
-    OnResize = SkPaintBackgroundResize
     OnDraw = SkPaintBackgroundDraw
     ExplicitLeft = 6
     ExplicitTop = 24
@@ -86,8 +84,6 @@ object Form2: TForm2
       BorderStyle = bsNone
       TabOrder = 1
       OnChange = MemoChange
-      ExplicitTop = 35
-      ExplicitHeight = 521
     end
     object PanelValidateJson: TPanel
       Left = 0
@@ -143,7 +139,7 @@ object Form2: TForm2
         ExplicitHeight = 39
       end
       object SkLabel3: TSkLabel
-        Left = 16
+        Left = 6
         Top = 8
         Width = 75
         Height = 19
@@ -169,7 +165,6 @@ object Form2: TForm2
     Placement = svpLeft
     ShowHint = True
     TabOrder = 2
-    ExplicitTop = -1
     object Panel6: TPanel
       Left = 0
       Top = 575
@@ -223,7 +218,6 @@ object Form2: TForm2
       Padding.Right = 2
       Padding.Bottom = 2
       TabOrder = 1
-      ExplicitTop = 250
       object Image9: TImage
         Left = 2
         Top = 2
@@ -299,7 +293,6 @@ object Form2: TForm2
       Padding.Right = 2
       Padding.Bottom = 2
       TabOrder = 3
-      ExplicitTop = 67
       object ImageRenderJson: TImage
         Left = 2
         Top = 2
@@ -337,7 +330,6 @@ object Form2: TForm2
       Padding.Right = 2
       Padding.Bottom = 2
       TabOrder = 4
-      ExplicitTop = 194
       object ImageOpenTemplate: TImage
         Left = 2
         Top = 2
@@ -376,7 +368,6 @@ object Form2: TForm2
       BevelOuter = bvNone
       TabOrder = 5
       Visible = False
-      ExplicitTop = 520
       object SkLabelSettings: TSkLabel
         AlignWithMargins = True
         Left = 3
@@ -419,8 +410,6 @@ object Form2: TForm2
       DoubleBuffered = True
       ParentDoubleBuffered = False
       TabOrder = 0
-      ExplicitLeft = 0
-      ExplicitWidth = 223
       object ImageExpand: TImage
         Left = 32
         Top = 0
@@ -473,7 +462,6 @@ object Form2: TForm2
       BorderStyle = bsNone
       Ctl3D = True
       Indent = 19
-      MultiSelect = True
       MultiSelectStyle = []
       ParentCtl3D = False
       ParentShowHint = False
@@ -481,10 +469,6 @@ object Form2: TForm2
       TabOrder = 1
       ToolTips = False
       OnClick = TreeView1Click
-      ExplicitLeft = 48
-      ExplicitTop = 138
-      ExplicitWidth = 223
-      ExplicitHeight = 558
     end
     object PanelSearchComponents: TPanel
       Left = 5
@@ -498,9 +482,6 @@ object Form2: TForm2
       ParentDoubleBuffered = False
       TabOrder = 2
       Visible = False
-      ExplicitLeft = 0
-      ExplicitTop = 35
-      ExplicitWidth = 188
       object SearchBoxComponents: TSearchBox
         Left = 24
         Top = 0
@@ -510,7 +491,6 @@ object Form2: TForm2
         TabOrder = 0
         TextHint = 'Type: label1'
         OnChange = SearchBoxComponentsChange
-        ExplicitWidth = 164
         ExplicitHeight = 23
       end
       object ActivityIndicatorSearch: TActivityIndicator
@@ -530,9 +510,6 @@ object Form2: TForm2
       DoubleBuffered = True
       ParentDoubleBuffered = False
       TabOrder = 3
-      ExplicitLeft = 0
-      ExplicitTop = 8
-      ExplicitWidth = 223
       object Image1: TImage
         Left = 173
         Top = 0
@@ -542,6 +519,7 @@ object Form2: TForm2
         Hint = 'Close'
         Align = alRight
         Center = True
+        ParentShowHint = False
         Picture.Data = {
           0954506E67496D61676589504E470D0A1A0A0000000D49484452000000140000
           001408060000008D891D0D000000017352474200AECE1CE90000000473424954
@@ -553,6 +531,7 @@ object Form2: TForm2
           407C0088F5F1194A2861A347800016430B8178023106E28A4D7443F11A486CE1
           00323401CA5E80CFCB1483C16F2000C0903915693203080000000049454E44AE
           426082}
+        ShowHint = True
         ExplicitLeft = 144
         ExplicitTop = 1
         ExplicitHeight = 39
@@ -566,6 +545,7 @@ object Form2: TForm2
         Hint = 'Filter'
         Align = alRight
         Center = True
+        ParentShowHint = False
         Picture.Data = {
           0954506E67496D61676589504E470D0A1A0A0000000D49484452000000140000
           001408060000008D891D0D000000017352474200AECE1CE90000000473424954
@@ -576,6 +556,7 @@ object Form2: TForm2
           2E57E2741D3106EA02B10E9AD81520BE3C6AE03032901588ED1850930E467623
           C540640033F4153E45542FB1014D812215545E7E4C0000000049454E44AE4260
           82}
+        ShowHint = True
         OnClick = Image2Click
         ExplicitLeft = 144
         ExplicitTop = 1
@@ -584,11 +565,11 @@ object Form2: TForm2
       object SkLabel2: TSkLabel
         Left = 6
         Top = 8
-        Width = 80
+        Width = 51
         Height = 19
         Words = <
           item
-            Caption = 'Components'
+            Caption = 'Explorer'
           end>
       end
     end

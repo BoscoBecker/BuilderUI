@@ -3,14 +3,13 @@
 interface
 
 uses
-  Core.IUIBuilder,
-
   System.JSON, System.Classes,
   System.Types, System.SysUtils, Forms,
 
   Vcl.Controls, Vcl.StdCtrls,Vcl.DBGrids, Vcl.Grids, Vcl.ComCtrls,
-  Vcl.ExtCtrls, Windows, Messages;
+  Vcl.ExtCtrls, Windows, Messages,
 
+  Core.IUIBuilder, Adapter.TreeViewAdapter;
 
 type
   TUIBuilderEngine = class(TInterfacedObject, IUIBuilder)
@@ -20,6 +19,7 @@ type
   public
     function CreateFormFromJson(AOwner: TComponent; Json: TJSONObject): TForm;
     function CreateControlFromJson(AOwner: TComponent; AParent: TWinControl; Json: TJSONObject): TControl;
+    procedure ControlClick(Sender: TObject);
     procedure CtrlMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure CtrlMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure CtrlMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -29,6 +29,13 @@ implementation
 
 uses
   Vcl.Graphics;
+
+procedure TUIBuilderEngine.ControlClick(Sender: TObject);
+begin
+ var ComponentName:= TControl(Sender).Name;
+  if Length(ComponentName) <=0 then Exit;
+  TTreeViewAdapter.FindComponentInTreeView(TControl(Sender).Name);
+end;
 
 function TUIBuilderEngine.CreateControlFromJson(AOwner: TComponent; AParent: TWinControl; Json: TJSONObject): TControl;
 var
@@ -81,6 +88,49 @@ begin
     Ctrl.Name := PropText;
 
   Ctrl.Parent := AParent;
+
+  if Ctrl is TLabel then
+    TLabel(Ctrl).OnClick := ControlClick
+  else
+  if Ctrl is TButton then
+    TButton(Ctrl).OnClick := ControlClick
+  else
+  if Ctrl is TEdit then
+    TEdit(Ctrl).OnClick := ControlClick
+  else
+  if Ctrl is TPanel then
+    TPanel(Ctrl).OnClick := ControlClick
+  else
+  if Ctrl is TComboBox then
+    TComboBox(Ctrl).OnClick := ControlClick
+  else
+  if Ctrl is TCheckBox then
+    TCheckBox(Ctrl).OnClick := ControlClick
+  else
+  if Ctrl is TStringGrid then
+    TStringGrid(Ctrl).OnClick := ControlClick
+  else
+  if Ctrl is TDBGrid then
+    TDBGrid(Ctrl).OnEnter:= ControlClick
+  else
+  if Ctrl is TMemo then
+    TMemo(Ctrl).OnClick := ControlClick
+  else
+  if Ctrl is TListBox then
+    TListBox(Ctrl).OnClick := ControlClick
+  else
+  if Ctrl is TDateTimePicker then
+    TDateTimePicker(Ctrl).OnClick := ControlClick
+  else
+  if Ctrl is TRadioGroup then
+    TRadioGroup(Ctrl).OnClick := ControlClick
+  else
+  if Ctrl is TCheckBox then
+    TCheckBox(Ctrl).OnClick := ControlClick
+  else
+  if Ctrl is TRadioButton then
+    TRadioButton(Ctrl).OnClick := ControlClick;
+
 //  Ctrl.OnMouseDown := CtrlMouseDown;
 //  Ctrl.OnMouseMove := CtrlMouseMove;
 //  Ctrl.OnMouseUp := CtrlMouseUp;

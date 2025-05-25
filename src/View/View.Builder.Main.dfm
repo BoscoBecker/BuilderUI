@@ -1,4 +1,4 @@
-object Form2: TForm2
+object FormBuilderMain: TFormBuilderMain
   Left = 0
   Top = 0
   Caption = 'Builder UI for  Template Forms'
@@ -18,11 +18,12 @@ object Form2: TForm2
   OnCanResize = FormCanResize
   OnClick = BtnRenderClick
   OnCreate = FormCreate
+  OnShow = FormShow
   TextHeight = 15
   object Splitter2: TSplitter
     Left = 789
-    Top = 42
-    Height = 616
+    Top = 57
+    Height = 601
     Align = alRight
     ExplicitLeft = 232
     ExplicitTop = 49
@@ -30,64 +31,94 @@ object Form2: TForm2
   end
   object Splitter1: TSplitter
     Left = 273
-    Top = 42
-    Height = 616
+    Top = 57
+    Height = 601
     ExplicitLeft = 244
     ExplicitTop = 36
+    ExplicitHeight = 616
   end
   object SkPaintBackground: TSkPaintBox
     AlignWithMargins = True
     Left = 279
-    Top = 45
+    Top = 60
     Width = 507
-    Height = 610
+    Height = 595
     Align = alClient
+    OnMouseMove = SkPaintBackgroundMouseMove
     OnDraw = SkPaintBackgroundDraw
     ExplicitLeft = 6
     ExplicitTop = 24
     ExplicitWidth = 542
     ExplicitHeight = 540
   end
-  object StatusBar1: TStatusBar
+  object StatusBarBottom: TStatusBar
     Left = 0
     Top = 687
     Width = 1034
     Height = 19
-    Panels = <>
+    Panels = <
+      item
+        Width = 100
+      end
+      item
+        Width = 300
+      end
+      item
+        Width = 200
+      end
+      item
+        Width = 200
+      end
+      item
+        Width = 150
+      end
+      item
+        Width = 150
+      end
+      item
+        Width = 150
+      end
+      item
+        Width = 150
+      end>
   end
   object PanelRenderJson: TPanel
     Left = 792
-    Top = 42
+    Top = 57
     Width = 242
-    Height = 616
+    Height = 601
     Align = alRight
     BevelOuter = bvNone
     Caption = 'PanelRenderJson'
     TabOrder = 1
     Visible = False
+    ExplicitTop = 42
+    ExplicitHeight = 616
     object BtnRender: TButton
       Left = 0
-      Top = 591
+      Top = 576
       Width = 242
       Height = 25
       Align = alBottom
       Caption = 'Render'
       TabOrder = 0
       OnClick = BtnRenderClick
+      ExplicitTop = 591
     end
     object Memo: TMemo
       Left = 0
       Top = 33
       Width = 242
-      Height = 523
+      Height = 508
       Align = alClient
       BorderStyle = bsNone
       TabOrder = 1
       OnChange = MemoChange
+      ExplicitHeight = 523
     end
     object PanelValidateJson: TPanel
       Left = 0
-      Top = 556
+      Top = 541
       Width = 242
       Height = 35
       Align = alBottom
@@ -95,6 +126,7 @@ object Form2: TForm2
       DoubleBuffered = True
       ParentDoubleBuffered = False
       TabOrder = 2
+      ExplicitTop = 556
       object SkLblVerify: TSkLabel
         Left = 16
         Top = 8
@@ -152,9 +184,9 @@ object Form2: TForm2
   end
   object SplitView1: TSplitView
     Left = 0
-    Top = 42
+    Top = 57
     Width = 50
-    Height = 616
+    Height = 601
     CloseStyle = svcCompact
     DockSite = True
     FullRepaint = False
@@ -165,9 +197,11 @@ object Form2: TForm2
     Placement = svpLeft
     ShowHint = True
     TabOrder = 2
+    ExplicitTop = 42
+    ExplicitHeight = 616
     object Panel6: TPanel
       Left = 0
-      Top = 575
+      Top = 560
       Width = 50
       Height = 41
       Align = alBottom
@@ -177,6 +211,7 @@ object Form2: TForm2
       Padding.Right = 2
       Padding.Bottom = 2
       TabOrder = 0
+      ExplicitTop = 575
       object ImgSettings: TImage
         Left = 2
         Top = 2
@@ -361,13 +396,14 @@ object Form2: TForm2
     end
     object PanelSettings: TPanel
       Left = 0
-      Top = 561
+      Top = 546
       Width = 50
       Height = 14
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 5
       Visible = False
+      ExplicitTop = 561
       object SkLabelSettings: TSkLabel
         AlignWithMargins = True
         Left = 3
@@ -390,9 +426,9 @@ object Form2: TForm2
   end
   object PanelTree: TPanel
     Left = 50
-    Top = 42
+    Top = 57
     Width = 223
-    Height = 616
+    Height = 601
     Align = alLeft
     BevelOuter = bvNone
     Caption = 'PanelTree'
@@ -400,6 +436,8 @@ object Form2: TForm2
     Padding.Right = 5
     TabOrder = 3
     Visible = False
+    ExplicitTop = 42
+    ExplicitHeight = 616
     object Panel11: TPanel
       Left = 5
       Top = 33
@@ -456,7 +494,7 @@ object Form2: TForm2
       Left = 5
       Top = 90
       Width = 213
-      Height = 526
+      Height = 511
       Align = alClient
       AutoExpand = True
       BorderStyle = bsNone
@@ -469,6 +507,7 @@ object Form2: TForm2
       TabOrder = 1
       ToolTips = False
       OnClick = TreeView1Click
+      ExplicitHeight = 526
     end
     object PanelSearchComponents: TPanel
       Left = 5
@@ -583,26 +622,6 @@ object Form2: TForm2
     BevelOuter = bvNone
     TabOrder = 4
   end
-  object Panel1: TPanel
-    Left = 0
-    Top = 0
-    Width = 1034
-    Height = 42
-    Margins.Bottom = 5
-    Align = alTop
-    BevelOuter = bvNone
-    Caption = 'Builder UI'
-    DockSite = True
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -27
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    Padding.Bottom = 15
-    ParentBackground = False
-    ParentFont = False
-    TabOrder = 5
-  end
   object PanelToolPalette: TPanel
     Left = 400
     Top = 570
@@ -611,7 +630,7 @@ object Form2: TForm2
     Cursor = crHandPoint
     DoubleBuffered = True
     ParentDoubleBuffered = False
-    TabOrder = 6
+    TabOrder = 5
     OnMouseDown = PanelToolPaletteMouseDown
     OnMouseMove = PanelToolPaletteMouseMove
     OnMouseUp = PanelToolPaletteMouseUp
@@ -737,6 +756,70 @@ object Form2: TForm2
         AE1784B223B1C8835CBF86907E7C167C847A975C0BC0FAE91644B0887100627E
         A86401036A245B00B138940D32FC2C036A2463D53F7CF2C1A805A3160C620B00
         7C3A2A1929AFC9F80000000049454E44AE426082}
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 1034
+    Height = 57
+    Margins.Bottom = 5
+    Align = alTop
+    BevelOuter = bvNone
+    DockSite = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -27
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    Padding.Bottom = 15
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 6
+    object Image3: TImage
+      Left = 994
+      Top = 0
+      Width = 40
+      Height = 42
+      Cursor = crHandPoint
+      Hint = 'Close'
+      Align = alRight
+      Center = True
+      ParentShowHint = False
+      Picture.Data = {
+        0954506E67496D61676589504E470D0A1A0A0000000D49484452000000140000
+        001408060000008D891D0D000000017352474200AECE1CE90000000473424954
+        080808087C086488000000C34944415478DA6364A032601C7206B202B112947D
+        0F887FE3D087531DBA81EA406C0465BF07E2BD580C0519E60CC48250FE3920BE
+        498C81D80C45378CA081200D2E402C80C550062C867D00E23DF8BC8CCF500642
+        86E1321097A10C840CC367203E43711A468C81E8612604C4A1401C0035986803
+        7119D60275F1052076C4662823918681345600B11D921856431989340C1466DC
+        407C0088F5F1194A2861A347800016430B8178023106E28A4D7443F11A486CE1
+        00323401CA5E80CFCB1483C16F2000C0903915693203080000000049454E44AE
+        426082}
+      ShowHint = True
+      ExplicitLeft = 993
+    end
+    object SkLabel1: TSkLabel
+      AlignWithMargins = True
+      Left = 3
+      Top = 3
+      Width = 988
+      Height = 36
+      Align = alClient
+      TextSettings.Decorations.Style = Dashed
+      TextSettings.Font.Size = 30.000000000000000000
+      TextSettings.HorzAlign = Center
+      TextSettings.LetterSpacing = 2.000000000000000000
+      TextSettings.Trimming = Character
+      Words = <
+        item
+          Caption = 'Forms Builder UI'
+        end>
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 969
+      ExplicitHeight = 42
     end
   end
 end

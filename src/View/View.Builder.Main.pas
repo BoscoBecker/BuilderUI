@@ -13,8 +13,8 @@ uses
   Util.Json, System.Math, System.ImageList, Vcl.ImgList;
 
 type
-  TForm2 = class(TForm)
-    StatusBar1: TStatusBar;
+  TFormBuilderMain = class(TForm)
+    StatusBarBottom: TStatusBar;
     PanelRenderJson: TPanel;
     BtnRender: TButton;
     Memo: TMemo;
@@ -42,7 +42,6 @@ type
     SkLabel3: TSkLabel;
     Splitter1: TSplitter;
     Panel2: TPanel;
-    Panel1: TPanel;
     PanelSearchComponents: TPanel;
     SearchBoxComponents: TSearchBox;
     ActivityIndicatorSearch: TActivityIndicator;
@@ -61,6 +60,9 @@ type
     Image2: TImage;
     SkLabel2: TSkLabel;
     SkPaintBox1: TSkPaintBox;
+    Panel1: TPanel;
+    Image3: TImage;
+    SkLabel1: TSkLabel;
     procedure BtnRenderClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ImgSettingsClick(Sender: TObject);
@@ -82,6 +84,8 @@ type
     procedure SkPaintBox1MouseMove(Sender: TObject; Shift: TShiftState; X,Y: Integer);
     procedure SkPaintBox1MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure SkPaintBox1MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure FormShow(Sender: TObject);
+    procedure SkPaintBackgroundMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
   private
     FBuilder : TUIBuilderEngine;
     FCreatedForms: TObjectList<TForm>;
@@ -89,15 +93,19 @@ type
     FDragOffset: TPoint;
     FSelecionadoShape: TShape;
     FTreeViewAdapter: TTreeViewAdapter;
+    FSelectedComponent: String;
     procedure RenderJson(const Atext : string);
     procedure CloseFormsCreated;
     procedure ValidateAndProcessJSON(const AJSON: string);
+    procedure BuildStatusBar;
+    procedure SetSelectedComponent(const Value: String);
   public
     destructor Destroy; override;
+    property SelectedComponent: String read FSelectedComponent write SetSelectedComponent;
   end;
 
 var
-  Form2: TForm2;
+  FormBuilderMain: TFormBuilderMain;
 
 implementation
 
@@ -105,14 +113,24 @@ implementation
 
 { TForm2 }
 
-
-
-procedure TForm2.BtnRenderClick(Sender: TObject);
+procedure TFormBuilderMain.BtnRenderClick(Sender: TObject);
 begin
   RenderJson(Memo.Lines.text);
 end;
 
-procedure TForm2.CloseFormsCreated;
+procedure TFormBuilderMain.BuildStatusBar;
+begin
+  StatusBarBottom.Panels[0].Text:= 'X: 0 Y: 0';                 // Panel 0 - Coordenadas do Mouse
+  StatusBarBottom.Panels[1].Text := 'Selecionado: Nenhum';       // Panel 1 - Componente Selecionado
+  StatusBarBottom.Panels[2].Text := 'Tamanho: 0x0';              // Panel 2 - Tamanho do componente
+  StatusBarBottom.Panels[3].Text := 'Date: ' +FormatDateTime('YYYY/MM/DD',now());             // Panel 3 - Snap/Grid
+  StatusBarBottom.Panels[4].Text := 'Zoom: 100%';                // Panel 4 - Zoom
+  StatusBarBottom.Panels[5].Text := 'Modo: Seleção';             // Panel 5 - Modo atual
+  StatusBarBottom.Panels[6].Text := 'Projeto: (vazio)';          // Panel 6 - Nome do Projeto
+  StatusBarBottom.Panels[7].Text := '';                          // Panel 7 - Mensagens temporárias
+end;
+
+procedure TFormBuilderMain.CloseFormsCreated;
 begin
   for var I := FCreatedForms.Count - 1 downto 0 do
   begin
@@ -124,14 +142,14 @@ begin
     FCreatedForms.Clear;
 end;
 
-destructor TForm2.Destroy;
+destructor TFormBuilderMain.Destroy;
 begin
   FCreatedForms.Free;
   FBuilder.Free;
   inherited;
 end;
 
-procedure TForm2.FormCanResize(Sender: TObject; var NewWidth,
+procedure TFormBuilderMain.FormCanResize(Sender: TObject; var NewWidth,
   NewHeight: Integer; var Resize: Boolean);
 begin
   if not FDragging then
@@ -141,27 +159,32 @@ begin
   end;
 end;
 
-procedure TForm2.FormCreate(Sender: TObject);
+procedure TFormBuilderMain.FormCreate(Sender: TObject);
 begin
   FCreatedForms := TObjectList<TForm>.Create(False);
 end;
 
-procedure TForm2.Image12Click(Sender: TObject);
+procedure TFormBuilderMain.FormShow(Sender: TObject);
+begin
+  BuildStatusBar();
+end;
+
+procedure TFormBuilderMain.Image12Click(Sender: TObject);
 begin
   PanelRenderJson.Visible:= False;
 end;
 
-procedure TForm2.Image2Click(Sender: TObject);
+procedure TFormBuilderMain.Image2Click(Sender: TObject);
 begin
   PanelSearchComponents.Visible:= not PanelSearchComponents.Visible;
 end;
 
-procedure TForm2.ImageRenderJsonClick(Sender: TObject);
+procedure TFormBuilderMain.ImageRenderJsonClick(Sender: TObject);
 begin
   PanelRenderJson.Visible:= True;
 end;
 
-procedure TForm2.ImgSettingsClick(Sender: TObject);
+procedure TFormBuilderMain.ImgSettingsClick(Sender: TObject);
 begin
   if not SplitView1.Opened then
     PanelSettings.Visible:= True
@@ -170,22 +193,22 @@ begin
   SplitView1.Opened := not SplitView1.Opened;
 end;
 
-procedure TForm2.Image9Click(Sender: TObject);
+procedure TFormBuilderMain.Image9Click(Sender: TObject);
 begin
   PanelTree.Visible:= not PanelTree.Visible;
 end;
 
-procedure TForm2.ImageColapseClick(Sender: TObject);
+procedure TFormBuilderMain.ImageColapseClick(Sender: TObject);
 begin
   TreeView1.Colapse;
 end;
 
-procedure TForm2.ImageExpandClick(Sender: TObject);
+procedure TFormBuilderMain.ImageExpandClick(Sender: TObject);
 begin
   TreeView1.Expand;
 end;
 
-procedure TForm2.MemoChange(Sender: TObject);
+procedure TFormBuilderMain.MemoChange(Sender: TObject);
 begin
   BtnRender.Enabled:= false;
   try
@@ -199,7 +222,7 @@ begin
   end;
 end;
 
-procedure TForm2.PanelToolPaletteMouseDown(Sender: TObject; Button: TMouseButton;
+procedure TFormBuilderMain.PanelToolPaletteMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
   if Button = mbLeft then
@@ -210,7 +233,7 @@ begin
   end;
 end;
 
-procedure TForm2.PanelToolPaletteMouseMove(Sender: TObject; Shift: TShiftState; X,
+procedure TFormBuilderMain.PanelToolPaletteMouseMove(Sender: TObject; Shift: TShiftState; X,
   Y: Integer);
 begin
   if FDragging then
@@ -220,7 +243,7 @@ begin
   end;
 end;
 
-procedure TForm2.PanelToolPaletteMouseUp(Sender: TObject; Button: TMouseButton;
+procedure TFormBuilderMain.PanelToolPaletteMouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
   if Button = mbLeft then
@@ -230,7 +253,7 @@ begin
   end;
 end;
 
-procedure TForm2.RenderJson(const Atext : string);
+procedure TFormBuilderMain.RenderJson(const Atext : string);
 begin
   var JsonText := Atext;
   var Json := TJSONObject.ParseJSONValue(JsonText) as TJSONObject;
@@ -275,7 +298,7 @@ begin
   end
 end;
 
-procedure TForm2.SearchBoxComponentsChange(Sender: TObject);
+procedure TFormBuilderMain.SearchBoxComponentsChange(Sender: TObject);
 begin
   if String(SearchBoxComponents.Text).Equals('') then Exit;
 
@@ -289,7 +312,13 @@ begin
   end;
 end;
 
-procedure TForm2.SkPaintBackgroundDraw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
+procedure TFormBuilderMain.SetSelectedComponent(const Value: String);
+begin
+  FSelectedComponent := Value;
+  StatusBarBottom.Panels[1].Text := 'Selected: '+ FSelectedComponent;
+end;
+
+procedure TFormBuilderMain.SkPaintBackgroundDraw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
 const
   GridSize = 20; // espaçamento entre linhas
 var
@@ -327,7 +356,13 @@ begin
 end;
 
 
-procedure TForm2.SkPaintBox1Draw(ASender: TObject; const ACanvas: ISkCanvas;
+procedure TFormBuilderMain.SkPaintBackgroundMouseMove(Sender: TObject; Shift: TShiftState;
+  X, Y: Integer);
+begin
+  StatusBarBottom.Panels[0].Text := Format('X: %d Y: %d', [X, Y]);
+end;
+
+procedure TFormBuilderMain.SkPaintBox1Draw(ASender: TObject; const ACanvas: ISkCanvas;
   const ADest: TRectF; const AOpacity: Single);
 begin
   var LPaint: ISkPaint := TSkPaint.Create;
@@ -336,14 +371,14 @@ begin
   ACanvas.DrawPaint(LPaint);
 end;
 
-procedure TForm2.SkPaintBox1MouseDown(Sender: TObject; Button: TMouseButton;
+procedure TFormBuilderMain.SkPaintBox1MouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
   FDragging := True;
   FDragOffset := Point(Round(X), Round(Y));
 end;
 
-procedure TForm2.SkPaintBox1MouseMove(Sender: TObject; Shift: TShiftState; X,
+procedure TFormBuilderMain.SkPaintBox1MouseMove(Sender: TObject; Shift: TShiftState; X,
   Y: Integer);
 var
   NewLeft, NewTop: Integer;
@@ -356,13 +391,13 @@ begin
   end;
 end;
 
-procedure TForm2.SkPaintBox1MouseUp(Sender: TObject; Button: TMouseButton;
+procedure TFormBuilderMain.SkPaintBox1MouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
   FDragging := False;
 end;
 
-procedure TForm2.TreeView1Click(Sender: TObject);
+procedure TFormBuilderMain.TreeView1Click(Sender: TObject);
 var
   Node: TTreeNode;
   NomeReal: string;
@@ -420,7 +455,7 @@ var
     FSelecionadoShape.Pen.Mode:= pmMask;
     FSelecionadoShape.Pen.Style := psDot;
     FSelecionadoShape.Visible := True;
-    FSelecionadoShape.BringToFront;
+    FSelecionadoShape.SendToBack;
   end;
 
 begin
@@ -430,7 +465,10 @@ begin
     NomeReal := Node.Text;
     if Pos('Name: ', NomeReal) = 1 then
     begin
+      if Length(NomeReal.Trim) <= 0 then Exit;
+
       NomeReal := Copy(NomeReal, 7, Length(NomeReal));
+      SetSelectedComponent(NomeReal);
       C := BuscarComponentePorNome(SkPaintBackground, NomeReal);
       if Assigned(C) then
       begin
@@ -441,7 +479,11 @@ begin
             begin
               if Assigned(FSelecionadoShape) then
                 TWinControl(C).BringToFront;
-              FSelecionadoShape.Visible := False;
+              if Assigned(FSelecionadoShape) then
+              begin
+                FSelecionadoShape.Visible := False;
+                FSelecionadoShape:= nil;
+              end;
             end else
               DestacarComponenteSelecionado(TControl(C));
           end;
@@ -451,7 +493,7 @@ begin
   end;
 end;
 
-procedure TForm2.ValidateAndProcessJSON(const AJSON: string);
+procedure TFormBuilderMain.ValidateAndProcessJSON(const AJSON: string);
 begin
   TThread.CreateAnonymousThread(
   procedure

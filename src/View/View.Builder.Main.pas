@@ -8,10 +8,13 @@ uses
   Vcl.ExtCtrls, System.Threading, StrUtils,
 
   Adapter.TreeViewAdapter,
-  Builder.UIBuilderEngine, System.Skia, Vcl.Skia, System.Types, System.UITypes,
+  Builder.UIBuilderEngine,
+  System.Skia, Vcl.Skia, System.Types, System.UITypes,
   Vcl.Imaging.pngimage, Vcl.WinXCtrls,
 
   Util.Json, System.Math, System.ImageList, Vcl.ImgList;
+
+type  TBuilderBackground = ( bClear, bGrid);
 
 type
   TFormBuilderMain = class(TForm)
@@ -42,7 +45,6 @@ type
     Panel2: TPanel;
     PanelSearchComponents: TPanel;
     SearchBoxComponents: TSearchBox;
-    ActivityIndicatorSearch: TActivityIndicator;
     PanelToolPalette: TPanel;
     Image6: TImage;
     Image11: TImage;
@@ -66,6 +68,7 @@ type
     ImageErro: TImage;
     Panel5: TPanel;
     PanelExecuteJson: TPanel;
+    ActivityIndicatorExplorer: TActivityIndicator;
     procedure FormCreate(Sender: TObject);
     procedure ImgSettingsClick(Sender: TObject);
     procedure Image9Click(Sender: TObject);
@@ -92,23 +95,28 @@ type
     procedure ImageRenderClick(Sender: TObject);
     procedure ButtonRunJsonClick(Sender: TObject);
     procedure PanelExecuteJsonClick(Sender: TObject);
+    procedure Image6Click(Sender: TObject);
+    procedure Image13Click(Sender: TObject);
   private
-    FBuilder : TUIBuilderEngine;
+    FBuilderBackground: TBuilderBackground;
     FCreatedForms: TObjectList<TForm>;
+    FTreeViewAdapter: TTreeViewAdapter;
+    FJsonStructure : TJSONObject;
+    FBuilder: TUIBuilderEngine;
+    FSelectedComponent: String;
+    FSelecionadoShape: TShape;
     FDragging: Boolean;
     FDragOffset: TPoint;
-    FSelecionadoShape: TShape;
-    FTreeViewAdapter: TTreeViewAdapter;
-    FSelectedComponent: String;
-    FJsonStructure : TJSONObject;
     procedure RenderJson(const Atext : string);
     procedure CloseFormsCreated;
     procedure ValidateAndProcessJSON(const AJSON: string);
     procedure BuildStatusBar;
     procedure SetSelectedComponent(const Value: String);
+    procedure SetBuilderBackground(const Value: TBuilderBackground);
   public
     destructor Destroy; override;
     property SelectedComponent: String read FSelectedComponent write SetSelectedComponent;
+    property BuilderBackground: TBuilderBackground read FBuilderBackground write SetBuilderBackground;
   end;
 
 var
@@ -151,10 +159,9 @@ end;
 
 destructor TFormBuilderMain.Destroy;
 begin
-
-  FJsonStructure.Free;
   FSelecionadoShape.Free;
   FTreeViewAdapter.Free;
+  FJsonStructure.Free;
   FCreatedForms.Free;
   FBuilder.Free;
   inherited;
@@ -173,6 +180,7 @@ end;
 procedure TFormBuilderMain.FormCreate(Sender: TObject);
 begin
   FCreatedForms := TObjectList<TForm>.Create(False);
+  SetBuilderBackground(bClear);
 end;
 
 procedure TFormBuilderMain.FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -190,9 +198,30 @@ begin
   PanelRenderJson.Visible:= False;
 end;
 
+procedure TFormBuilderMain.Image13Click(Sender: TObject);
+begin
+  if FBuilderBackground = bClear then
+  begin
+    FBuilderBackground := bGrid;
+    SkPaintBackground.Width:= SkPaintBackground.Width +1;
+  end  else
+  begin
+    FBuilderBackground := bCLear;
+    SkPaintBackground.Width:= SkPaintBackground.Width - 1;
+  end;
+end;
+
 procedure TFormBuilderMain.Image2Click(Sender: TObject);
 begin
   PanelSearchComponents.Visible:= not PanelSearchComponents.Visible;
+end;
+
+procedure TFormBuilderMain.Image6Click(Sender: TObject);
+begin
+  if Screen.Cursor = crHandPoint then
+    Screen.Cursor:= crDefault
+  else
+    Screen.Cursor:= crHandPoint;
 end;
 
 procedure TFormBuilderMain.ImageRenderClick(Sender: TObject);
@@ -222,12 +251,30 @@ end;
 
 procedure TFormBuilderMain.ImageColapseClick(Sender: TObject);
 begin
-  TreeView1.Colapse;
+  Try
+    ActivityIndicatorExplorer.Animate:= True;
+    TThread.Synchronize(nil,
+    procedure
+    begin
+      TreeView1.Colapse;
+    end)
+  Finally
+    ActivityIndicatorExplorer.Animate:= False;
+  End;
 end;
 
 procedure TFormBuilderMain.ImageExpandClick(Sender: TObject);
 begin
-  TreeView1.Expand;
+  Try
+    ActivityIndicatorExplorer.Animate:= True;
+    TThread.Synchronize(nil,
+    procedure
+    begin
+      TreeView1.Expand;
+    end)
+  Finally
+    ActivityIndicatorExplorer.Animate:= False;
+  End;
 end;
 
 procedure TFormBuilderMain.MemoChange(Sender: TObject);
@@ -317,8 +364,6 @@ begin
     except on E: Exception do
       begin
         CloseFormsCreated;
-//        FTreeViewAdapter.FTreeView.Items.Clear;
-//        FTreeViewAdapter.FCreatedForm.Clear;
       end;
     end;
   finally
@@ -329,14 +374,20 @@ procedure TFormBuilderMain.SearchBoxComponentsChange(Sender: TObject);
 begin
   if String(SearchBoxComponents.Text).Equals('') then Exit;
 
-  ActivityIndicatorSearch.Animate:= True;
+  ActivityIndicatorExplorer.Animate:= True;
   try
     if  FSelecionadoShape <> nil then
       FSelecionadoShape.Visible:= False;
     FTreeViewAdapter.FindComponentInTreeView(SearchBoxComponents.Text);
   finally
-    ActivityIndicatorSearch.Animate:= False;
+    ActivityIndicatorExplorer.Animate:= False;
   end;
+end;
+
+procedure TFormBuilderMain.SetBuilderBackground(
+  const Value: TBuilderBackground);
+begin
+  FBuilderBackground := Value;
 end;
 
 procedure TFormBuilderMain.SetSelectedComponent(const Value: String);
@@ -347,66 +398,57 @@ end;
 
 procedure TFormBuilderMain.SkPaintBackgroundDraw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
 const
-  GridSize = 20; // espaçamento entre linhas
+  GridSize = 20;
 var
   Paint: ISkPaint;
 begin
-
-  // Exemplo: desenhar um retângulo
-  ACanvas.DrawRect(RectF(100, 100, 300, 200), TSkPaint.Create(TSkPaintStyle.Stroke));
-
-
-  // Cor de fundo
-  ACanvas.Clear($FFF5F5F5); // cor clara tipo Delphi Panel
-
-  // Configura o pincel
-  Paint := TSkPaint.Create;
-  Paint.Style := TSkPaintStyle.Stroke;
-  Paint.Color := $FFDDDDDD;
-  Paint.StrokeWidth := 1;
-
-  // Linhas verticais
-  var X := ADest.Left;
-  while X <= ADest.Right do
-  begin
-    ACanvas.DrawLine(X, ADest.Top, X, ADest.Bottom, Paint);
-    X := X + GridSize;
-  end;
-
-  // Linhas horizontais
-  var Y := ADest.Top;
-  while Y <= ADest.Bottom do
-  begin
-    ACanvas.DrawLine(ADest.Left, Y, ADest.Right, Y, Paint);
-    Y := Y + GridSize;
+  case FBuilderBackground of
+    bClear: ACanvas.Clear(TAlphaColors.White);
+    bGrid:
+    begin
+      ACanvas.DrawRect(RectF(100, 100, 300, 200), TSkPaint.Create(TSkPaintStyle.Stroke));
+      ACanvas.Clear($FFF5F5F5);
+      Paint := TSkPaint.Create;
+      Paint.Style := TSkPaintStyle.Stroke;
+      Paint.Color := $FFDDDDDD;
+      Paint.StrokeWidth := 1;
+      var X := ADest.Left;
+      while X <= ADest.Right do
+      begin
+        ACanvas.DrawLine(X, ADest.Top, X, ADest.Bottom, Paint);
+        X := X + GridSize;
+      end;
+      var Y := ADest.Top;
+      while Y <= ADest.Bottom do
+      begin
+        ACanvas.DrawLine(ADest.Left, Y, ADest.Right, Y, Paint);
+        Y := Y + GridSize;
+      end;
+    end;
   end;
 end;
 
 
-procedure TFormBuilderMain.SkPaintBackgroundMouseMove(Sender: TObject; Shift: TShiftState;
-  X, Y: Integer);
+procedure TFormBuilderMain.SkPaintBackgroundMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
 begin
   StatusBarBottom.Panels[0].Text := Format('X: %d Y: %d', [X, Y]);
 end;
 
-procedure TFormBuilderMain.SkPaintBox1Draw(ASender: TObject; const ACanvas: ISkCanvas;
-  const ADest: TRectF; const AOpacity: Single);
+procedure TFormBuilderMain.SkPaintBox1Draw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
 begin
   var LPaint: ISkPaint := TSkPaint.Create;
-  LPaint.Shader := TSkShader.MakeGradientSweep(ADest.CenterPoint,
-  [$FFF2F2F2, $FFCCCCCC, $FF999999, $FFCCCCCC, $FFF2F2F2]);
-  ACanvas.DrawPaint(LPaint);
+      LPaint.Shader := TSkShader.MakeGradientSweep(ADest.CenterPoint,
+      [$FFF2F2F2, $FFCCCCCC, $FF999999, $FFCCCCCC, $FFF2F2F2]);
+      ACanvas.DrawPaint(LPaint);
 end;
 
-procedure TFormBuilderMain.SkPaintBox1MouseDown(Sender: TObject; Button: TMouseButton;
-  Shift: TShiftState; X, Y: Integer);
+procedure TFormBuilderMain.SkPaintBox1MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   FDragging := True;
   FDragOffset := Point(Round(X), Round(Y));
 end;
 
-procedure TFormBuilderMain.SkPaintBox1MouseMove(Sender: TObject; Shift: TShiftState; X,
-  Y: Integer);
+procedure TFormBuilderMain.SkPaintBox1MouseMove(Sender: TObject; Shift: TShiftState; X,  Y: Integer);
 var
   NewLeft, NewTop: Integer;
 begin
@@ -479,13 +521,13 @@ var
   procedure DestacarComponenteSelecionado(Control: TControl);
   begin
     CriarMarcador(Self);
+    FSelecionadoShape.Parent := Control.Parent;
     FSelecionadoShape.SetBounds(
       Control.Left - 2,
       Control.Top - 2,
       Control.Width + 4,
       Control.Height + 4
     );
-    FSelecionadoShape.Parent := Control.Parent;
     if FSelecionadoShape.Pen <> nil then
     begin
       FSelecionadoShape.Brush.Style := bsClear;
@@ -499,42 +541,49 @@ var
   end;
 
 begin
-  Node := TreeView1.Selected;
-  if Node <> nil then
-  begin
-    NomeReal := Node.Text;
-    if Pos('Name: ', NomeReal) = 1 then
-    begin
-      if Length(NomeReal.Trim) <= 0 then Exit;
+  try
+    if TreeView1.CanFocus then
+      TreeView1.SetFocus;
+    TreeView1.BringToFront;
 
-      NomeReal := Copy(NomeReal, 7, Length(NomeReal));
-      SetSelectedComponent(NomeReal);
-      C := BuscarComponentePorNome(SkPaintBackground, NomeReal);
-      if Assigned(C) then
+    Node := TreeView1.Selected;
+    if Node <> nil then
+    begin
+      NomeReal := Node.Text;
+      if Pos('Name: ', NomeReal) = 1 then
       begin
-        if C is TControl then
+        if Length(NomeReal.Trim) <= 0 then Exit;
+
+        NomeReal := Copy(NomeReal, 7, Length(NomeReal));
+        SetSelectedComponent(NomeReal);
+        C := BuscarComponentePorNome(SkPaintBackground, NomeReal);
+        if Assigned(C) then
         begin
+          if C is TControl then
           begin
-            if TWinControl(C) is TForm then
             begin
-              if Assigned(FSelecionadoShape) then
-                TWinControl(C).BringToFront;
-              if Assigned(FSelecionadoShape) then
+              if TWinControl(C) is TForm then
               begin
-                FSelecionadoShape.Visible := False;
-                FSelecionadoShape:= nil;
-              end;
-            end else
-              DestacarComponenteSelecionado(TControl(C));
+                if Assigned(FSelecionadoShape) then
+                  TWinControl(C).BringToFront;
+                if Assigned(FSelecionadoShape) then
+                begin
+                  FSelecionadoShape.Visible := False;
+                  FSelecionadoShape:= nil;
+                end;
+              end else
+                DestacarComponenteSelecionado(TControl(C));
+            end;
           end;
         end;
+      end else
+      if Assigned(FSelecionadoShape) then
+      begin
+        FSelecionadoShape.Visible := False;
+        FSelecionadoShape:= nil;
       end;
-    end else
-    if Assigned(FSelecionadoShape) then
-    begin
-      FSelecionadoShape.Visible := False;
-      FSelecionadoShape:= nil;
     end;
+  finally
   end;
 end;
 

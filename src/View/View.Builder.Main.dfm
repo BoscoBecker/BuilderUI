@@ -1,7 +1,7 @@
 object FormBuilderMain: TFormBuilderMain
   Left = 0
   Top = 0
-  Caption = 'Builder UI for  Template Forms'
+  Caption = 'Forms Builder UI'
   ClientHeight = 706
   ClientWidth = 1034
   Color = clWhite
@@ -46,7 +46,7 @@ object FormBuilderMain: TFormBuilderMain
     Align = alClient
     OnMouseMove = SkPaintBackgroundMouseMove
     OnDraw = SkPaintBackgroundDraw
-    ExplicitHeight = 621
+    ExplicitTop = 57
   end
   object StatusBarBottom: TStatusBar
     Left = 0
@@ -89,8 +89,6 @@ object FormBuilderMain: TFormBuilderMain
     Caption = 'PanelRenderJson'
     TabOrder = 1
     Visible = False
-    ExplicitTop = 42
-    ExplicitHeight = 616
     object Memo: TMemo
       Left = 0
       Top = 33
@@ -101,7 +99,6 @@ object FormBuilderMain: TFormBuilderMain
       ScrollBars = ssVertical
       TabOrder = 0
       OnChange = MemoChange
-      ExplicitHeight = 508
     end
     object Panel13: TPanel
       Left = 0
@@ -180,9 +177,6 @@ object FormBuilderMain: TFormBuilderMain
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 3
-      ExplicitLeft = 96
-      ExplicitTop = 416
-      ExplicitWidth = 185
       object ImageErro: TImage
         Left = 158
         Top = 0
@@ -247,8 +241,6 @@ object FormBuilderMain: TFormBuilderMain
         Padding.Bottom = 5
         TabOrder = 0
         OnClick = PanelExecuteJsonClick
-        ExplicitLeft = 56
-        ExplicitTop = 8
       end
     end
   end
@@ -267,8 +259,6 @@ object FormBuilderMain: TFormBuilderMain
     Placement = svpLeft
     ShowHint = True
     TabOrder = 2
-    ExplicitTop = 42
-    ExplicitHeight = 616
     object Panel6: TPanel
       Left = 0
       Top = 560
@@ -281,7 +271,6 @@ object FormBuilderMain: TFormBuilderMain
       Padding.Right = 2
       Padding.Bottom = 2
       TabOrder = 0
-      ExplicitTop = 575
       object ImgSettings: TImage
         Left = 2
         Top = 2
@@ -473,7 +462,6 @@ object FormBuilderMain: TFormBuilderMain
       BevelOuter = bvNone
       TabOrder = 5
       Visible = False
-      ExplicitTop = 561
       object SkLabelSettings: TSkLabel
         AlignWithMargins = True
         Left = 3
@@ -506,8 +494,6 @@ object FormBuilderMain: TFormBuilderMain
     Padding.Right = 5
     TabOrder = 3
     Visible = False
-    ExplicitTop = 42
-    ExplicitHeight = 616
     object Panel11: TPanel
       Left = 5
       Top = 33
@@ -519,7 +505,7 @@ object FormBuilderMain: TFormBuilderMain
       ParentDoubleBuffered = False
       TabOrder = 0
       object ImageExpand: TImage
-        Left = 32
+        Left = 64
         Top = 0
         Width = 32
         Height = 32
@@ -538,9 +524,10 @@ object FormBuilderMain: TFormBuilderMain
           1618FA16000092DE1C19EE8DA86E0000000049454E44AE426082}
         ShowHint = True
         OnClick = ImageExpandClick
+        ExplicitLeft = 32
       end
       object ImageColapse: TImage
-        Left = 0
+        Left = 32
         Top = 0
         Width = 32
         Height = 32
@@ -558,6 +545,12 @@ object FormBuilderMain: TFormBuilderMain
           470A19E888BC3E0000000049454E44AE426082}
         ShowHint = True
         OnClick = ImageColapseClick
+        ExplicitLeft = 0
+      end
+      object ActivityIndicatorExplorer: TActivityIndicator
+        Left = 0
+        Top = 0
+        Align = alLeft
       end
     end
     object TreeView1: TTreeView
@@ -577,7 +570,6 @@ object FormBuilderMain: TFormBuilderMain
       TabOrder = 1
       ToolTips = False
       OnClick = TreeView1Click
-      ExplicitHeight = 526
     end
     object PanelSearchComponents: TPanel
       Left = 5
@@ -592,21 +584,17 @@ object FormBuilderMain: TFormBuilderMain
       TabOrder = 2
       Visible = False
       object SearchBoxComponents: TSearchBox
-        Left = 24
+        Left = 0
         Top = 0
-        Width = 189
+        Width = 213
         Height = 25
         Align = alClient
         TabOrder = 0
         TextHint = 'Type: label1'
         OnChange = SearchBoxComponentsChange
+        ExplicitLeft = 24
+        ExplicitWidth = 189
         ExplicitHeight = 23
-      end
-      object ActivityIndicatorSearch: TActivityIndicator
-        Left = 0
-        Top = 0
-        Align = alLeft
-        IndicatorSize = aisSmall
       end
     end
     object Panel3: TPanel
@@ -694,11 +682,14 @@ object FormBuilderMain: TFormBuilderMain
   end
   object PanelToolPalette: TPanel
     Left = 400
-    Top = 570
-    Width = 289
-    Height = 54
+    Top = 569
+    Width = 297
+    Height = 48
     Cursor = crHandPoint
+    BevelOuter = bvNone
+    Color = clWhite
     DoubleBuffered = True
+    ParentBackground = False
     ParentDoubleBuffered = False
     TabOrder = 5
     OnMouseDown = PanelToolPaletteMouseDown
@@ -706,26 +697,28 @@ object FormBuilderMain: TFormBuilderMain
     OnMouseUp = PanelToolPaletteMouseUp
     object SkPaintBox1: TSkPaintBox
       AlignWithMargins = True
-      Left = 4
-      Top = 4
-      Width = 281
-      Height = 46
+      Left = 3
+      Top = 3
+      Width = 291
+      Height = 42
       Align = alClient
       OnMouseDown = SkPaintBox1MouseDown
       OnMouseMove = SkPaintBox1MouseMove
       OnMouseUp = SkPaintBox1MouseUp
       OnDraw = SkPaintBox1Draw
-      ExplicitLeft = 48
-      ExplicitTop = 240
-      ExplicitWidth = 50
-      ExplicitHeight = 50
+      ExplicitLeft = -5
+      ExplicitTop = 0
+      ExplicitWidth = 294
+      ExplicitHeight = 47
     end
     object Image6: TImage
       Left = 8
-      Top = 9
+      Top = 6
       Width = 41
       Height = 36
+      Hint = 'Select mode'
       Center = True
+      ParentShowHint = False
       Picture.Data = {
         0954506E67496D61676589504E470D0A1A0A0000000D49484452000000180000
         00180806000000E0773DF8000000017352474200AECE1CE90000000473424954
@@ -737,10 +730,12 @@ object FormBuilderMain: TFormBuilderMain
         E723A95948C817F82C1003624106483823872FC8C5F2C4FA829C2A13DD178E40
         7C809A1680C00420CEA73488A802686E01004E093B1963965899000000004945
         4E44AE426082}
+      ShowHint = True
+      OnClick = Image6Click
     end
     object Image11: TImage
       Left = 55
-      Top = 9
+      Top = 6
       Width = 41
       Height = 36
       Center = True
@@ -759,10 +754,12 @@ object FormBuilderMain: TFormBuilderMain
     end
     object Image13: TImage
       Left = 102
-      Top = 9
+      Top = 6
       Width = 41
       Height = 36
+      Hint = 'Background'
       Center = True
+      ParentShowHint = False
       Picture.Data = {
         0954506E67496D61676589504E470D0A1A0A0000000D49484452000000180000
         00180806000000E0773DF8000000017352474200AECE1CE90000000473424954
@@ -772,12 +769,15 @@ object FormBuilderMain: TFormBuilderMain
         C110B48092A2025438CE266401A824D521D3025B20CE24640108800A2C528A6B
         6EA81E98E10F8158019F0520D000C4F564FA046F61876E490110F3136930C8E5
         0B180814D7540743DF0200FC271C19E38E4A080000000049454E44AE426082}
+      ShowHint = True
+      OnClick = Image13Click
     end
     object Image14: TImage
       Left = 149
-      Top = 9
+      Top = 6
       Width = 41
       Height = 36
+      Hint = 'Component explorer'
       Center = True
       Picture.Data = {
         0954506E67496D61676589504E470D0A1A0A0000000D49484452000000180000
@@ -793,9 +793,10 @@ object FormBuilderMain: TFormBuilderMain
     end
     object Image15: TImage
       Left = 196
-      Top = 9
+      Top = 6
       Width = 41
       Height = 36
+      Hint = 'Share'
       Center = True
       Picture.Data = {
         0954506E67496D61676589504E470D0A1A0A0000000D49484452000000180000
@@ -813,9 +814,10 @@ object FormBuilderMain: TFormBuilderMain
     end
     object Image16: TImage
       Left = 243
-      Top = 9
+      Top = 6
       Width = 41
       Height = 36
+      Hint = 'Options'
       Center = True
       Picture.Data = {
         0954506E67496D61676589504E470D0A1A0A0000000D49484452000000180000

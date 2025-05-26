@@ -74,6 +74,7 @@
       "Position": { "X": 500, "Y": 140 },
       "Width": 200,
       "Height": 100,
+	  "Color":"#0000FF",
       "Caption": "Second Panel"
     },
     {

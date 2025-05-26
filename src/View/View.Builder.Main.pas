@@ -10,13 +10,13 @@ uses
   Adapter.TreeViewAdapter,
   Builder.UIBuilderEngine, System.Skia, Vcl.Skia, System.Types, System.UITypes,
   Vcl.Imaging.pngimage, Vcl.WinXCtrls,
+
   Util.Json, System.Math, System.ImageList, Vcl.ImgList;
 
 type
   TFormBuilderMain = class(TForm)
     StatusBarBottom: TStatusBar;
     PanelRenderJson: TPanel;
-    BtnRender: TButton;
     Memo: TMemo;
     Splitter2: TSplitter;
     SplitView1: TSplitView;
@@ -35,8 +35,6 @@ type
     ImageExpand: TImage;
     ImageColapse: TImage;
     TreeView1: TTreeView;
-    PanelValidateJson: TPanel;
-    SkLblVerify: TSkLabel;
     Panel13: TPanel;
     Image12: TImage;
     SkLabel3: TSkLabel;
@@ -45,7 +43,6 @@ type
     PanelSearchComponents: TPanel;
     SearchBoxComponents: TSearchBox;
     ActivityIndicatorSearch: TActivityIndicator;
-    SkPaintBackground: TSkPaintBox;
     PanelToolPalette: TPanel;
     Image6: TImage;
     Image11: TImage;
@@ -61,9 +58,14 @@ type
     SkLabel2: TSkLabel;
     SkPaintBox1: TSkPaintBox;
     Panel1: TPanel;
-    Image3: TImage;
     SkLabel1: TSkLabel;
-    procedure BtnRenderClick(Sender: TObject);
+    SkPaintBackground: TSkPaintBox;
+    Panel4: TPanel;
+    LabelInfoJson: TLabel;
+    ImageOk: TImage;
+    ImageErro: TImage;
+    Panel5: TPanel;
+    PanelExecuteJson: TPanel;
     procedure FormCreate(Sender: TObject);
     procedure ImgSettingsClick(Sender: TObject);
     procedure Image9Click(Sender: TObject);
@@ -86,6 +88,10 @@ type
     procedure SkPaintBox1MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure FormShow(Sender: TObject);
     procedure SkPaintBackgroundMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+    procedure FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+    procedure ImageRenderClick(Sender: TObject);
+    procedure ButtonRunJsonClick(Sender: TObject);
+    procedure PanelExecuteJsonClick(Sender: TObject);
   private
     FBuilder : TUIBuilderEngine;
     FCreatedForms: TObjectList<TForm>;
@@ -94,6 +100,7 @@ type
     FSelecionadoShape: TShape;
     FTreeViewAdapter: TTreeViewAdapter;
     FSelectedComponent: String;
+    FJsonStructure : TJSONObject;
     procedure RenderJson(const Atext : string);
     procedure CloseFormsCreated;
     procedure ValidateAndProcessJSON(const AJSON: string);
@@ -113,11 +120,6 @@ implementation
 
 { TForm2 }
 
-procedure TFormBuilderMain.BtnRenderClick(Sender: TObject);
-begin
-  RenderJson(Memo.Lines.text);
-end;
-
 procedure TFormBuilderMain.BuildStatusBar;
 begin
   StatusBarBottom.Panels[0].Text:= 'X: 0 Y: 0';                 // Panel 0 - Coordenadas do Mouse
@@ -128,6 +130,11 @@ begin
   StatusBarBottom.Panels[5].Text := 'Modo: Seleção';             // Panel 5 - Modo atual
   StatusBarBottom.Panels[6].Text := 'Projeto: (vazio)';          // Panel 6 - Nome do Projeto
   StatusBarBottom.Panels[7].Text := '';                          // Panel 7 - Mensagens temporárias
+end;
+
+procedure TFormBuilderMain.ButtonRunJsonClick(Sender: TObject);
+begin
+  RenderJson(Memo.Text);
 end;
 
 procedure TFormBuilderMain.CloseFormsCreated;
@@ -144,6 +151,10 @@ end;
 
 destructor TFormBuilderMain.Destroy;
 begin
+
+  FJsonStructure.Free;
+  FSelecionadoShape.Free;
+  FTreeViewAdapter.Free;
   FCreatedForms.Free;
   FBuilder.Free;
   inherited;
@@ -164,6 +175,11 @@ begin
   FCreatedForms := TObjectList<TForm>.Create(False);
 end;
 
+procedure TFormBuilderMain.FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+begin
+  StatusBarBottom.Panels[0].Text := Format('X: %d Y: %d', [X, Y]);
+end;
+
 procedure TFormBuilderMain.FormShow(Sender: TObject);
 begin
   BuildStatusBar();
@@ -179,9 +195,15 @@ begin
   PanelSearchComponents.Visible:= not PanelSearchComponents.Visible;
 end;
 
+procedure TFormBuilderMain.ImageRenderClick(Sender: TObject);
+begin
+  RenderJson(Memo.Lines.text);
+end;
+
 procedure TFormBuilderMain.ImageRenderJsonClick(Sender: TObject);
 begin
   PanelRenderJson.Visible:= True;
+  Splitter2.Visible:= True;
 end;
 
 procedure TFormBuilderMain.ImgSettingsClick(Sender: TObject);
@@ -210,16 +232,13 @@ end;
 
 procedure TFormBuilderMain.MemoChange(Sender: TObject);
 begin
-  BtnRender.Enabled:= false;
-  try
-    try
-      ValidateAndProcessJSON(Memo.Lines.Text);
-    except
-      BtnRender.Enabled:= true;
-    end;
-  finally
-    BtnRender.Enabled:= true;
-  end;
+  PanelExecuteJson.Enabled:= false;
+  ValidateAndProcessJSON(Memo.Lines.Text);
+end;
+
+procedure TFormBuilderMain.PanelExecuteJsonClick(Sender: TObject);
+begin
+  RenderJson(memo.text);
 end;
 
 procedure TFormBuilderMain.PanelToolPaletteMouseDown(Sender: TObject; Button: TMouseButton;
@@ -255,8 +274,10 @@ end;
 
 procedure TFormBuilderMain.RenderJson(const Atext : string);
 begin
+  if (Atext.Trim.Equals('')) or (Length(Atext) < 10) then Exit;
+
   var JsonText := Atext;
-  var Json := TJSONObject.ParseJSONValue(JsonText) as TJSONObject;
+  FJsonStructure := TJSONObject.ParseJSONValue(JsonText) as TJSONObject;
   var MyForm: TForm;
   var FormsArray: TJSONArray;
   var FormJson: TJSONObject;
@@ -266,36 +287,42 @@ begin
   FTreeViewAdapter.FTreeView := TreeView1;
   FTreeViewAdapter.FCreatedForm := FCreatedForms;
   try
-    if Json.TryGetValue<TJSONArray>('Forms', FormsArray) then
-    begin
-      for var I := 0 to FormsArray.Count - 1 do
+    try
+      if FJsonStructure.TryGetValue<TJSONArray>('Forms', FormsArray) then
       begin
-        FormJson := FormsArray.Items[I] as TJSONObject;
-        MyForm := FBuilder.CreateFormFromJson(SkPaintBackground, FormJson);
+        for var I := 0 to FormsArray.Count - 1 do
+        begin
+          FormJson := FormsArray.Items[I] as TJSONObject;
+          MyForm := FBuilder.CreateFormFromJson(SkPaintBackground, FormJson);
 
-        Node := TreeView1.Items.Add(nil, FormJson.GetValue<string>('Name'));
+          Node := TreeView1.Items.Add(nil, FormJson.GetValue<string>('Name'));
+          Node.Data := MyForm;
+          FTreeViewAdapter.AddJSONToTreeView(FormJson,Node,'root',TreeView1);
+
+          MyForm.OnClose := FTreeViewAdapter.CloseFormsTreeview;
+          FCreatedForms.Add(MyForm);
+          MyForm.Show;
+        end;
+      end else
+      begin
+        Node := TreeView1.Items.Add(nil, FJsonStructure.GetValue<string>('Name'));
+        MyForm := FBuilder.CreateFormFromJson(SkPaintBackground, FJsonStructure);
         Node.Data := MyForm;
-        FTreeViewAdapter.AddJSONToTreeView(FormJson,Node,'root',TreeView1);
+        FTreeViewAdapter.AddJSONToTreeView(FJsonStructure,Node,'root',TreeView1);
 
         MyForm.OnClose := FTreeViewAdapter.CloseFormsTreeview;
         FCreatedForms.Add(MyForm);
         MyForm.Show;
       end;
-    end else
-    begin
-      Node := TreeView1.Items.Add(nil, Json.GetValue<string>('Name'));
-      MyForm := FBuilder.CreateFormFromJson(SkPaintBackground, Json);
-      Node.Data := MyForm;
-      FTreeViewAdapter.AddJSONToTreeView(Json,Node,'root',TreeView1);
-
-      MyForm.OnClose := FTreeViewAdapter.CloseFormsTreeview;
-      FCreatedForms.Add(MyForm);
-      MyForm.Show;
+    except on E: Exception do
+      begin
+        CloseFormsCreated;
+//        FTreeViewAdapter.FTreeView.Items.Clear;
+//        FTreeViewAdapter.FCreatedForm.Clear;
+      end;
     end;
   finally
-    TreeView1.AutoExpand:= True;
-    Json.Free;
-  end
+  end;
 end;
 
 procedure TFormBuilderMain.SearchBoxComponentsChange(Sender: TObject);
@@ -430,18 +457,28 @@ var
 
   procedure CriarMarcador(AOwner: TForm);
   begin
+    if FSelecionadoShape <> NIl then
+    begin
+      if FSelecionadoShape.Parent is TForm then
+      begin
+        FSelecionadoShape.Free;
+        FSelecionadoShape := TShape.Create(AOwner);
+        FSelecionadoShape.Parent := AOwner;
+        FSelecionadoShape.Visible := False;
+      end;
+    end else
     if not Assigned(FSelecionadoShape) then
     begin
       FSelecionadoShape := TShape.Create(AOwner);
       FSelecionadoShape.Parent := AOwner;
       FSelecionadoShape.Visible := False;
-    end;
+    end else
+    FSelecionadoShape.Parent := AOwner;
   end;
 
   procedure DestacarComponenteSelecionado(Control: TControl);
   begin
     CriarMarcador(Self);
-
     FSelecionadoShape.SetBounds(
       Control.Left - 2,
       Control.Top - 2,
@@ -449,13 +486,16 @@ var
       Control.Height + 4
     );
     FSelecionadoShape.Parent := Control.Parent;
-    FSelecionadoShape.Brush.Style := bsClear;
-    FSelecionadoShape.Pen.Color := clGrayText;
-    FSelecionadoShape.Pen.Width := 1;
-    FSelecionadoShape.Pen.Mode:= pmMask;
-    FSelecionadoShape.Pen.Style := psDot;
-    FSelecionadoShape.Visible := True;
-    FSelecionadoShape.SendToBack;
+    if FSelecionadoShape.Pen <> nil then
+    begin
+      FSelecionadoShape.Brush.Style := bsClear;
+      FSelecionadoShape.Pen.Color := clGrayText;
+      FSelecionadoShape.Pen.Width := 1;
+      FSelecionadoShape.Pen.Mode:= pmMask;
+      FSelecionadoShape.Pen.Style := psDot;
+      FSelecionadoShape.Visible := True;
+      FSelecionadoShape.SendToBack;
+    end;
   end;
 
 begin
@@ -489,6 +529,11 @@ begin
           end;
         end;
       end;
+    end else
+    if Assigned(FSelecionadoShape) then
+    begin
+      FSelecionadoShape.Visible := False;
+      FSelecionadoShape:= nil;
     end;
   end;
 end;
@@ -498,27 +543,32 @@ begin
   TThread.CreateAnonymousThread(
   procedure
   var
-    IsValid: Boolean;
     ErrorMsg: string;
+    Duplicates: TArray<string>;
   begin
-    SkLblVerify.Caption:= 'Analizing json ... ';
+    LabelInfoJson.Caption:= 'Analizing json ... ';
     try
-      TThread.Queue(nil,
-        procedure
-        begin
-          IsValid := TJSONHelper.ValidateJSON(AJSON, ErrorMsg);
-          if IsValid then
-          begin
-            SkLblVerify.Caption:= 'Valid (RFC 8259)';
-            Self.PanelValidateJson.Brush.Color:= clgreen;
-            Self.PanelValidateJson.Repaint;
-          end else
-          begin
-            SkLblVerify.Caption:= 'InValid Valid (RFC 8259)';
-            Self.PanelValidateJson.Brush. Color:= clred;
-            Self.PanelValidateJson.repaint;
-          end;
-        end);
+      if TJSONHelper.ValidateJSON(AJSON, ErrorMsg) and TJSONHelper.HasDuplicateNames(AJSON, Duplicates) then
+      begin
+        if String(Duplicates) = '' then
+        LabelInfoJson.Caption:= 'Invalid json'
+        else
+          LabelInfoJson.Caption:= 'Invalid json, Has Duplicate Names : ' + string.Join(', ', Duplicates);
+        ImageOk.Visible:= False;
+        ImageErro.Visible:= True;
+        PanelExecuteJson.Enabled:= False;
+        PanelExecuteJson.Font.Color:= clgray;
+        CloseFormsCreated;
+        TreeView1.Items.Clear;
+        Exit;
+      end else
+      begin
+        LabelInfoJson.Caption:= 'Is Valid json';
+        ImageOk.Visible:= True;
+        ImageErro.Visible:= False;
+        PanelExecuteJson.Font.Color:= clblack;
+        PanelExecuteJson.Enabled:= True;
+      end;
     except
       on E: Exception do
         TThread.Queue(nil,
@@ -532,3 +582,4 @@ end;
 
 
 end.
+

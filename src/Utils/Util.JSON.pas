@@ -3,7 +3,7 @@ unit Util.JSON;
 interface
 
 uses
-  System.JSON, System.SysUtils, System.Classes;
+  System.JSON, System.SysUtils, System.Classes, system.Generics.Collections;
 
 type
   EInvalidJSON = class(Exception);
@@ -25,6 +25,9 @@ type
     class function BeautifyJSON(const AJSON: string): string; static;
     class function MinifyJSON(const AJSON: string): string; static;
     class function ValidateJSON(const AJSON: string; out ErrorMessage: string): Boolean; static;
+    class function HasNamedComponent(const AJSON, ATargetName: string): Boolean; static;
+    class function HasDuplicateNames(const AJSON: string; out Duplicates: TArray<string>): Boolean; static;
+    class procedure TraverseJSON(const JSONValue: TJSONValue;  const ATargetName: string; var Found: Boolean; const NameList: TDictionary<string, Integer>);
   end;
 
   TJSONWorker<T: class, constructor> = class
@@ -37,6 +40,93 @@ type
 implementation
 
 { TJSONHelper }
+
+class function TJSONHelper.HasDuplicateNames(const AJSON: string;
+  out Duplicates: TArray<string>): Boolean;
+var
+  Root: TJSONValue;
+  NameDict: TDictionary<string, Integer>;
+  DupList: TList<string>;
+  procedure InternalTraverse(Value: TJSONValue);
+  var
+    Obj: TJSONObject;
+    Arr: TJSONArray;
+    Pair: TJSONPair;
+    Item: TJSONValue;
+    NameVal: string;
+  begin
+    if Value is TJSONObject then
+    begin
+      Obj := TJSONObject(Value);
+
+      if Obj.TryGetValue<string>('Name', NameVal) then
+      begin
+        if NameDict.ContainsKey(NameVal) then
+          NameDict[NameVal] := NameDict[NameVal] + 1
+        else
+          NameDict.Add(NameVal, 1);
+      end;
+
+      for Pair in Obj do
+        InternalTraverse(Pair.JsonValue);
+    end
+    else if Value is TJSONArray then
+    begin
+      Arr := TJSONArray(Value);
+      for Item in Arr do
+        InternalTraverse(Item);
+    end;
+  end;
+begin
+  Result := False;
+  SetLength(Duplicates, 0);
+  Root := TJSONObject.ParseJSONValue(AJSON);
+  if not Assigned(Root) then
+    Exit;
+
+  NameDict := TDictionary<string, Integer>.Create;
+  DupList := TList<string>.Create;
+  try
+    InternalTraverse(Root);
+
+    for var Key in NameDict.Keys do
+      if NameDict[Key] > 1 then
+        DupList.Add(Key);
+
+    if DupList.Count > 0 then
+    begin
+      Duplicates := DupList.ToArray;
+      Result := True;
+    end;
+  finally
+    Root.Free;
+    NameDict.Free;
+    DupList.Free;
+  end;
+end;
+
+class function TJSONHelper.HasNamedComponent(const AJSON,
+  ATargetName: string): Boolean;
+var
+  Root: TJSONValue;
+  Found: Boolean;
+  DummyDict: TDictionary<string, Integer>;
+begin
+  Result := False;
+  Root := TJSONObject.ParseJSONValue(AJSON);
+  DummyDict := TDictionary<string, Integer>.Create;
+  try
+    if Assigned(Root) then
+    begin
+      Found := False;
+      TraverseJSON(Root, ATargetName, Found, DummyDict);
+      Result := Found;
+    end;
+  finally
+    DummyDict.Free;
+    Root.Free;
+  end;
+end;
 
 class function TJSONHelper.IsValidJSON(const AJSON: string): Boolean;
 var
@@ -81,6 +171,56 @@ begin
   finally
     JSONValue.Free;
   end;
+end;
+
+class procedure TJSONHelper.TraverseJSON(const JSONValue: TJSONValue;
+  const ATargetName: string; var Found: Boolean;
+  const NameList: TDictionary<string, Integer>);
+var
+  Pair: TJSONPair;
+  Item: TJSONValue;
+  JSONArray: TJSONArray;
+  JSONObject: TJSONObject;
+  NameValue: string;
+begin
+  if JSONValue is TJSONObject then
+  begin
+    JSONObject := JSONValue as TJSONObject;
+
+    // Verifica "Name"
+    if JSONObject.TryGetValue<string>('Name', NameValue) then
+    begin
+      if SameText(NameValue, ATargetName) then
+        Found := True;
+
+      if NameList.ContainsKey(NameValue) then
+        NameList[NameValue] := NameList[NameValue] + 1
+      else
+        NameList.Add(NameValue, 1);
+    end;
+
+    // Recorre por todas as propriedades
+    for Pair in JSONObject do
+    begin
+      if Pair.JsonValue is TJSONArray then
+      begin
+        JSONArray := Pair.JsonValue as TJSONArray;
+        for Item in JSONArray do
+          TraverseJSON(Item, ATargetName, Found, NameList);
+      end
+      else if Pair.JsonValue is TJSONObject then
+      begin
+        TraverseJSON(Pair.JsonValue, ATargetName, Found, NameList);
+      end;
+    end;
+  end
+  else if JSONValue is TJSONArray then
+  begin
+    JSONArray := JSONValue as TJSONArray;
+    for Item in JSONArray do
+      TraverseJSON(Item, ATargetName, Found, NameList);
+  end;
+
 end;
 
 class function TJSONHelper.ValidateJSON(const AJSON: string; out ErrorMessage: string): Boolean;

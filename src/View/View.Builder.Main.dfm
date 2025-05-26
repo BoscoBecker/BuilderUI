@@ -16,19 +16,10 @@ object FormBuilderMain: TFormBuilderMain
   Visible = True
   WindowState = wsMaximized
   OnCanResize = FormCanResize
-  OnClick = BtnRenderClick
   OnCreate = FormCreate
+  OnMouseMove = FormMouseMove
   OnShow = FormShow
   TextHeight = 15
-  object Splitter2: TSplitter
-    Left = 789
-    Top = 57
-    Height = 601
-    Align = alRight
-    ExplicitLeft = 232
-    ExplicitTop = 49
-    ExplicitHeight = 622
-  end
   object Splitter1: TSplitter
     Left = 273
     Top = 57
@@ -36,6 +27,15 @@ object FormBuilderMain: TFormBuilderMain
     ExplicitLeft = 244
     ExplicitTop = 36
     ExplicitHeight = 616
+  end
+  object Splitter2: TSplitter
+    Left = 789
+    Top = 57
+    Height = 601
+    Align = alRight
+    Visible = False
+    ExplicitLeft = 814
+    ExplicitTop = 65
   end
   object SkPaintBackground: TSkPaintBox
     AlignWithMargins = True
@@ -46,10 +46,7 @@ object FormBuilderMain: TFormBuilderMain
     Align = alClient
     OnMouseMove = SkPaintBackgroundMouseMove
     OnDraw = SkPaintBackgroundDraw
-    ExplicitLeft = 6
-    ExplicitTop = 24
-    ExplicitWidth = 542
-    ExplicitHeight = 540
+    ExplicitHeight = 621
   end
   object StatusBarBottom: TStatusBar
     Left = 0
@@ -94,48 +91,17 @@ object FormBuilderMain: TFormBuilderMain
     Visible = False
     ExplicitTop = 42
     ExplicitHeight = 616
-    object BtnRender: TButton
-      Left = 0
-      Top = 576
-      Width = 242
-      Height = 25
-      Align = alBottom
-      Caption = 'Render'
-      TabOrder = 0
-      OnClick = BtnRenderClick
-      ExplicitTop = 591
-    end
     object Memo: TMemo
       Left = 0
       Top = 33
       Width = 242
-      Height = 508
+      Height = 486
       Align = alClient
       BorderStyle = bsNone
-      TabOrder = 1
+      ScrollBars = ssVertical
+      TabOrder = 0
       OnChange = MemoChange
-      ExplicitHeight = 523
-    end
-    object PanelValidateJson: TPanel
-      Left = 0
-      Top = 541
-      Width = 242
-      Height = 35
-      Align = alBottom
-      BevelOuter = bvNone
-      DoubleBuffered = True
-      ParentDoubleBuffered = False
-      TabOrder = 2
-      ExplicitTop = 556
-      object SkLblVerify: TSkLabel
-        Left = 16
-        Top = 8
-        Width = 0
-        Height = 0
-        Words = <
-          item
-          end>
-      end
+      ExplicitHeight = 508
     end
     object Panel13: TPanel
       Left = 0
@@ -144,7 +110,7 @@ object FormBuilderMain: TFormBuilderMain
       Height = 33
       Align = alTop
       BevelOuter = bvNone
-      TabOrder = 3
+      TabOrder = 1
       object Image12: TImage
         Left = 202
         Top = 0
@@ -179,6 +145,110 @@ object FormBuilderMain: TFormBuilderMain
           item
             Caption = 'Render Json'
           end>
+      end
+    end
+    object Panel4: TPanel
+      Left = 0
+      Top = 560
+      Width = 242
+      Height = 41
+      Align = alBottom
+      BevelOuter = bvNone
+      TabOrder = 2
+      object LabelInfoJson: TLabel
+        Left = 0
+        Top = 0
+        Width = 242
+        Height = 41
+        Align = alClient
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowFrame
+        Font.Height = -12
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+        WordWrap = True
+        ExplicitWidth = 3
+        ExplicitHeight = 15
+      end
+    end
+    object Panel5: TPanel
+      Left = 0
+      Top = 519
+      Width = 242
+      Height = 41
+      Align = alBottom
+      BevelOuter = bvNone
+      TabOrder = 3
+      ExplicitLeft = 96
+      ExplicitTop = 416
+      ExplicitWidth = 185
+      object ImageErro: TImage
+        Left = 158
+        Top = 0
+        Width = 42
+        Height = 41
+        Align = alRight
+        Center = True
+        Picture.Data = {
+          0954506E67496D61676589504E470D0A1A0A0000000D49484452000000180000
+          00180806000000E0773DF8000000017352474200AECE1CE90000000473424954
+          080808087C0864880000014E4944415478DACD95AD52C34014856F050A03A618
+          0A3C40F14580C150CF43F00E40053FEFC043D4178301010A530C0E6811D41483
+          AAE19C99BB33DB9BDD6D362D4CCFCC37996C9273927B37BB35F963D596216013
+          AC810DB0AE6363F0A5C7CFAA01346D79A63131E4097CE704EC82666635FAE0A5
+          4C401573A767F09A0A6059DA15CD9D7AE295CB06B435C469151C815BF063EE8D
+          5D1BEB582180B365DF981C8013F006AE3D239A9F821D7003EECD730F60680342
+          B5A7D119D8F642C4337F075781AF63B3FB36E010D40335F5433E746C2B614E8D
+          C09D0D38062B1216433AA0A1E703701131A726A09B1B70AE6F2EFA2597B901A9
+          12B99A0F74AC21C5C6CF2C51ACC9B6A122C5C6976A726A9ADA86FA8D2F3D4DA9
+          45FC68FC8B7BEEE4DF978A582FCA6AE662374F48C13C1540B15C7B32DD939058
+          8E47C9DC707C71767157ABCBF49639D2E330F5F0526CFA73E9178C2558191137
+          54600000000049454E44AE426082}
+        Visible = False
+        ExplicitLeft = 164
+        ExplicitTop = -35
+        ExplicitHeight = 76
+      end
+      object ImageOk: TImage
+        Left = 200
+        Top = 0
+        Width = 42
+        Height = 41
+        Align = alRight
+        Center = True
+        Picture.Data = {
+          0954506E67496D61676589504E470D0A1A0A0000000D49484452000000180000
+          00180806000000E0773DF8000000017352474200AECE1CE90000000473424954
+          080808087C086488000000D64944415478DA6364A031601CB5809E162800F17C
+          207600E203401C08C41FA865810110EF07620124B18D401C400D0BB0190E0F21
+          4A2DC06738C53EC067F847A8FC03722D2064B803105F00871154901588ED8058
+          0C885F01F10920FE4AA9E1C81638430D8781DF40BC07883F506238B205915834
+          A05B42B2E1F87C806E89023986235BC00DC49ED0B8C0664901105B936A38B205
+          0C50D7B9E0B0840D884B80588714C3D12D20C512A20CC766013196A402710E31
+          86E3B2009F25B8922FC91630400D376640A42E50063C0BB5846830A42A9C616A
+          010001CA37195F5D4E680000000049454E44AE426082}
+        Visible = False
+        ExplicitHeight = 76
+      end
+      object PanelExecuteJson: TPanel
+        Left = 0
+        Top = 0
+        Width = 185
+        Height = 41
+        Cursor = crHandPoint
+        Align = alLeft
+        BevelOuter = bvNone
+        Caption = 'Execute Json'
+        Enabled = False
+        Padding.Left = 5
+        Padding.Top = 5
+        Padding.Right = 5
+        Padding.Bottom = 5
+        TabOrder = 0
+        OnClick = PanelExecuteJsonClick
+        ExplicitLeft = 56
+        ExplicitTop = 8
       end
     end
   end
@@ -500,7 +570,7 @@ object FormBuilderMain: TFormBuilderMain
       BorderStyle = bsNone
       Ctl3D = True
       Indent = 19
-      MultiSelectStyle = []
+      MultiSelectStyle = [msControlSelect, msShiftSelect]
       ParentCtl3D = False
       ParentShowHint = False
       ShowHint = True
@@ -776,35 +846,11 @@ object FormBuilderMain: TFormBuilderMain
     ParentBackground = False
     ParentFont = False
     TabOrder = 6
-    object Image3: TImage
-      Left = 994
-      Top = 0
-      Width = 40
-      Height = 42
-      Cursor = crHandPoint
-      Hint = 'Close'
-      Align = alRight
-      Center = True
-      ParentShowHint = False
-      Picture.Data = {
-        0954506E67496D61676589504E470D0A1A0A0000000D49484452000000140000
-        001408060000008D891D0D000000017352474200AECE1CE90000000473424954
-        080808087C086488000000C34944415478DA6364A032601C7206B202B112947D
-        0F887FE3D087531DBA81EA406C0465BF07E2BD580C0519E60CC48250FE3920BE
-        498C81D80C45378CA081200D2E402C80C550062C867D00E23DF8BC8CCF500642
-        86E1321097A10C840CC367203E43711A468C81E8612604C4A1401C0035986803
-        7119D60275F1052076C4662823918681345600B11D921856431989340C1466DC
-        407C0088F5F1194A2861A347800016430B8178023106E28A4D7443F11A486CE1
-        00323401CA5E80CFCB1483C16F2000C0903915693203080000000049454E44AE
-        426082}
-      ShowHint = True
-      ExplicitLeft = 993
-    end
     object SkLabel1: TSkLabel
       AlignWithMargins = True
       Left = 3
       Top = 3
-      Width = 988
+      Width = 1028
       Height = 36
       Align = alClient
       TextSettings.Decorations.Style = Dashed

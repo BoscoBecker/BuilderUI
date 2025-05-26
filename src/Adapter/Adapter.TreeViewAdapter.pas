@@ -110,7 +110,8 @@ begin
     ExpandFathers(NoEncontrado);
     FTreeView.Selected := NoEncontrado;
     NoEncontrado.MakeVisible;
-    FTreeView.SetFocus;
+    if FTreeView.CanFocus then
+      FTreeView.SetFocus;
   end;
 end;
 

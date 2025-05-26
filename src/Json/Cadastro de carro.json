@@ -1,305 +1,149 @@
 {
   "Type": "TForm",
+  "Name": "FrmCadastroCliente",
   "Align": "Client",
   "Children": [
     {
-      "Type": "TLabel",
-      "Text": "Cadastro de Veículo",
-      "Position": { "X": 5, "Y": 10 },
-      "Width": 300,
-      "Height": 30,
-      "FontSize": 16,
-      "FontStyle": ["Bold"]
-    },
-    {
-      "Type": "TLabel",
-      "Text": "Informações Básicas",
-      "Position": { "X": 5, "Y": 50 },
-      "Width": 300,
-      "Height": 20,
-      "FontStyle": ["Underline"]
-    },
-    {
-      "Type": "TLabel",
-      "Text": "Placa:",
-      "Position": { "X": 5, "Y": 80 },
-      "Width": 100,
-      "Height": 20
-    },
-    {
-      "Type": "TEdit",
-      "Text": "",
-      "Position": { "X": 5, "Y": 100 },
-      "Width": 100,
-      "Height": 30
-    },
-    {
-      "Type": "TLabel",
-      "Text": "Chassi:",
-      "Position": { "X": 115, "Y": 80 },
-      "Width": 190,
-      "Height": 20
-    },
-    {
-      "Type": "TEdit",
-      "Text": "",
-      "Position": { "X": 115, "Y": 100 },
-      "Width": 190,
-      "Height": 30
-    },
-    {
-      "Type": "TLabel",
-      "Text": "Marca/Modelo:",
-      "Position": { "X": 5, "Y": 140 },
-      "Width": 300,
-      "Height": 20
-    },
-    {
-      "Type": "TEdit",
-      "Text": "",
-      "Position": { "X": 5, "Y": 160 },
-      "Width": 300,
-      "Height": 30
-    },
-    {
-      "Type": "TLabel",
-      "Text": "Ano de Fabricação:",
-      "Position": { "X": 5, "Y": 200 },
+      "Type": "TComboBox",
+      "Name": "ComboBox1",
+      "Position": { "X": 10, "Y": 10 },
       "Width": 150,
-      "Height": 20
+      "Items": ["Item 1", "Item 2", "Item 3"]
     },
     {
       "Type": "TEdit",
-      "Text": "",
-      "Position": { "X": 5, "Y": 220 },
+      "Name": "Edit1",
+      "Position": { "X": 10, "Y": 50 },
       "Width": 150,
-      "Height": 30
+      "Text": "Type here"
     },
     {
-      "Type": "TLabel",
-      "Text": "Ano do Modelo:",
-      "Position": { "X": 165, "Y": 200 },
-      "Width": 140,
-      "Height": 20
+      "Type": "TCheckBox",
+      "Name": "CheckBox1",
+      "Position": { "X": 10, "Y": 90 },
+      "Caption": "Accept terms"
     },
     {
-      "Type": "TEdit",
-      "Text": "",
-      "Position": { "X": 165, "Y": 220 },
-      "Width": 140,
-      "Height": 30
+      "Type": "TCheckBox",
+      "Name": "CheckBox2",
+      "Position": { "X": 10, "Y": 120 },
+      "Caption": "Subscribe"
     },
     {
-      "Type": "TLabel",
-      "Text": "Cor:",
-      "Position": { "X": 5, "Y": 260 },
-      "Width": 100,
-      "Height": 20
+      "Type": "TCheckBox",
+      "Name": "CheckBox3",
+      "Position": { "X": 10, "Y": 150 },
+      "Caption": "Enable feature"
     },
     {
-      "Type": "TEdit",
-      "Text": "",
-      "Position": { "X": 5, "Y": 280 },
-      "Width": 100,
-      "Height": 30
+      "Type": "TRadioButton",
+      "Name": "RadioButton1",
+      "Position": { "X": 10, "Y": 180 },
+      "Caption": "Single Option"
     },
     {
-      "Type": "TLabel",
-      "Text": "Tipo de Combustível:",
-      "Position": { "X": 115, "Y": 260 },
-      "Width": 190,
-      "Height": 20
+      "Type": "TRadioGroup",
+      "Name": "RadioGroup1",
+      "Position": { "X": 10, "Y": 210 },
+      "Caption": "Gender",
+      "Items": ["Male", "Female", "Other"],
+      "Width": 150
     },
     {
-      "Type": "TEdit",
-      "Text": "",
-      "Position": { "X": 115, "Y": 280 },
-      "Width": 190,
-      "Height": 30
-    },
-    {
-      "Type": "TLabel",
-      "Text": "Informações Técnicas",
-      "Position": { "X": 5, "Y": 320 },
-      "Width": 300,
-      "Height": 20,
-      "FontStyle": ["Underline"]
-    },
-    {
-      "Type": "TLabel",
-      "Text": "Motor:",
-      "Position": { "X": 5, "Y": 350 },
+      "Type": "TDateTimePicker",
+      "Name": "DateTimePicker1",
       "Width": 150,
-      "Height": 20
+      "Position": { "X": 10, "Y": 280 }
     },
     {
-      "Type": "TEdit",
-      "Text": "",
-      "Position": { "X": 5, "Y": 370 },
+      "Type": "TListBox",
+      "Name": "ListBox1",
+      "Position": { "X": 10, "Y": 320 },
       "Width": 150,
-      "Height": 30
+      "Height": 60,
+      "Items": ["Apple", "Banana", "Orange"]
     },
     {
-      "Type": "TLabel",
-      "Text": "Potência (cv):",
-      "Position": { "X": 165, "Y": 350 },
-      "Width": 140,
-      "Height": 20
-    },
-    {
-      "Type": "TEdit",
-      "Text": "",
-      "Position": { "X": 165, "Y": 370 },
-      "Width": 140,
-      "Height": 30
-    },
-    {
-      "Type": "TLabel",
-      "Text": "Câmbio:",
-      "Position": { "X": 5, "Y": 410 },
+      "Type": "TMemo",
+      "Name": "Memo1",
+      "Position": { "X": 10, "Y": 390 },
       "Width": 150,
-      "Height": 20
-    },
-    {
-      "Type": "TEdit",
-      "Text": "",
-      "Position": { "X": 5, "Y": 430 },
-      "Width": 150,
-      "Height": 30
-    },
-    {
-      "Type": "TLabel",
-      "Text": "Tração:",
-      "Position": { "X": 165, "Y": 410 },
-      "Width": 140,
-      "Height": 20
-    },
-    {
-      "Type": "TEdit",
-      "Text": "",
-      "Position": { "X": 165, "Y": 430 },
-      "Width": 140,
-      "Height": 30
-    },
-    {
-      "Type": "TLabel",
-      "Text": "Portas:",
-      "Position": { "X": 5, "Y": 470 },
-      "Width": 100,
-      "Height": 20
-    },
-    {
-      "Type": "TEdit",
-      "Text": "",
-      "Position": { "X": 5, "Y": 490 },
-      "Width": 100,
-      "Height": 30
-    },
-    {
-      "Type": "TLabel",
-      "Text": "Capacidade do Tanque:",
-      "Position": { "X": 115, "Y": 470 },
-      "Width": 190,
-      "Height": 20
-    },
-    {
-      "Type": "TEdit",
-      "Text": "",
-      "Position": { "X": 115, "Y": 490 },
-      "Width": 190,
-      "Height": 30
-    },
-    {
-      "Type": "TLabel",
-      "Text": "Documentação",
-      "Position": { "X": 5, "Y": 530 },
-      "Width": 300,
-      "Height": 20,
-      "FontStyle": ["Underline"]
-    },
-    {
-      "Type": "TLabel",
-      "Text": "Renavam:",
-      "Position": { "X": 5, "Y": 560 },
-      "Width": 150,
-      "Height": 20
-    },
-    {
-      "Type": "TEdit",
-      "Text": "",
-      "Position": { "X": 5, "Y": 580 },
-      "Width": 150,
-      "Height": 30
-    },
-    {
-      "Type": "TLabel",
-      "Text": "Data de Licenciamento:",
-      "Position": { "X": 165, "Y": 560 },
-      "Width": 140,
-      "Height": 20
-    },
-    {
-      "Type": "TEdit",
-      "Text": "",
-      "Position": { "X": 165, "Y": 580 },
-      "Width": 140,
-      "Height": 30
-    },
-    {
-      "Type": "TLabel",
-      "Text": "Proprietário Atual:",
-      "Position": { "X": 5, "Y": 620 },
-      "Width": 300,
-      "Height": 20
-    },
-    {
-      "Type": "TEdit",
-      "Text": "",
-      "Position": { "X": 5, "Y": 640 },
-      "Width": 300,
-      "Height": 30
-    },
-    {
-      "Type": "TLabel",
-      "Text": "Valor de Mercado:",
-      "Position": { "X": 5, "Y": 680 },
-      "Width": 150,
-      "Height": 20
-    },
-    {
-      "Type": "TEdit",
-      "Text": "",
-      "Position": { "X": 5, "Y": 700 },
-      "Width": 150,
-      "Height": 30
-    },
-    {
-      "Type": "TLabel",
-      "Text": "Status do Veículo:",
-      "Position": { "X": 165, "Y": 680 },
-      "Width": 140,
-      "Height": 20
-    },
-    {
-      "Type": "TEdit",
-      "Text": "",
-      "Position": { "X": 165, "Y": 700 },
-      "Width": 140,
-      "Height": 30
+      "Height": 80,
+      "Lines": ["Note 1", "Note 2"]
     },
     {
       "Type": "TButton",
-      "Text": "Salvar Veículo",
-      "Position": { "X": 5, "Y": 740 },
-      "Width": 150,
-      "Height": 40
+      "Name": "Button1",
+      "Position": { "X": 10, "Y": 480 },
+      "Caption": "Submit"
     },
     {
-      "Type": "TButton",
-      "Text": "Cancelar",
-      "Position": { "X": 165, "Y": 740 },
-      "Width": 140,
-      "Height": 40
+      "Type": "TBitBtn",
+      "Name": "BitBtn1",
+      "Position": { "X": 90, "Y": 480 },
+      "Caption": "OK",
+      "Kind": "bkOK"
+    },
+    {
+      "Type": "TSpeedButton",
+      "Name": "SpeedButton1",
+      "Position": { "X": 170, "Y": 480 },
+      "Caption": "Fast"
+    },
+    {
+      "Type": "TComboBox",
+      "Name": "ComboBox2",
+      "Position": { "X": 180, "Y": 10 },
+      "Width": 150,
+      "Items": ["A", "B", "C"]
+    },
+    {
+      "Type": "TPanel",
+      "Name": "Panel1",
+      "Position": { "X": 180, "Y": 50 },
+      "Width": 200,
+      "Height": 80,
+      "Caption": "Main Panel"
+    },
+    {
+      "Type": "TPanel",
+      "Name": "Panel2",
+      "Position": { "X": 180, "Y": 140 },
+      "Width": 200,
+      "Height": 80,
+      "Caption": "Secondary Panel"
+    },
+    {
+      "Type": "TShape",
+      "Name": "Shape1",
+      "Position": { "X": 180, "Y": 230 },
+      "Width": 60,
+      "Height": 60,
+      "Shape": "stRectangle"
+    },
+    {
+      "Type": "TStringGrid",
+      "Name": "StringGrid1",
+      "Position": { "X": 180, "Y": 300 },
+      "Width": 250,
+      "Height": 100,
+      "ColCount": 3,
+      "RowCount": 5
+    },
+    {
+      "Type": "TDBGrid",
+      "Name": "DBGrid1",
+      "Position": { "X": 180, "Y": 410 },
+      "Width": 300,
+      "Height": 100
+    },
+    {
+      "Type": "TGroupBox",
+      "Name": "GroupBox1",
+      "Position": { "X": 500, "Y": 10 },
+      "Width": 250,
+      "Height": 200,
+      "Caption": "Settings"
     }
   ]
 }

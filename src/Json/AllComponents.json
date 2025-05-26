@@ -121,7 +121,7 @@
     },
     {
       "Type": "TMemo",
-      "Name": "Memo1",
+      "Name": "TMemo1",
       "Position": { "X": 520, "Y": 310 },
       "Width": 180,
       "Height": 60,

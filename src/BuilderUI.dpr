@@ -4,7 +4,7 @@ program BuilderUI;
 
 uses
   Vcl.Forms,
-  View.Builder.Main in 'View\View.Builder.Main.pas' {Form2},
+  View.Builder.Main in 'View\View.Builder.Main.pas' {FormBuilderMain},
   Builder.UIBuilderEngine in 'Builder\Builder.UIBuilderEngine.pas',
   Core.IUIBuilder in 'Core\Core.IUIBuilder.pas',
   Adapter.TreeViewAdapter in 'Adapter\Adapter.TreeViewAdapter.pas',
@@ -17,6 +17,6 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TForm2, Form2);
+  Application.CreateForm(TFormBuilderMain, FormBuilderMain);
   Application.Run;
 end.

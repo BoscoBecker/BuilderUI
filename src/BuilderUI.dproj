@@ -5,7 +5,7 @@
         <FrameworkType>VCL</FrameworkType>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
-        <Platform Condition="'$(Platform)'==''">Win64</Platform>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <ProjectName Condition="'$(ProjectName)'==''">BuilderUI</ProjectName>
         <TargetedPlatforms>3</TargetedPlatforms>
         <AppType>Application</AppType>
@@ -127,7 +127,7 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="View\View.Builder.Main.pas">
-            <Form>Form2</Form>
+            <Form>FormBuilderMain</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Builder\Builder.UIBuilderEngine.pas"/>

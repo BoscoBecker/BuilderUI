@@ -7,7 +7,7 @@ uses
   System.Types, System.SysUtils, Forms,
 
   Vcl.Controls, Vcl.StdCtrls,Vcl.DBGrids, Vcl.Grids, Vcl.ComCtrls,
-  Vcl.ExtCtrls, Windows, Messages,
+  Vcl.ExtCtrls, Windows, Messages, Vcl.Buttons, Dialogs,
 
   Core.IUIBuilder, Adapter.TreeViewAdapter;
 
@@ -34,7 +34,11 @@ procedure TUIBuilderEngine.ControlClick(Sender: TObject);
 begin
  var ComponentName:= TControl(Sender).Name;
   if Length(ComponentName) <=0 then Exit;
+
+  if TTreeViewAdapter.FTreeView.CanFocus then
+    TTreeViewAdapter.FTreeView.SetFocus;
   TTreeViewAdapter.FindComponentInTreeView(TControl(Sender).Name);
+  TTreeViewAdapter.FTreeView.OnClick(Sender);
 end;
 
 function TUIBuilderEngine.CreateControlFromJson(AOwner: TComponent; AParent: TWinControl; Json: TJSONObject): TControl;
@@ -58,10 +62,16 @@ begin
     Ctrl := TLabel.Create(AOwner)
   else if CtrlType = 'TButton' then
     Ctrl := TButton.Create(AOwner)
+  else if CtrlType = 'TBitBtn' then
+    Ctrl := TBitBtn.Create(AOwner)
+  else if CtrlType = 'TSpeedButton' then
+    Ctrl := TSpeedButton.Create(AOwner)
   else if CtrlType = 'TEdit' then
     Ctrl := TEdit.Create(AOwner)
   else if CtrlType = 'TPanel' then
     Ctrl := TPanel.Create(AOwner)
+  else if CtrlType = 'TShape' then
+    Ctrl := TShape.Create(AOwner)
   else if CtrlType = 'TComboBox' then
     Ctrl := TComboBox.Create(AOwner)
   else if CtrlType = 'TCheckBox' then
@@ -82,6 +92,8 @@ begin
     Ctrl := TCheckBox.Create(AOwner)
   else if CtrlType = 'TRadioButton' then
     Ctrl := TRadioButton.Create(AOwner)
+  else if CtrlType = 'TGroupBox' then
+    Ctrl := TGroupBox.Create(AOwner)
   else Exit;
 
   if Json.TryGetValue<string>('Name', PropText) or Json.TryGetValue<string>('name', PropText) then
@@ -94,6 +106,12 @@ begin
   else
   if Ctrl is TButton then
     TButton(Ctrl).OnClick := ControlClick
+  else
+  if Ctrl is TBitBtn then
+    TBitBtn(Ctrl).OnClick := ControlClick
+  else
+  if Ctrl is TSpeedButton then
+    TSpeedButton(Ctrl).OnClick := ControlClick
   else
   if Ctrl is TEdit then
     TEdit(Ctrl).OnClick := ControlClick
@@ -129,7 +147,12 @@ begin
     TCheckBox(Ctrl).OnClick := ControlClick
   else
   if Ctrl is TRadioButton then
-    TRadioButton(Ctrl).OnClick := ControlClick;
+    TRadioButton(Ctrl).OnClick := ControlClick
+  else if Ctrl is TGroupBox then
+    TGroupBox(Ctrl).OnClick := ControlClick
+  else if Ctrl is TShape then
+    TShape(Ctrl).OnMouseEnter := ControlClick;
+
 
 //  Ctrl.OnMouseDown := CtrlMouseDown;
 //  Ctrl.OnMouseMove := CtrlMouseMove;
@@ -151,27 +174,71 @@ begin
       TRadioGroup(Ctrl).Caption := PropText;
   end;
 
-  if Json.TryGetValue<TJSONObject>('Position', PositionObj) or Json.TryGetValue<TJSONObject>('position', PositionObj) then
-  begin
-    Ctrl.Left := Round(PositionObj.GetValue<Single>('X', 0));
-    Ctrl.Top := Round(PositionObj.GetValue<Single>('Y', 0));
-  end;
+    if Json.TryGetValue<TJSONObject>('Position', PositionObj) or Json.TryGetValue<TJSONObject>('position', PositionObj) then
+    begin
+      Ctrl.Left := Round(PositionObj.GetValue<Single>('X', 0));
+      Ctrl.Top := Round(PositionObj.GetValue<Single>('Y', 0));
+    end;
 
-  if Json.TryGetValue<string>('Align', AlignStr) then
-  begin
-    if AlignStr = 'Top' then
-      TPanel(Ctrl).Align := alTop
-    else if AlignStr = 'Bottom' then
-      TPanel(Ctrl).Align := alBottom
-    else if AlignStr = 'Left' then
-      TPanel(Ctrl).Align := alLeft
-    else if AlignStr = 'Right' then
-      TPanel(Ctrl).Align := alRight
-    else if AlignStr = 'Client' then
-      TPanel(Ctrl).Align := alClient
-    else if AlignStr = 'None' then
-      TPanel(Ctrl).Align := alNone;
-  end;
+    if Json.TryGetValue<string>('Align', AlignStr) then
+    begin
+      if AlignStr = 'Top' then
+        TPanel(Ctrl).Align := alTop
+      else if AlignStr = 'Bottom' then
+        TPanel(Ctrl).Align := alBottom
+      else if AlignStr = 'Left' then
+        TPanel(Ctrl).Align := alLeft
+      else if AlignStr = 'Right' then
+        TPanel(Ctrl).Align := alRight
+      else if AlignStr = 'Client' then
+        TPanel(Ctrl).Align := alClient
+      else if AlignStr = 'None' then
+        TPanel(Ctrl).Align := alNone;
+    end;
+
+    var items:= Json.GetValue('Items');
+    if (items <> nil) and (items is TJSONArray) then
+    begin
+      if Ctrl is TComboBox then
+      begin
+        var ItemsArray := TJSONArray(items);
+        try
+          for var ItemValue in ItemsArray do
+            TComboBox(Ctrl).Items.Add(ItemValue.Value);
+        finally
+          ItemsArray:= Nil;
+        end;
+      end;
+
+      if Ctrl is TListBox then
+      begin
+        var itemsArray := TJSONArray(items);
+        try
+          TListBox(Ctrl).items.Clear;
+          for var ItemValue in ItemsArray do
+            TListBox(Ctrl).Items.Add(ItemValue.Value);
+        finally
+          itemsArray := Nil;
+        end;
+      end;
+    end;
+
+    var lines:= Json.GetValue('Lines');
+    if (lines <> nil) and (lines is TJSONArray) then
+    begin
+      if Ctrl is TMemo then
+      begin
+        var linesArray := TJSONArray(lines);
+        TMemo(Ctrl).lines.Clear;
+        try
+          for var ItemValue in linesArray do
+            TMemo(Ctrl).Lines.Add(ItemValue.Value);
+        finally
+          linesArray:= nil;
+        end;
+      end;
+    end;
+
 
   // Propriedade BevelOuter
   if Json.TryGetValue<string>('BevelOuter', BevelStr) then
@@ -269,7 +336,6 @@ var
   FormName, CaptionText: string;
   ControlsArray: TJSONArray;
   ControlJson: TJSONObject;
-  FormsArray: TJSONArray;
 begin
   Form := TForm.Create(AOwner);
   Form.Position := poDefault;

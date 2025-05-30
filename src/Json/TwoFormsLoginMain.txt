@@ -1,0 +1,165 @@
+{
+"Forms": [
+{
+"Type": "TForm",
+"Name": "FrmLogin",
+"Caption": "Tela de Login",
+"Align": "Client",
+"Children": [
+{
+"Type": "TLabel",
+"Name": "LblTitulo",
+"Text": "Bem-vindo ao Sistema",
+"Position": { "X": 150, "Y": 20 },
+"Width": 300,
+"Height": 30,
+"FontSize": 16,
+"FontStyle": ["Bold"]
+},
+{
+"Type": "TLabel",
+"Name": "LblUsuario",
+"Text": "Usuário:",
+"Position": { "X": 80, "Y": 80 },
+"Width": 100,
+"Height": 20
+},
+{
+"Type": "TEdit",
+"Name": "EditUsuario",
+"Text": "",
+"Position": { "X": 180, "Y": 75 },
+"Width": 200,
+"Height": 25
+},
+{
+"Type": "TLabel",
+"Name": "LblSenha",
+"Text": "Senha:",
+"Position": { "X": 80, "Y": 120 },
+"Width": 100,
+"Height": 20
+},
+{
+"Type": "TEdit",
+"Name": "EditSenha",
+"Text": "",
+"PasswordChar": "*",
+"Position": { "X": 180, "Y": 115 },
+"Width": 200,
+"Height": 25
+},
+{
+"Type": "TCheckBox",
+"Name": "ChkLembrar",
+"Caption": "Lembrar login",
+"Position": { "X": 180, "Y": 150 },
+"Width": 150,
+"Height": 20
+},
+{
+"Type": "TButton",
+"Name": "BtnEntrar",
+"Caption": "Entrar",
+"Position": { "X": 180, "Y": 190 },
+"Width": 200,
+"Height": 30
+}
+]
+},
+{
+"Type": "TForm",
+"Name": "FrmPrincipal",
+"Caption": "Sistema Principal",
+"Align": "Client",
+"Children": [
+{
+"Type": "TLabel",
+"Name": "LblBemVindo",
+"Text": "Bem-vindo ao Sistema!",
+"Position": { "X": 20, "Y": 20 },
+"Width": 300,
+"Height": 30,
+"FontSize": 14,
+"FontStyle": ["Bold"]
+},
+{
+"Type": "TPanel",
+"Name": "PanelMenu",
+"Caption": "Menu",
+"Position": { "X": 20, "Y": 70 },
+"Width": 180,
+"Height": 300,
+"Children": [
+{
+"Type": "TSpeedButton",
+"Name": "BtnCadastroPessoa",
+"Caption": "Cadastro de Pessoa",
+"Position": { "X": 10, "Y": 10 },
+"Width": 160,
+"Height": 30
+},
+{
+"Type": "TSpeedButton",
+"Name": "BtnCadastroProduto",
+"Caption": "Cadastro de Produto",
+"Position": { "X": 10, "Y": 50 },
+"Width": 160,
+"Height": 30
+},
+{
+"Type": "TSpeedButton",
+"Name": "BtnRelatorios",
+"Caption": "Relatórios",
+"Position": { "X": 10, "Y": 90 },
+"Width": 160,
+"Height": 30
+},
+{
+"Type": "TSpeedButton",
+"Name": "BtnSair",
+"Caption": "Sair",
+"Position": { "X": 10, "Y": 130 },
+"Width": 160,
+"Height": 30
+}
+]
+},
+{
+"Type": "TPanel",
+"Name": "PanelConteudo",
+"Caption": "Conteúdo",
+"Position": { "X": 220, "Y": 70 },
+"Width": 500,
+"Height": 400,
+"Children": [
+{
+"Type": "TLabel",
+"Name": "LblInfo",
+"Text": "Selecione uma opção no menu.",
+"Position": { "X": 20, "Y": 20 },
+"Width": 300,
+"Height": 20
+},
+{
+"Type": "TButton",
+"Name": "BtnAtualizarDados",
+"Caption": "Atualizar Dados",
+"Position": { "X": 20, "Y": 60 },
+"Width": 140,
+"Height": 30
+},
+{
+"Type": "TButton",
+"Name": "BtnVerLogs",
+"Caption": "Ver Logs",
+"Position": { "X": 180, "Y": 60 },
+"Width": 140,
+"Height": 30
+}
+]
+}
+]
+}
+]
+}

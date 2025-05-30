@@ -57,9 +57,9 @@ var
 begin
   Result := nil;
   Ctrl:= nil;
-  CtrlType := Json.GetValue<string>('Type', '');
-  if CtrlType = '' then Exit;
+  if Trim(Json.GetValue<string>('Type', '')).Equals('') then Exit;
 
+  CtrlType := Json.GetValue<string>('Type');
   Ctrl:= SetControlType(AOwner, Ctrl, Json.GetValue<string>('Type', ''));
   Ctrl.Name := Json.GetValue<string>('Name', '');
   Ctrl.Visible:= False;
@@ -161,13 +161,13 @@ var
   ControlJson: TJSONObject;
 begin
   Form:= TForm.Create(AOwner);
-  Form.Name:= Json.GetValue<string>('Name');
-  Form.Caption:= Json.GetValue<string>('Caption','');
-  Form.Height:= Json.GetValue<integer>('Height',500);
-  Form.Width:= Json.GetValue<integer>('Width',500);
   Form.Position:= poDefault;
   Form.FormStyle:= fsMDIChild;
   Form.BorderStyle:= bsSizeable;
+  Form.Name:= Json.GetValue<string>('Name');
+  Form.Caption:= Json.GetValue<string>('Caption','');
+  Form.Height:= Json.GetValue<integer>('Height',650);
+  Form.Width:= Json.GetValue<integer>('Width',500);
   Form.OnClick:= ControlClick;
   if Json.TryGetValue<TJSONArray>('Children', ControlsArray) then
   begin

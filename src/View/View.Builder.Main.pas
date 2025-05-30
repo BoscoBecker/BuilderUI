@@ -1,4 +1,4 @@
-﻿unit View.Builder.Main;
+unit View.Builder.Main;
 
 interface
 
@@ -69,6 +69,12 @@ type
     Panel5: TPanel;
     PanelExecuteJson: TPanel;
     ActivityIndicatorExplorer: TActivityIndicator;
+    Panel8: TPanel;
+    Image3: TImage;
+    Image5: TImage;
+    Image7: TImage;
+    Image8: TImage;
+    Image17: TImage;
     procedure FormCreate(Sender: TObject);
     procedure ImgSettingsClick(Sender: TObject);
     procedure Image9Click(Sender: TObject);
@@ -135,9 +141,9 @@ begin
   StatusBarBottom.Panels[2].Text := 'Tamanho: 0x0';              // Panel 2 - Tamanho do componente
   StatusBarBottom.Panels[3].Text := 'Date: ' +FormatDateTime('YYYY/MM/DD',now());             // Panel 3 - Snap/Grid
   StatusBarBottom.Panels[4].Text := 'Zoom: 100%';                // Panel 4 - Zoom
-  StatusBarBottom.Panels[5].Text := 'Modo: Seleção';             // Panel 5 - Modo atual
+  StatusBarBottom.Panels[5].Text := 'Modo: Sele��o';             // Panel 5 - Modo atual
   StatusBarBottom.Panels[6].Text := 'Projeto: (vazio)';          // Panel 6 - Nome do Projeto
-  StatusBarBottom.Panels[7].Text := '';                          // Panel 7 - Mensagens temporárias
+  StatusBarBottom.Panels[7].Text := '';                          // Panel 7 - Mensagens tempor�rias
 end;
 
 procedure TFormBuilderMain.ButtonRunJsonClick(Sender: TObject);
@@ -600,7 +606,7 @@ begin
       if TJSONHelper.ValidateJSON(AJSON, ErrorMsg) and TJSONHelper.HasDuplicateNames(AJSON, Duplicates) then
       begin
         if String(Duplicates) = '' then
-        LabelInfoJson.Caption:= 'Invalid json'
+        LabelInfoJson.Caption:= '        Invalid json'
         else
           LabelInfoJson.Caption:= 'Invalid json, Has Duplicate Names : ' + string.Join(', ', Duplicates);
         ImageOk.Visible:= False;
@@ -612,7 +618,7 @@ begin
         Exit;
       end else
       begin
-        LabelInfoJson.Caption:= 'Is Valid json';
+        LabelInfoJson.Caption:= '      Valid json';
         ImageOk.Visible:= True;
         ImageErro.Visible:= False;
         PanelExecuteJson.Font.Color:= clblack;
@@ -632,6 +638,3 @@ end;
 
 end.
 
-(************* Copied from AI Chat Window ***************
-Tudo bem? 😁 O que posso fazer por você hoje?
-*)

@@ -100,13 +100,14 @@ object FormBuilderMain: TFormBuilderMain
       Left = 0
       Top = 33
       Width = 242
-      Height = 574
+      Height = 553
       Align = alClient
       BorderStyle = bsNone
       ScrollBars = ssVertical
       TabOrder = 0
+      WantTabs = True
       OnChange = MemoChange
-      ExplicitHeight = 486
+      ExplicitHeight = 542
     end
     object Panel13: TPanel
       Left = 0
@@ -154,18 +155,17 @@ object FormBuilderMain: TFormBuilderMain
     end
     object Panel4: TPanel
       Left = 0
-      Top = 648
+      Top = 652
       Width = 242
-      Height = 41
+      Height = 37
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitTop = 560
       object LabelInfoJson: TLabel
         Left = 0
         Top = 0
         Width = 242
-        Height = 41
+        Height = 37
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowFrame
@@ -174,24 +174,22 @@ object FormBuilderMain: TFormBuilderMain
         Font.Style = []
         ParentFont = False
         WordWrap = True
-        ExplicitWidth = 3
-        ExplicitHeight = 15
+        ExplicitHeight = 40
       end
     end
     object Panel5: TPanel
       Left = 0
-      Top = 607
+      Top = 616
       Width = 242
-      Height = 41
+      Height = 36
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 3
-      ExplicitTop = 519
       object ImageErro: TImage
         Left = 158
         Top = 0
         Width = 42
-        Height = 41
+        Height = 36
         Align = alRight
         Center = True
         Picture.Data = {
@@ -218,7 +216,7 @@ object FormBuilderMain: TFormBuilderMain
         Left = 200
         Top = 0
         Width = 42
-        Height = 41
+        Height = 36
         Align = alRight
         Center = True
         Picture.Data = {
@@ -239,18 +237,170 @@ object FormBuilderMain: TFormBuilderMain
         Left = 0
         Top = 0
         Width = 185
-        Height = 41
+        Height = 36
         Cursor = crHandPoint
         Align = alLeft
         BevelOuter = bvNone
         Caption = 'Execute Json'
         Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
         Padding.Left = 5
         Padding.Top = 5
         Padding.Right = 5
         Padding.Bottom = 5
+        ParentFont = False
         TabOrder = 0
         OnClick = PanelExecuteJsonClick
+        ExplicitHeight = 41
+      end
+    end
+    object Panel8: TPanel
+      Left = 0
+      Top = 586
+      Width = 242
+      Height = 30
+      Align = alBottom
+      BevelOuter = bvNone
+      TabOrder = 4
+      ExplicitTop = 585
+      object Image3: TImage
+        Left = 208
+        Top = 0
+        Width = 34
+        Height = 30
+        Hint = 'Copy'
+        Align = alRight
+        Center = True
+        ParentShowHint = False
+        Picture.Data = {
+          0954506E67496D61676589504E470D0A1A0A0000000D49484452000000140000
+          001408060000008D891D0D000000017352474200AECE1CE90000000473424954
+          080808087C086488000001424944415478DACD933D4B034110862785954D2C62
+          25E45209210109D6F9208D9D85602B76969A3FA0016B4D9D46497E846982DA07
+          898DA55EC0CA2A16A96CF20EF72E2E4BEE7653080E3C70BBB7F7DCECCC6E4ED2
+          2302453ECF402C01914B99BF0727CEDC05E8AD2BDC003BE07DC5DA0938061FA1
+          4295B5C11638037567ED103C802F300E11EE829A352E1053C385F56E4C71A6B0
+          0A2ABE1AFD4BE1BEFC1E9F09B7AFC2326870FE193C850855D6B1C62330A0B00F
+          0EAD772510FB844764C8CCDE9C2D37C11EB8052DCD3254786DC9DC1AAAF43154
+          58649D06194DC98373496ED1FC4FBBBC2DC94DF1C58F243766E1136A9498E926
+          C77A340EC00DC72A79019FD63711B803A7E27479555C814B53F094354D49694A
+          96508B3E05AF606E65A64DD363D30B159ABF9BE8F227C28CCD4DF9A6D8BB6593
+          49C4E7A993A1998F898408D78A25CB534D151CA37F970000000049454E44AE42
+          6082}
+        ShowHint = True
+        ExplicitLeft = 201
+        ExplicitTop = 5
+        ExplicitHeight = 34
+      end
+      object Image5: TImage
+        Left = 0
+        Top = 0
+        Width = 34
+        Height = 30
+        Hint = 'Load json'
+        Align = alLeft
+        Center = True
+        ParentShowHint = False
+        Picture.Data = {
+          0954506E67496D61676589504E470D0A1A0A0000000D49484452000000140000
+          001408060000008D891D0D000000017352474200AECE1CE90000000473424954
+          080808087C086488000000FA4944415478DA6364A03260C422C60AC48238D4F3
+          03F16D520C0419E609C4DC38D46B01B12110FB106BA02E10EBE07100C8C01A20
+          DE8ACB5074039D81588C08031970194AAA81F240DC8EC4C73094540341C00E88
+          4D1810E1BC12881B2931101DBC02E2BD43DF4050F87C858A8902F16B3431181B
+          44DF27C6C06020BE0EC4B140FC0D88673040621764480B940D120365825C520C
+          4C07E2C50C90E4820C4031FD10EA42A20C8C03E23350AF8212F26120FE0F3500
+          246682A487A08175500D95405C04150779B30DEAFD16A8CB0F415D5A41D75826
+          543860035780F8322E0309155FE80014EBDB81F8372E0361860A1269E07B64C3
+          701948110000854B3A153A1A4DE00000000049454E44AE426082}
+        ShowHint = True
+        ExplicitLeft = 6
+        ExplicitTop = -6
+      end
+      object Image7: TImage
+        Left = 34
+        Top = 0
+        Width = 34
+        Height = 30
+        Hint = 'Save json'
+        Align = alLeft
+        Center = True
+        ParentShowHint = False
+        Picture.Data = {
+          0954506E67496D61676589504E470D0A1A0A0000000D49484452000000140000
+          001408060000008D891D0D000000017352474200AECE1CE90000000473424954
+          080808087C0864880000012E4944415478DA6364A03260C422C60AC48238D4F3
+          03F16D520C0419E609C4DC38D46B01B12110FB106BA02E10EBE07100C8C01A20
+          DE8ACB5074039D81588C08031970194AAA81F240DC8EC4C73094540341C00E88
+          4D1810E1BC12881B2931101DBC02E2BD840C04B9E021D48BC6403C1388E3A09A
+          77007130101F82AA5B488C81200DD7A111D002C42250CD207006883380782D03
+          249272493150136AD01934752083B8A0AE24E8C21020F600E2255097810C5F01
+          C42E40CC091507892D82060B13105F05E20BB80C748086DD760648AE790D7521
+          2876BF41D930578362BA1F8879182039E802A5B18C9CD01D81F8C0A03210E45D
+          5B0648720281025004915A3820832206445282818BA4165FC8401EEA5D64B581
+          A416B0E8C01788E740D91341DE662452233EB000880DA0980100C9A339452A50
+          EC060000000049454E44AE426082}
+        ShowHint = True
+        ExplicitLeft = 201
+        ExplicitTop = 5
+        ExplicitHeight = 34
+      end
+      object Image8: TImage
+        Left = 68
+        Top = 0
+        Width = 34
+        Height = 30
+        Hint = 'Clear '
+        Align = alLeft
+        Center = True
+        ParentShowHint = False
+        Picture.Data = {
+          0954506E67496D61676589504E470D0A1A0A0000000D49484452000000140000
+          001408060000008D891D0D000000017352474200AECE1CE90000000473424954
+          080808087C0864880000011C4944415478DA6364200E0840E90F841432126158
+          0010AF87B203817803A506820CF087B237422DA0C8C003406C0F651F04628751
+          038932500188E3A1EC0820D680B26F00F10A287B21103F20C640900BF613E172
+          107084FA00AF81C85E24043082009B81D381588F48032F0171263E0359813884
+          48C360600D10FFC665A00C10DB9268E061207E82CB400B205644E26B01B10810
+          1FC263E07D203E81CBC010A8B7612003884581B8198F81BFA1DEC63010544479
+          A2296E87BA3015498C1B88DB80B805885F43C5B633408B36640375815807CDC0
+          65503A0A2D186A807831D42010B802C497D10D1403626724BE3CD485E806DA41
+          83E23A5250EC05E257D8C2901B8A41801FC9C520177C84B2E5805816CA3E0AC4
+          5FA1186BA4500C0036AD3515D9A1006D0000000049454E44AE426082}
+        ShowHint = True
+        ExplicitLeft = 43
+        ExplicitTop = -4
+        ExplicitHeight = 28
+      end
+      object Image17: TImage
+        Left = 174
+        Top = 0
+        Width = 34
+        Height = 30
+        Hint = 'High size'
+        Align = alRight
+        Center = True
+        ParentShowHint = False
+        Picture.Data = {
+          0954506E67496D61676589504E470D0A1A0A0000000D49484452000000140000
+          001408060000008D891D0D000000017352474200AECE1CE90000000473424954
+          080808087C086488000000EB4944415478DAB5940111C2300C45330773C07030
+          1CCC0148280E4001430138A0533250000E280E8602488E00254B773DAECBDDBF
+          5B6FE94BD2A6C920B16563030BD41C95F3DAA11AE16350136FDDB05F0F48B0AB
+          127486BAF077856AC5FF8E7D9C04AE503BE17C4395BCE91DF42832245BA3F612
+          58A3364A5621A34067FEDEF2FE2030F6B21E43403AEC03975944021D97BF4459
+          2D93929DBA4860CEC13FC7337A1F2607565CB28BDC4FE5D2199E34A081D7A510
+          6C1A097430702935246E1B1F98BCB1FD9208EE3FBD16FA7DAA3E3D72FA6738DC
+          E1DBBFEAF85AC0EFF8B2C2C7880C2D04C657124B0E7C026D4E3815DC6B6C2700
+          00000049454E44AE426082}
+        ShowHint = True
+        ExplicitLeft = 201
+        ExplicitTop = 5
+        ExplicitHeight = 34
       end
     end
   end

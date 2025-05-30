@@ -56,11 +56,12 @@ The project follows a clean architecture pattern with the following main compone
 
 ```json
 {
-  "Name": "MainForm",
+  "Type": "TForm",
+  "Name": "FrmainForm",
   "Caption": "Sample Form",
   "Width": 800,
   "Height": 600,
-  "Controls": [
+  "Children": [
     {
       "Type": "TPanel",
       "Name": "Panel1",
@@ -74,6 +75,15 @@ The project follows a clean architecture pattern with the following main compone
   ]
 }
 ```
+
+# ✨ IA ✨- Is recomended use IA to create rich UI 
+
+## <img src="https://github.com/user-attachments/assets/90bb6587-0a4d-49fb-a261-8d2f6a422dc7" alt="Descrição" width="30" href="#"/> **GPT Json** Chat from **ChatGPT**
+
+Por Widenex
+Advanced JSON converter and formatter. Transforms data into a structured, precise JSON format. Also exports JSON in a CSV file.
+
+Chat: https://chatgpt.com/share/683a0f55-77a4-800d-a505-5b1a76501b6d enjoy
 
 ## Getting Started
 

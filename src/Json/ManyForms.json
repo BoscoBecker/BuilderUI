@@ -51,7 +51,7 @@
         {
           "Name": "BtnSalvarCliente",
           "Type": "TButton",
-          "Text": "Salvar",
+          "Caption": "Salvar",
           "Position": { "X": 5, "Y": 180 },
           "Width": 140,
           "Height": 40
@@ -59,7 +59,7 @@
         {
           "Name": "BtnCancelarCliente",
           "Type": "TButton",
-          "Text": "Cancelar",
+          "Caption": "Cancelar",
           "Position": { "X": 165, "Y": 180 },
           "Width": 140,
           "Height": 40
@@ -125,7 +125,7 @@
         {
           "Name": "EdtCidade",
           "Type": "TEdit",
-          "Text": "",
+          "Caption": "",
           "Position": { "X": 5, "Y": 190 },
           "Width": 150,
           "Height": 30
@@ -133,12 +133,45 @@
         {
           "Name": "BtnSalvarEndereco",
           "Type": "TButton",
-          "Text": "Salvar Endereço",
+          "Caption": "Salvar Endereço",
           "Position": { "X": 5, "Y": 240 },
           "Width": 150,
           "Height": 40
         }
       ]
+    },
+	{
+  "Type": "TForm",
+  "Name": "FrmButtons",
+  "Caption":"Listagem de buttons",
+  "Align": "Client",
+  "Children": [      
+    {
+      "Type": "TButton",
+      "Name": "BtnLimparCampos",
+      "Caption": "Limpar Campos",
+      "Position": { "X": 5, "Y": 100 },
+      "Width": 150,
+      "Height": 40
+    },
+    {
+      "Type": "TButton",
+      "Name": "BtnGerarPDF",
+      "Caption": "Exportar PDF",
+      "Position": { "X": 165, "Y": 150 },
+      "Width": 140,
+      "Height": 40
+    },
+    {
+      "Type": "TButton",
+      "Name": "BtnEnviarEmail",
+      "Caption": "Enviar por E-mail",
+      "Position": { "X": 5, "Y": 200 },
+      "Width": 120,
+      "Height":120
     }
+  ]
+}
+
   ]
 }

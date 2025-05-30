@@ -1,4 +1,4 @@
-unit View.Builder.Main;
+﻿unit View.Builder.Main;
 
 interface
 
@@ -135,9 +135,9 @@ begin
   StatusBarBottom.Panels[2].Text := 'Tamanho: 0x0';              // Panel 2 - Tamanho do componente
   StatusBarBottom.Panels[3].Text := 'Date: ' +FormatDateTime('YYYY/MM/DD',now());             // Panel 3 - Snap/Grid
   StatusBarBottom.Panels[4].Text := 'Zoom: 100%';                // Panel 4 - Zoom
-  StatusBarBottom.Panels[5].Text := 'Modo: Sele��o';             // Panel 5 - Modo atual
+  StatusBarBottom.Panels[5].Text := 'Modo: Seleção';             // Panel 5 - Modo atual
   StatusBarBottom.Panels[6].Text := 'Projeto: (vazio)';          // Panel 6 - Nome do Projeto
-  StatusBarBottom.Panels[7].Text := '';                          // Panel 7 - Mensagens tempor�rias
+  StatusBarBottom.Panels[7].Text := '';                          // Panel 7 - Mensagens temporárias
 end;
 
 procedure TFormBuilderMain.ButtonRunJsonClick(Sender: TObject);
@@ -632,3 +632,6 @@ end;
 
 end.
 
+(************* Copied from AI Chat Window ***************
+Tudo bem? 😁 O que posso fazer por você hoje?
+*)

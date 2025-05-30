@@ -67,24 +67,15 @@ begin
   Ctrl.Parent := AParent;
   SetControlEvent(Ctrl);
   SetControlCaption(Ctrl, Json.GetValue<string>('Caption',CaptionStr));
-  SetControlWidth(Ctrl,Json.GetValue<string>('Width','0'));
-  SetControlHeight(Ctrl,Json.GetValue<string>('Height', '0'));
+  SetControlCaption(Ctrl, Json.GetValue<string>('Text',CaptionStr));
+  SetControlWidth(Ctrl,Json.GetValue<string>('Width','100'));
+  SetControlHeight(Ctrl,Json.GetValue<string>('Height', '50'));
 
    if Json.TryGetValue<TJSONObject>('Position', PositionObj) then
    begin
      Ctrl.Left := Round(PositionObj.GetValue<Single>('X', -100));
      Ctrl.Top := Round(PositionObj.GetValue<Single>('Y', -100));
    end;
-
-  if Ctrl is TEdit then
-    TEdit(Ctrl).Text := Json.GetValue<string>('Text',TextStr);
-  if Ctrl is TMemo then
-    TMemo(Ctrl).Text := Json.GetValue<string>('Text',TextStr);
-  if Ctrl is TLabel then
-    TLabel(Ctrl).Caption := Json.GetValue<string>('Text',TextStr);
-
-  if Ctrl is TButton then
-    TButton(Ctrl).Caption := Json.GetValue<string>('Text',TextStr);
 
    if Ctrl is TPanel then
    begin
@@ -172,6 +163,8 @@ begin
   Form:= TForm.Create(AOwner);
   Form.Name:= Json.GetValue<string>('Name');
   Form.Caption:= Json.GetValue<string>('Caption','');
+  Form.Height:= Json.GetValue<integer>('Height',500);
+  Form.Width:= Json.GetValue<integer>('Width',500);
   Form.Position:= poDefault;
   Form.FormStyle:= fsMDIChild;
   Form.BorderStyle:= bsSizeable;
@@ -288,16 +281,27 @@ end;
 
 procedure TUIBuilderEngine.SetControlCaption(Ctrl: TControl; const Text: string);
 begin
+  if Trim(Text) = '' then Exit;
+
   if Ctrl is TLabel then
     TLabel(Ctrl).Caption := Text
   else if Ctrl is TButton then
     TButton(Ctrl).Caption := Text
+  else if Ctrl is TBitBtn then
+    TBitBtn(Ctrl).Caption := Text
+  else if Ctrl is TSpeedButton then
+    TSpeedButton(Ctrl).Caption :=  Text
   else if Ctrl is TRadioButton then
-    TRadioButton(Ctrl).Caption := Text
+    TRadioButton(Ctrl).Caption :=  Text
   else if Ctrl is TCheckBox then
     TCheckBox(Ctrl).Caption := Text
   else if Ctrl is TRadioGroup then
-    TRadioGroup(Ctrl).Caption := Text;
+    TRadioGroup(Ctrl).Caption :=  Text
+  else  if Ctrl is TEdit then
+    TEdit(Ctrl).Text := Text
+  else if Ctrl is TMemo then
+    TMemo(Ctrl).Text := Text;
+
 end;
 function TUIBuilderEngine.SetControlColor(const Text: string): TColor;
 var

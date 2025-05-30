@@ -1,0 +1,65 @@
+{
+  "Forms": [
+    {
+      "Type": "TForm",
+      "Name": "FrmPrincipal",
+      "Caption": "Sistema de Cadastro",
+      "Width": 800,
+      "Height": 600,
+      "Children": [
+        {
+          "Type": "TPageControl",
+          "Name": "PgCtrlPrincipal",
+          "Align": "Client",
+          "Children": [
+            {
+              "Type": "TTabSheet",
+              "Name": "TabCliente",
+              "Caption": "Cliente",
+              "Children": [
+                {
+                  "Type": "TLabel",
+                  "Name": "LblNome",
+                  "Caption": "Nome:",
+                  "Position": {"X": 10, "Y": 10}
+                },
+                {
+                  "Type": "TEdit",
+                  "Name": "EdtNome",
+                  "Position": {"X": 100, "Y": 10},
+                  "Width": 200
+                }
+              ]
+            },
+            {
+              "Type": "TTabSheet",
+              "Name": "TabEndereco",
+              "Caption": "Endereço",
+              "Children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Type": "TForm",
+      "Name": "FrmLogin",
+      "Caption": "Login",
+      "BorderStyle": "bsDialog",
+      "Position": "poScreenCenter",
+      "Children": [
+        {
+          "Type": "TEdit",
+          "Name": "EdtUsuario",
+          "Position": {"X": 10, "Y": 10}
+        },
+        {
+          "Type": "TEdit",
+          "Name": "EdtSenha",
+          "PasswordChar": "*",
+          "Position": {"X": 10, "Y": 40}
+        }
+      ]
+    }
+  ]
+}

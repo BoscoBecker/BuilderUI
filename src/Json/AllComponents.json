@@ -1,6 +1,7 @@
 {
   "Type": "TForm",
   "Name": "FrmCadastroCliente",
+  "Caption":"Cadastro de Cliente",
   "Align": "Client",
   "Children": [
     {

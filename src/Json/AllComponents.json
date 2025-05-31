@@ -1,7 +1,7 @@
 {
   "Type": "TForm",
   "Name": "FrmCadastroCliente",
-  "Caption":"Cadastro de Cliente",
+  "Caption": "Customer Registration",
   "Align": "Client",
   "Children": [
     {
@@ -46,7 +46,7 @@
       "Type": "TCheckBox",
       "Name": "CheckBox3",
       "Position": { "X": 250, "Y": 90 },
-      "Caption": "Checkbox extra"
+      "Caption": "Extra checkbox"
     },
     {
       "Type": "TRadioButton",
@@ -75,7 +75,7 @@
       "Position": { "X": 500, "Y": 140 },
       "Width": 200,
       "Height": 100,
-	  "Color":"#0000FF",
+      "Color": "#0000FF",
       "Caption": "Second Panel"
     },
     {

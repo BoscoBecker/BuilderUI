@@ -17,6 +17,8 @@ type
 
 type
   TTreeViewAdapter = class
+  private
+
   public
     class var FTreeView: TTreeView;
     class var FCreatedForm: TObjectList<TForm>;
@@ -74,13 +76,18 @@ begin
   if not Assigned(FTreeView) or not Assigned(Sender) then Exit;
   if Sender is TForm then
   begin
+    TForm(Sender).FormStyle:= fsMDIForm;
+    TForm(Sender).Visible:= False;
+    TForm(Sender).Left:= -5000;
+    TForm(Sender).Top:=  -5000;
+
     for var I := FTreeView.Items.Count - 1 downto 0 do
     begin
       Node := FTreeView.Items[I];
       if Node.Data = Sender then
       begin
         FTreeView.Items.Delete(Node);
-        Action := caFree;
+        Action := TCloseAction.caHide;
       end;
     end;
   end;

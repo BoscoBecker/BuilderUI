@@ -15,13 +15,11 @@ uses
 
 type
   TUIBuilderEngine = class(TInterfacedObject, IUIBuilder)
-  private
-    FDragControl: TControl;
-    FDragOffset: TPoint;
   public
     function CreateFormFromJson(AOwner: TComponent; Json: TJSONObject): TForm;
     function CreateControlFromJson(AOwner: TComponent; AParent: TWinControl; Json: TJSONObject): TControl;
     procedure ControlClick(Sender: TObject);
+    procedure ControlDblClickImage(Sender: TObject);
     procedure SetControlEvent(Ctrl: TControl);
     procedure SetControlCaption(Ctrl: TControl; const Text: string);
     procedure SetControlWidth(Ctrl: TControl; const Text: string);
@@ -31,17 +29,35 @@ type
     function SetControlAling(const Text: string): TAlign;
     function SetControlBevelCut(const Text: string): TBevelCut;
     function SetControlBorderStyle(const Text: string): TBorderStyle;
+    destructor Destroy; override;
   end;
 
 implementation
 
 procedure TUIBuilderEngine.ControlClick(Sender: TObject);
+
 begin
   if Length(TControl(Sender).Name) <=0 then Exit;
-  if TTreeViewAdapter.FTreeView.CanFocus then
-    TTreeViewAdapter.FTreeView.SetFocus;
-  TTreeViewAdapter.FindComponentInTreeView(TControl(Sender).Name);
-  TTreeViewAdapter.FTreeView.OnClick(Sender);
+  try
+    if TTreeViewAdapter.FTreeView.CanFocus then
+      TTreeViewAdapter.FTreeView.SetFocus;
+    TTreeViewAdapter.FindComponentInTreeView(TControl(Sender).Name);
+    TTreeViewAdapter.FTreeView.OnClick(Sender);
+  except
+  end;
+end;
+
+procedure TUIBuilderEngine.ControlDblClickImage(Sender: TObject);
+begin
+  var Open := TOpenDialog.Create(nil);
+  try
+    Open.Filter:= 'Images (*.PNG)|*.JPG|*.JPEG';
+    if Open.Execute(Application.Handle) then
+      if not String(open.FileName).trim.Equals('') then
+        TImage(Sender).Picture.LoadFromFile(open.FileName);
+  finally
+    Open.Free;
+  end;
 end;
 
 function TUIBuilderEngine.CreateControlFromJson(AOwner: TComponent; AParent: TWinControl; Json: TJSONObject): TControl;
@@ -53,7 +69,7 @@ var
   ChildJson: TJSONObject;
   FontStyles: TJSONArray;
   Style: TFontStyles;
-  ColorStr,CaptionStr, TextStr: string;
+  ColorStr,CaptionStr: string;
 begin
   Result := nil;
   Ctrl:= nil;
@@ -142,6 +158,28 @@ begin
     TLabel(Ctrl).Font.Style := Style;
   end;
 
+  if (Ctrl is TPageControl) and Json.TryGetValue<TJSONArray>('Pages', ChildrenArr) then
+  begin
+    for var I := 0 to ChildrenArr.Count - 1 do
+    begin
+      ChildJson := ChildrenArr.Items[I] as TJSONObject;
+      var Tab := TTabSheet.Create(AOwner);
+      Tab.PageControl := TPageControl(Ctrl);
+      Tab.Caption := ChildJson.GetValue<string>('Caption', 'Sem Título');
+      Tab.Name := Format('%s_Tab%d', [Ctrl.Name, I]); // opcional
+      Tab.Parent := TPageControl(Ctrl); // garante visualização
+
+      // Agora adiciona os filhos da página (Children)
+      var TabChildren: TJSONArray;
+      if ChildJson.TryGetValue<TJSONArray>('Children', TabChildren) then
+      begin
+        for var J := 0 to TabChildren.Count - 1 do
+          CreateControlFromJson(AOwner, Tab, TabChildren.Items[J] as TJSONObject);
+      end;
+    end;
+  end;
+
+
   if Json.TryGetValue<TJSONArray>('Children', ChildrenArr) or Json.TryGetValue<TJSONArray>('children', ChildrenArr) then
   begin
     for var I := 0 to ChildrenArr.Count - 1 do
@@ -182,6 +220,11 @@ begin
   Result:= Form;
 end;
 
+
+destructor TUIBuilderEngine.Destroy;
+begin
+  inherited;
+end;
 
 procedure TUIBuilderEngine.SetControlEvent(Ctrl: TControl);
 begin
@@ -235,10 +278,15 @@ begin
   else
   if Ctrl is TRadioButton then
     TRadioButton(Ctrl).OnClick := ControlClick
-  else if Ctrl is TGroupBox then
+  else
+  if Ctrl is TGroupBox then
     TGroupBox(Ctrl).OnClick := ControlClick
-  else if Ctrl is TShape then
-    TShape(Ctrl).OnMouseEnter := ControlClick;
+  else
+  if Ctrl is TShape then
+    TShape(Ctrl).OnMouseEnter := ControlClick
+  else
+  if Ctrl is TImage then
+    TImage(Ctrl).OnDblClick := ControlDblClickImage
 end;
 
 
@@ -301,7 +349,6 @@ begin
     TEdit(Ctrl).Text := Text
   else if Ctrl is TMemo then
     TMemo(Ctrl).Text := Text;
-
 end;
 function TUIBuilderEngine.SetControlColor(const Text: string): TColor;
 var
@@ -309,7 +356,7 @@ var
   ColorValue: integer;
 begin
   ColorStr:= Text;
-  if (Text <> '') then
+  if (not Text.Trim.Equals('') ) then
   begin
     if (ColorStr[1] = '#') then
     begin
@@ -382,7 +429,13 @@ begin
   else if CtrlType = 'TRadioButton' then
     Ctrl := TRadioButton.Create(AOwner)
   else if CtrlType = 'TGroupBox' then
-    Ctrl := TGroupBox.Create(AOwner);
+    Ctrl := TGroupBox.Create(AOwner)
+  else if CtrlType = 'TPageControl' then
+    Ctrl := TPageControl.Create(AOwner)
+  else if CtrlType = 'TTabSheet' then
+    Ctrl := TTabSheet.Create(AOwner)
+  else if CtrlType = 'TImage' then
+    Ctrl := TImage.Create(AOwner);
   Result:= Ctrl;
 end;
 

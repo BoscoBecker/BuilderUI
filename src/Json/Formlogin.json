@@ -3,7 +3,7 @@
     {
       "Type": "TForm",
       "Name": "FrmPrincipal",
-      "Caption": "Sistema de Cadastro",
+      "Caption": "Registration System",
       "Width": 800,
       "Height": 600,
       "Children": [
@@ -15,12 +15,12 @@
             {
               "Type": "TTabSheet",
               "Name": "TabCliente",
-              "Caption": "Cliente",
+              "Caption": "Customer",
               "Children": [
                 {
                   "Type": "TLabel",
                   "Name": "LblNome",
-                  "Caption": "Nome:",
+                  "Caption": "Name:",
                   "Position": {"X": 10, "Y": 10}
                 },
                 {
@@ -34,7 +34,7 @@
             {
               "Type": "TTabSheet",
               "Name": "TabEndereco",
-              "Caption": "Endereço",
+              "Caption": "Address",
               "Children": []
             }
           ]

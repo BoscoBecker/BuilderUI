@@ -1,0 +1,965 @@
+{
+  "Forms": [
+    {
+      "Name": "FrmLogin",
+      "Caption": "System Login",
+      "Type": "TForm",
+      "Align": "Client",
+      "Children": [
+        {
+          "Name": "LblTituloLogin",
+          "Type": "TLabel",
+          "Text": "Welcome",
+          "Position": { "X": 100, "Y": 20 },
+          "Width": 200,
+          "Height": 30,
+          "FontSize": 16,
+          "FontStyle": ["Bold"]
+        },
+        {
+          "Name": "LblUsuario",
+          "Type": "TLabel",
+          "Text": "User:",
+          "Position": { "X": 60, "Y": 70 },
+          "Width": 80,
+          "Height": 20
+        },
+        {
+          "Name": "EdtUsuario",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 140, "Y": 65 },
+          "Width": 180,
+          "Height": 30
+        },
+        {
+          "Name": "LblSenha",
+          "Type": "TLabel",
+          "Text": "Password:",
+          "Position": { "X": 60, "Y": 110 },
+          "Width": 80,
+          "Height": 20
+        },
+        {
+          "Name": "EdtSenha",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 140, "Y": 105 },
+          "Width": 180,
+          "Height": 30,
+          "PasswordChar": "*"
+        },
+        {
+          "Name": "BtnEntrar",
+          "Type": "TButton",
+          "Caption": "Login",
+          "Position": { "X": 140, "Y": 160 },
+          "Width": 90,
+          "Height": 35
+        },
+        {
+          "Name": "BtnEsqueciSenha",
+          "Type": "TButton",
+          "Caption": "Forgot Password",
+          "Position": { "X": 230, "Y": 160 },
+          "Width": 90,
+          "Height": 35
+        }
+      ]
+    },
+    {
+      "Name": "FrmMain",
+      "Caption": "Main System",
+      "Type": "TForm",
+      "Align": "Client",
+      "Children": [
+        {
+          "Name": "LblBemVindo",
+          "Type": "TLabel",
+          "Text": "Welcome to the System",
+          "Position": { "X": 10, "Y": 10 },
+          "Width": 300,
+          "Height": 30,
+          "FontSize": 16,
+          "FontStyle": ["Bold"]
+        },
+        {
+          "Name": "BtnCadastroCliente",
+          "Type": "TButton",
+          "Caption": "Customer Registration",
+          "Position": { "X": 10, "Y": 60 },
+          "Width": 180,
+          "Height": 40
+        },
+        {
+          "Name": "BtnCadastroFornecedor",
+          "Type": "TButton",
+          "Caption": "Supplier Registration",
+          "Position": { "X": 200, "Y": 60 },
+          "Width": 180,
+          "Height": 40
+        },
+        {
+          "Name": "BtnCadastroPessoa",
+          "Type": "TButton",
+          "Caption": "People Registration",
+          "Position": { "X": 390, "Y": 60 },
+          "Width": 180,
+          "Height": 40
+        },
+        {
+          "Name": "BtnGerarRelatorio",
+          "Type": "TButton",
+          "Caption": "Report Generator",
+          "Position": { "X": 10, "Y": 110 },
+          "Width": 180,
+          "Height": 40
+        },
+        {
+          "Name": "BtnSair",
+          "Type": "TButton",
+          "Caption": "Exit",
+          "Position": { "X": 10, "Y": 170 },
+          "Width": 100,
+          "Height": 35
+        }
+      ]
+    },
+    {
+      "Name": "FrmReportGenerator",
+      "Caption": "Report Generator",
+      "Type": "TForm",
+      "Align": "Client",
+      "Children": [
+        {
+          "Name": "LblTituloRelatorio",
+          "Type": "TLabel",
+          "Text": "Report Generator",
+          "Position": { "X": 10, "Y": 10 },
+          "Width": 300,
+          "Height": 30,
+          "FontSize": 16,
+          "FontStyle": ["Bold"]
+        },
+        {
+          "Name": "LblTipoRelatorio",
+          "Type": "TLabel",
+          "Text": "Report Type:",
+          "Position": { "X": 10, "Y": 60 },
+          "Width": 120,
+          "Height": 20
+        },
+        {
+          "Name": "CmbTipoRelatorio",
+          "Type": "TComboBox",
+          "Items": ["Customers", "Suppliers", "Sales", "Products"],
+          "Position": { "X": 140, "Y": 55 },
+          "Width": 200,
+          "Height": 30
+        },
+        {
+          "Name": "LblPeriodo",
+          "Type": "TLabel",
+          "Text": "Period:",
+          "Position": { "X": 10, "Y": 100 },
+          "Width": 80,
+          "Height": 20
+        },
+        {
+          "Name": "DtInicial",
+          "Type": "TDateTimePicker",
+          "Position": { "X": 90, "Y": 95 },
+          "Width": 120,
+          "Height": 30
+        },
+        {
+          "Name": "LblAte",
+          "Type": "TLabel",
+          "Text": "to",
+          "Position": { "X": 220, "Y": 100 },
+          "Width": 30,
+          "Height": 20
+        },
+        {
+          "Name": "DtFinal",
+          "Type": "TDateTimePicker",
+          "Position": { "X": 260, "Y": 95 },
+          "Width": 120,
+          "Height": 30
+        },
+        {
+          "Name": "LblFiltro",
+          "Type": "TLabel",
+          "Text": "Filter:",
+          "Position": { "X": 10, "Y": 140 },
+          "Width": 80,
+          "Height": 20
+        },
+        {
+          "Name": "EdtFiltro",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 90, "Y": 135 },
+          "Width": 290,
+          "Height": 30
+        },
+        {
+          "Name": "BtnGerar",
+          "Type": "TButton",
+          "Caption": "Generate Report",
+          "Position": { "X": 10, "Y": 180 },
+          "Width": 150,
+          "Height": 40
+        },
+        {
+          "Name": "BtnExportarPDF",
+          "Type": "TButton",
+          "Caption": "Export PDF",
+          "Position": { "X": 170, "Y": 180 },
+          "Width": 120,
+          "Height": 40
+        },
+        {
+          "Name": "BtnEnviarEmail",
+          "Type": "TButton",
+          "Caption": "Send by Email",
+          "Position": { "X": 300, "Y": 180 },
+          "Width": 120,
+          "Height": 40
+        },
+        {
+          "Name": "GridRelatorio",
+          "Type": "TStringGrid",
+          "Position": { "X": 10, "Y": 240 },
+          "Width": 600,
+          "Height": 200
+        }
+      ]
+    },
+    {
+      "Name": "FrmPeopleRegistration",
+      "Caption": "People Registration",
+      "Type": "TForm",
+      "Align": "Client",
+      "Children": [
+        {
+          "Name": "LblTituloPessoa",
+          "Type": "TLabel",
+          "Text": "People Registration",
+          "Position": { "X": 10, "Y": 10 },
+          "Width": 300,
+          "Height": 30,
+          "FontSize": 16,
+          "FontStyle": ["Bold"]
+        },
+        {
+          "Name": "LblTipoPessoa",
+          "Type": "TLabel",
+          "Text": "Type:",
+          "Position": { "X": 10, "Y": 50 },
+          "Width": 60,
+          "Height": 20
+        },
+        {
+          "Name": "CmbTipoPessoa",
+          "Type": "TComboBox",
+          "Items": ["Individual", "Company"],
+          "Position": { "X": 80, "Y": 45 },
+          "Width": 120,
+          "Height": 30
+        },
+        {
+          "Name": "LblNomeRazao",
+          "Type": "TLabel",
+          "Text": "Name/Company Name:",
+          "Position": { "X": 10, "Y": 90 },
+          "Width": 130,
+          "Height": 20
+        },
+        {
+          "Name": "EdtNomeRazao",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 150, "Y": 85 },
+          "Width": 300,
+          "Height": 30
+        },
+        {
+          "Name": "LblApelidoFantasia",
+          "Type": "TLabel",
+          "Text": "Nickname/Trade Name:",
+          "Position": { "X": 10, "Y": 130 },
+          "Width": 120,
+          "Height": 20
+        },
+        {
+          "Name": "EdtApelidoFantasia",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 150, "Y": 125 },
+          "Width": 300,
+          "Height": 30
+        },
+        {
+          "Name": "LblDocumento",
+          "Type": "TLabel",
+          "Text": "CPF/CNPJ:",
+          "Position": { "X": 10, "Y": 170 },
+          "Width": 80,
+          "Height": 20
+        },
+        {
+          "Name": "EdtDocumento",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 100, "Y": 165 },
+          "Width": 150,
+          "Height": 30
+        },
+        {
+          "Name": "LblRGIE",
+          "Type": "TLabel",
+          "Text": "RG/State Registration:",
+          "Position": { "X": 270, "Y": 170 },
+          "Width": 60,
+          "Height": 20
+        },
+        {
+          "Name": "EdtRGIE",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 340, "Y": 165 },
+          "Width": 110,
+          "Height": 30
+        },
+        {
+          "Name": "LblTelefone",
+          "Type": "TLabel",
+          "Text": "Phone:",
+          "Position": { "X": 10, "Y": 210 },
+          "Width": 80,
+          "Height": 20
+        },
+        {
+          "Name": "EdtTelefone",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 100, "Y": 205 },
+          "Width": 150,
+          "Height": 30
+        },
+        {
+          "Name": "LblEmail",
+          "Type": "TLabel",
+          "Text": "Email:",
+          "Position": { "X": 270, "Y": 210 },
+          "Width": 60,
+          "Height": 20
+        },
+        {
+          "Name": "EdtEmail",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 340, "Y": 205 },
+          "Width": 200,
+          "Height": 30
+        },
+        {
+          "Name": "LblEndereco",
+          "Type": "TLabel",
+          "Text": "Address:",
+          "Position": { "X": 10, "Y": 250 },
+          "Width": 80,
+          "Height": 20
+        },
+        {
+          "Name": "EdtEndereco",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 100, "Y": 245 },
+          "Width": 440,
+          "Height": 30
+        },
+        {
+          "Name": "LblNumero",
+          "Type": "TLabel",
+          "Text": "Number:",
+          "Position": { "X": 10, "Y": 290 },
+          "Width": 60,
+          "Height": 20
+        },
+        {
+          "Name": "EdtNumero",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 80, "Y": 285 },
+          "Width": 80,
+          "Height": 30
+        },
+        {
+          "Name": "LblBairro",
+          "Type": "TLabel",
+          "Text": "District:",
+          "Position": { "X": 180, "Y": 290 },
+          "Width": 60,
+          "Height": 20
+        },
+        {
+          "Name": "EdtBairro",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 240, "Y": 285 },
+          "Width": 140,
+          "Height": 30
+        },
+        {
+          "Name": "LblCidade",
+          "Type": "TLabel",
+          "Text": "City:",
+          "Position": { "X": 400, "Y": 290 },
+          "Width": 60,
+          "Height": 20
+        },
+        {
+          "Name": "EdtCidade",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 460, "Y": 285 },
+          "Width": 140,
+          "Height": 30
+        },
+        {
+          "Name": "LblUF",
+          "Type": "TLabel",
+          "Text": "State:",
+          "Position": { "X": 10, "Y": 330 },
+          "Width": 30,
+          "Height": 20
+        },
+        {
+          "Name": "EdtUF",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 50, "Y": 325 },
+          "Width": 40,
+          "Height": 30
+        },
+        {
+          "Name": "LblCEP",
+          "Type": "TLabel",
+          "Text": "ZIP Code:",
+          "Position": { "X": 110, "Y": 330 },
+          "Width": 40,
+          "Height": 20
+        },
+        {
+          "Name": "EdtCEP",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 150, "Y": 325 },
+          "Width": 100,
+          "Height": 30
+        },
+        {
+          "Name": "LblTipoCadastro",
+          "Type": "TLabel",
+          "Text": "Registration Type:",
+          "Position": { "X": 270, "Y": 330 },
+          "Width": 110,
+          "Height": 20
+        },
+        {
+          "Name": "CmbTipoCadastro",
+          "Type": "TComboBox",
+          "Items": ["Customer", "Supplier", "Both"],
+          "Position": { "X": 390, "Y": 325 },
+          "Width": 120,
+          "Height": 30
+        },
+        {
+          "Name": "BtnSalvarPessoa",
+          "Type": "TButton",
+          "Caption": "Save",
+          "Position": { "X": 10, "Y": 380 },
+          "Width": 120,
+          "Height": 40
+        },
+        {
+          "Name": "BtnCancelarPessoa",
+          "Type": "TButton",
+          "Caption": "Cancel",
+          "Position": { "X": 140, "Y": 380 },
+          "Width": 120,
+          "Height": 40
+        }
+      ]
+    },
+    {
+      "Name": "FrmSupplierRegistration",
+      "Caption": "Supplier Registration",
+      "Type": "TForm",
+      "Align": "Client",
+      "Children": [
+        {
+          "Name": "LblTituloFornecedor",
+          "Type": "TLabel",
+          "Text": "Supplier Registration",
+          "Position": { "X": 10, "Y": 10 },
+          "Width": 300,
+          "Height": 30,
+          "FontSize": 16,
+          "FontStyle": ["Bold"]
+        },
+        {
+          "Name": "LblRazaoSocial",
+          "Type": "TLabel",
+          "Text": "Company Name:",
+          "Position": { "X": 10, "Y": 50 },
+          "Width": 100,
+          "Height": 20
+        },
+        {
+          "Name": "EdtRazaoSocial",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 120, "Y": 45 },
+          "Width": 300,
+          "Height": 30
+        },
+        {
+          "Name": "LblNomeFantasia",
+          "Type": "TLabel",
+          "Text": "Trade Name:",
+          "Position": { "X": 10, "Y": 90 },
+          "Width": 100,
+          "Height": 20
+        },
+        {
+          "Name": "EdtNomeFantasia",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 120, "Y": 85 },
+          "Width": 300,
+          "Height": 30
+        },
+        {
+          "Name": "LblCNPJ",
+          "Type": "TLabel",
+          "Text": "CNPJ:",
+          "Position": { "X": 10, "Y": 130 },
+          "Width": 60,
+          "Height": 20
+        },
+        {
+          "Name": "EdtCNPJ",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 80, "Y": 125 },
+          "Width": 150,
+          "Height": 30
+        },
+        {
+          "Name": "LblIE",
+          "Type": "TLabel",
+          "Text": "State Registration:",
+          "Position": { "X": 250, "Y": 130 },
+          "Width": 120,
+          "Height": 20
+        },
+        {
+          "Name": "EdtIE",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 380, "Y": 125 },
+          "Width": 120,
+          "Height": 30
+        },
+        {
+          "Name": "LblContato",
+          "Type": "TLabel",
+          "Text": "Contact:",
+          "Position": { "X": 10, "Y": 170 },
+          "Width": 60,
+          "Height": 20
+        },
+        {
+          "Name": "EdtContato",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 80, "Y": 165 },
+          "Width": 200,
+          "Height": 30
+        },
+        {
+          "Name": "LblTelefone",
+          "Type": "TLabel",
+          "Text": "Phone:",
+          "Position": { "X": 300, "Y": 170 },
+          "Width": 60,
+          "Height": 20
+        },
+        {
+          "Name": "EdtTelefone",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 370, "Y": 165 },
+          "Width": 130,
+          "Height": 30
+        },
+        {
+          "Name": "LblEmail",
+          "Type": "TLabel",
+          "Text": "Email:",
+          "Position": { "X": 10, "Y": 210 },
+          "Width": 60,
+          "Height": 20
+        },
+        {
+          "Name": "EdtEmail",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 80, "Y": 205 },
+          "Width": 250,
+          "Height": 30
+        },
+        {
+          "Name": "LblEndereco",
+          "Type": "TLabel",
+          "Text": "Address:",
+          "Position": { "X": 10, "Y": 250 },
+          "Width": 80,
+          "Height": 20
+        },
+        {
+          "Name": "EdtEndereco",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 100, "Y": 245 },
+          "Width": 400,
+          "Height": 30
+        },
+        {
+          "Name": "LblNumero",
+          "Type": "TLabel",
+          "Text": "Number:",
+          "Position": { "X": 10, "Y": 290 },
+          "Width": 60,
+          "Height": 20
+        },
+        {
+          "Name": "EdtNumero",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 80, "Y": 285 },
+          "Width": 80,
+          "Height": 30
+        },
+        {
+          "Name": "LblBairro",
+          "Type": "TLabel",
+          "Text": "District:",
+          "Position": { "X": 180, "Y": 290 },
+          "Width": 60,
+          "Height": 20
+        },
+        {
+          "Name": "EdtBairro",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 240, "Y": 285 },
+          "Width": 140,
+          "Height": 30
+        },
+        {
+          "Name": "LblCidade",
+          "Type": "TLabel",
+          "Text": "City:",
+          "Position": { "X": 400, "Y": 290 },
+          "Width": 60,
+          "Height": 20
+        },
+        {
+          "Name": "EdtCidade",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 460, "Y": 285 },
+          "Width": 140,
+          "Height": 30
+        },
+        {
+          "Name": "LblUF",
+          "Type": "TLabel",
+          "Text": "State:",
+          "Position": { "X": 10, "Y": 330 },
+          "Width": 30,
+          "Height": 20
+        },
+        {
+          "Name": "EdtUF",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 50, "Y": 325 },
+          "Width": 40,
+          "Height": 30
+        },
+        {
+          "Name": "LblCEP",
+          "Type": "TLabel",
+          "Text": "ZIP Code:",
+          "Position": { "X": 110, "Y": 330 },
+          "Width": 40,
+          "Height": 20
+        },
+        {
+          "Name": "EdtCEP",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 150, "Y": 325 },
+          "Width": 100,
+          "Height": 30
+        },
+        {
+          "Name": "BtnSalvarFornecedor",
+          "Type": "TButton",
+          "Caption": "Save",
+          "Position": { "X": 10, "Y": 380 },
+          "Width": 120,
+          "Height": 40
+        },
+        {
+          "Name": "BtnCancelarFornecedor",
+          "Type": "TButton",
+          "Caption": "Cancel",
+          "Position": { "X": 140, "Y": 380 },
+          "Width": 120,
+          "Height": 40
+        }
+      ]
+    },
+    {
+      "Name": "FrmCustomerRegistration",
+      "Caption": "Customer Registration",
+      "Type": "TForm",
+      "Align": "Client",
+      "Children": [
+        {
+          "Name": "LblTituloCliente",
+          "Type": "TLabel",
+          "Text": "Customer Registration",
+          "Position": { "X": 10, "Y": 10 },
+          "Width": 300,
+          "Height": 30,
+          "FontSize": 16,
+          "FontStyle": ["Bold"]
+        },
+        {
+          "Name": "LblNomeCompleto",
+          "Type": "TLabel",
+          "Text": "Full Name:",
+          "Position": { "X": 10, "Y": 50 },
+          "Width": 120,
+          "Height": 20
+        },
+        {
+          "Name": "EdtNomeCompleto",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 140, "Y": 45 },
+          "Width": 300,
+          "Height": 30
+        },
+        {
+          "Name": "LblCPF",
+          "Type": "TLabel",
+          "Text": "CPF:",
+          "Position": { "X": 10, "Y": 90 },
+          "Width": 40,
+          "Height": 20
+        },
+        {
+          "Name": "EdtCPF",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 60, "Y": 85 },
+          "Width": 120,
+          "Height": 30
+        },
+        {
+          "Name": "LblRG",
+          "Type": "TLabel",
+          "Text": "RG:",
+          "Position": { "X": 200, "Y": 90 },
+          "Width": 30,
+          "Height": 20
+        },
+        {
+          "Name": "EdtRG",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 240, "Y": 85 },
+          "Width": 120,
+          "Height": 30
+        },
+        {
+          "Name": "LblDataNascimento",
+          "Type": "TLabel",
+          "Text": "Birth Date:",
+          "Position": { "X": 10, "Y": 130 },
+          "Width": 130,
+          "Height": 20
+        },
+        {
+          "Name": "DtNascimento",
+          "Type": "TDateTimePicker",
+          "Position": { "X": 150, "Y": 125 },
+          "Width": 120,
+          "Height": 30
+        },
+        {
+          "Name": "LblTelefone",
+          "Type": "TLabel",
+          "Text": "Phone:",
+          "Position": { "X": 10, "Y": 170 },
+          "Width": 80,
+          "Height": 20
+        },
+        {
+          "Name": "EdtTelefone",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 100, "Y": 165 },
+          "Width": 120,
+          "Height": 30
+        },
+        {
+          "Name": "LblEmail",
+          "Type": "TLabel",
+          "Text": "Email:",
+          "Position": { "X": 240, "Y": 170 },
+          "Width": 60,
+          "Height": 20
+        },
+        {
+          "Name": "EdtEmail",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 310, "Y": 165 },
+          "Width": 200,
+          "Height": 30
+        },
+        {
+          "Name": "LblEndereco",
+          "Type": "TLabel",
+          "Text": "Address:",
+          "Position": { "X": 10, "Y": 210 },
+          "Width": 80,
+          "Height": 20
+        },
+        {
+          "Name": "EdtEndereco",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 100, "Y": 205 },
+          "Width": 410,
+          "Height": 30
+        },
+        {
+          "Name": "LblNumero",
+          "Type": "TLabel",
+          "Text": "Number:",
+          "Position": { "X": 10, "Y": 250 },
+          "Width": 60,
+          "Height": 20
+        },
+        {
+          "Name": "EdtNumero",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 80, "Y": 245 },
+          "Width": 80,
+          "Height": 30
+        },
+        {
+          "Name": "LblBairro",
+          "Type": "TLabel",
+          "Text": "District:",
+          "Position": { "X": 180, "Y": 250 },
+          "Width": 60,
+          "Height": 20
+        },
+        {
+          "Name": "EdtBairro",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 240, "Y": 245 },
+          "Width": 140,
+          "Height": 30
+        },
+        {
+          "Name": "LblCidade",
+          "Type": "TLabel",
+          "Text": "City:",
+          "Position": { "X": 400, "Y": 250 },
+          "Width": 60,
+          "Height": 20
+        },
+        {
+          "Name": "EdtCidade",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 460, "Y": 245 },
+          "Width": 140,
+          "Height": 30
+        },
+        {
+          "Name": "LblUF",
+          "Type": "TLabel",
+          "Text": "State:",
+          "Position": { "X": 10, "Y": 290 },
+          "Width": 30,
+          "Height": 20
+        },
+        {
+          "Name": "EdtUF",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 50, "Y": 285 },
+          "Width": 40,
+          "Height": 30
+        },
+        {
+          "Name": "LblCEP",
+          "Type": "TLabel",
+          "Text": "ZIP Code:",
+          "Position": { "X": 110, "Y": 290 },
+          "Width": 40,
+          "Height": 20
+        },
+        {
+          "Name": "EdtCEP",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 150, "Y": 285 },
+          "Width": 100,
+          "Height": 30
+        },
+        {
+          "Name": "BtnSalvarCliente",
+          "Type": "TButton",
+          "Caption": "Save",
+          "Position": { "X": 10, "Y": 340 },
+          "Width": 120,
+          "Height": 40
+        },
+        {
+          "Name": "BtnCancelarCliente",
+          "Type": "TButton",
+          "Caption": "Cancel",
+          "Position": { "X": 140, "Y": 340 },
+          "Width": 120,
+          "Height": 40
+        }
+      ]
+    }
+  ]
+}

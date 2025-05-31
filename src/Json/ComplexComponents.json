@@ -1,6 +1,8 @@
 {
   "Type": "TForm",
-  "Name": "FrmCadastroCliente",
+  "Name": "FrmComplexComponents", 
+  "Caption": "Complex Components Example",
+  "Width": 800,
   "Align": "Client",
   "Children": [
     {

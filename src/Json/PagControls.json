@@ -1,0 +1,398 @@
+{
+  "Forms": [
+    {
+      "Name": "FrmUpdateProduct",
+      "Caption": "Product Update - Edit",
+      "Type": "TForm",
+      "Align": "Client",
+      "Children": [
+        {
+          "Name": "LblTitle",
+          "Type": "TLabel",
+          "Text": "Generic Product Description",
+          "Position": { "X": 10, "Y": 10 },
+          "Width": 400,
+          "Height": 30,
+          "FontSize": 16,
+          "FontStyle": ["Bold"]
+        },
+        {
+          "Name": "TabControlMain",
+          "Type": "TPageControl",
+          "Position": { "X": 10, "Y": 50 },
+          "Width": 750,
+          "Height": 380,
+          "Pages": [
+            {
+              "Caption": "Registrations",
+              "Children": [
+                {
+                  "Name": "LblCode",
+                  "Type": "TLabel",
+                  "Text": "Code",
+                  "Position": { "X": 10, "Y": 20 },
+                  "Width": 60,
+                  "Height": 20
+                },
+                {
+                  "Name": "EdtCode",
+                  "Type": "TEdit",
+                  "Text": "00004800001",
+                  "Position": { "X": 10, "Y": 40 },
+                  "Width": 120,
+                  "Height": 28,
+                  "ReadOnly": true
+                },
+                {
+                  "Name": "LblDescription",
+                  "Type": "TLabel",
+                  "Text": "Description*",
+                  "Position": { "X": 150, "Y": 20 },
+                  "Width": 80,
+                  "Height": 20
+                },
+                {
+                  "Name": "EdtDescription",
+                  "Type": "TEdit",
+                  "Text": "VL LED 50",
+                  "Position": { "X": 150, "Y": 40 },
+                  "Width": 220,
+                  "Height": 28
+                },
+                {
+                  "Name": "LblType",
+                  "Type": "TLabel",
+                  "Text": "Type*",
+                  "Position": { "X": 400, "Y": 20 },
+                  "Width": 60,
+                  "Height": 20
+                },
+                {
+                  "Name": "EdtType",
+                  "Type": "TEdit",
+                  "Text": "PI",
+                  "Position": { "X": 400, "Y": 40 },
+                  "Width": 60,
+                  "Height": 28
+                },
+                {
+                  "Name": "BtnTypeSearch",
+                  "Type": "TSpeedButton",
+                  "Caption": "...",
+                  "Position": { "X": 465, "Y": 40 },
+                  "Width": 28,
+                  "Height": 28
+                },
+                {
+                  "Name": "LblDefaultWarehouse",
+                  "Type": "TLabel",
+                  "Text": "Default Warehouse*",
+                  "Position": { "X": 10, "Y": 80 },
+                  "Width": 100,
+                  "Height": 20
+                },
+                {
+                  "Name": "EdtDefaultWarehouse",
+                  "Type": "TEdit",
+                  "Text": "01",
+                  "Position": { "X": 10, "Y": 100 },
+                  "Width": 60,
+                  "Height": 28
+                },
+                {
+                  "Name": "BtnDefaultWarehouseSearch",
+                  "Type": "TSpeedButton",
+                  "Caption": "...",
+                  "Position": { "X": 75, "Y": 100 },
+                  "Width": 28,
+                  "Height": 28
+                },
+                {
+                  "Name": "LblGroup",
+                  "Type": "TLabel",
+                  "Text": "Group",
+                  "Position": { "X": 150, "Y": 80 },
+                  "Width": 60,
+                  "Height": 20
+                },
+                {
+                  "Name": "EdtGroup",
+                  "Type": "TEdit",
+                  "Text": "",
+                  "Position": { "X": 150, "Y": 100 },
+                  "Width": 120,
+                  "Height": 28
+                },
+                {
+                  "Name": "BtnGroupSearch",
+                  "Type": "TSpeedButton",
+                  "Caption": "...",
+                  "Position": { "X": 275, "Y": 100 },
+                  "Width": 28,
+                  "Height": 28
+                },
+                {
+                  "Name": "LblDefaultTE",
+                  "Type": "TLabel",
+                  "Text": "Default TE",
+                  "Position": { "X": 320, "Y": 80 },
+                  "Width": 70,
+                  "Height": 20
+                },
+                {
+                  "Name": "EdtDefaultTE",
+                  "Type": "TEdit",
+                  "Text": "",
+                  "Position": { "X": 320, "Y": 100 },
+                  "Width": 80,
+                  "Height": 28
+                },
+                {
+                  "Name": "BtnDefaultTESearch",
+                  "Type": "TSpeedButton",
+                  "Caption": "...",
+                  "Position": { "X": 405, "Y": 100 },
+                  "Width": 28,
+                  "Height": 28
+                },
+                {
+                  "Name": "LblConversionFactor",
+                  "Type": "TLabel",
+                  "Text": "Conversion Factor",
+                  "Position": { "X": 10, "Y": 140 },
+                  "Width": 80,
+                  "Height": 20
+                },
+                {
+                  "Name": "EdtConversionFactor",
+                  "Type": "TEdit",
+                  "Text": "0.90",
+                  "Position": { "X": 10, "Y": 160 },
+                  "Width": 80,
+                  "Height": 28
+                },
+                {
+                  "Name": "LblConversionType",
+                  "Type": "TLabel",
+                  "Text": "Conversion Type",
+                  "Position": { "X": 110, "Y": 140 },
+                  "Width": 100,
+                  "Height": 20
+                },
+                {
+                  "Name": "CmbConversionType",
+                  "Type": "TComboBox",
+                  "Items": ["M - Multiplier", "D - Divider"],
+                  "Position": { "X": 110, "Y": 160 },
+                  "Width": 150,
+                  "Height": 28
+                },
+                {
+                  "Name": "LblStandardCost",
+                  "Type": "TLabel",
+                  "Text": "Standard Cost",
+                  "Position": { "X": 280, "Y": 140 },
+                  "Width": 90,
+                  "Height": 20
+                },
+                {
+                  "Name": "EdtStandardCost",
+                  "Type": "TEdit",
+                  "Text": "0.00",
+                  "Position": { "X": 280, "Y": 160 },
+                  "Width": 80,
+                  "Height": 28
+                },
+                {
+                  "Name": "LblSalePrice",
+                  "Type": "TLabel",
+                  "Text": "Sale Price",
+                  "Position": { "X": 10, "Y": 200 },
+                  "Width": 90,
+                  "Height": 20,
+                  "FontStyle": ["Bold"]
+                },
+                {
+                  "Name": "EdtSalePrice",
+                  "Type": "TEdit",
+                  "Text": "2,700.00",
+                  "Position": { "X": 10, "Y": 220 },
+                  "Width": 120,
+                  "Height": 28,
+                  "FontStyle": ["Bold"]
+                },
+                {
+                  "Name": "LblNetCost",
+                  "Type": "TLabel",
+                  "Text": "Net Cost",
+                  "Position": { "X": 150, "Y": 200 },
+                  "Width": 90,
+                  "Height": 20
+                },
+                {
+                  "Name": "EdtNetCost",
+                  "Type": "TEdit",
+                  "Text": "40.0000",
+                  "Position": { "X": 150, "Y": 220 },
+                  "Width": 100,
+                  "Height": 28
+                },
+                {
+                  "Name": "LblURCalculation",
+                  "Type": "TLabel",
+                  "Text": "UR Calculation",
+                  "Position": { "X": 270, "Y": 200 },
+                  "Width": 70,
+                  "Height": 20
+                },
+                {
+                  "Name": "EdtURCalculation",
+                  "Type": "TEdit",
+                  "Text": "",
+                  "Position": { "X": 270, "Y": 220 },
+                  "Width": 80,
+                  "Height": 28
+                },
+                {
+                  "Name": "LblURPrice",
+                  "Type": "TLabel",
+                  "Text": "UR Price",
+                  "Position": { "X": 370, "Y": 200 },
+                  "Width": 70,
+                  "Height": 20
+                },
+                {
+                  "Name": "EdtURPrice",
+                  "Type": "TEdit",
+                  "Text": "0.00",
+                  "Position": { "X": 370, "Y": 220 },
+                  "Width": 80,
+                  "Height": 28
+                },
+                {
+                  "Name": "LblAccountingAccount",
+                  "Type": "TLabel",
+                  "Text": "Accounting Account",
+                  "Position": { "X": 470, "Y": 200 },
+                  "Width": 80,
+                  "Height": 20
+                },
+                {
+                  "Name": "EdtAccountingAccount",
+                  "Type": "TEdit",
+                  "Text": "",
+                  "Position": { "X": 470, "Y": 220 },
+                  "Width": 120,
+                  "Height": 28
+                },
+                {
+                  "Name": "LblFamily",
+                  "Type": "TLabel",
+                  "Text": "Family",
+                  "Position": { "X": 10, "Y": 260 },
+                  "Width": 60,
+                  "Height": 20
+                },
+                {
+                  "Name": "EdtFamily",
+                  "Type": "TEdit",
+                  "Text": "",
+                  "Position": { "X": 10, "Y": 280 },
+                  "Width": 120,
+                  "Height": 28
+                },
+                {
+                  "Name": "LblTrace",
+                  "Type": "TLabel",
+                  "Text": "Trace",
+                  "Position": { "X": 150, "Y": 260 },
+                  "Width": 60,
+                  "Height": 20
+                },
+                {
+                  "Name": "CmbTrace",
+                  "Type": "TComboBox",
+                  "Items": ["Does not use", "Uses"],
+                  "Position": { "X": 150, "Y": 280 },
+                  "Width": 120,
+                  "Height": 28
+                },
+                {
+                  "Name": "LblBaseStuff",
+                  "Type": "TLabel",
+                  "Text": "Base Stuff.",
+                  "Position": { "X": 290, "Y": 260 },
+                  "Width": 80,
+                  "Height": 20
+                },
+                {
+                  "Name": "EdtBaseStuff",
+                  "Type": "TEdit",
+                  "Text": "",
+                  "Position": { "X": 290, "Y": 280 },
+                  "Width": 80,
+                  "Height": 28
+                },
+                {
+                  "Name": "LblURRevision",
+                  "Type": "TLabel",
+                  "Text": "UR Revision",
+                  "Position": { "X": 390, "Y": 260 },
+                  "Width": 80,
+                  "Height": 20
+                },
+                {
+                  "Name": "EdtURRevision",
+                  "Type": "TEdit",
+                  "Text": "",
+                  "Position": { "X": 390, "Y": 280 },
+                  "Width": 80,
+                  "Height": 28
+                },
+                {
+                  "Name": "LblRevisionDate",
+                  "Type": "TLabel",
+                  "Text": "Revision Date",
+                  "Position": { "X": 490, "Y": 260 },
+                  "Width": 90,
+                  "Height": 20
+                },
+                {
+                  "Name": "DtRevisionDate",
+                  "Type": "TDateTimePicker",
+                  "Position": { "X": 490, "Y": 280 },
+                  "Width": 120,
+                  "Height": 28
+                }
+              ]
+            },
+            {
+              "Caption": "Taxes",
+              "Children": []
+            },
+            {
+              "Caption": "MRP/Supplies",
+              "Children": []
+            },
+            {
+              "Caption": "Distribution Center",
+              "Children": []
+            },
+            {
+              "Caption": "Service",
+              "Children": []
+            },
+            {
+              "Caption": "Copyright Defects",
+              "Children": []
+            },
+            {
+              "Caption": "Warranty",
+              "Children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

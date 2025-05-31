@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.Generics.Collections, System.JSON, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Buttons, Vcl.ComCtrls, Vcl.StdCtrls,
-  Vcl.ExtCtrls, System.Threading, StrUtils,
+  Vcl.ExtCtrls, System.Threading, StrUtils,Clipbrd,
 
   Adapter.TreeViewAdapter,
   Builder.UIBuilderEngine,
@@ -75,6 +75,7 @@ type
     Image7: TImage;
     Image8: TImage;
     Image17: TImage;
+    Splitter3: TSplitter;
     procedure FormCreate(Sender: TObject);
     procedure ImgSettingsClick(Sender: TObject);
     procedure Image9Click(Sender: TObject);
@@ -103,6 +104,10 @@ type
     procedure PanelExecuteJsonClick(Sender: TObject);
     procedure Image6Click(Sender: TObject);
     procedure Image13Click(Sender: TObject);
+    procedure Image8Click(Sender: TObject);
+    procedure Image5Click(Sender: TObject);
+    procedure Image7Click(Sender: TObject);
+    procedure Image3Click(Sender: TObject);
   private
     FBuilderBackground: TBuilderBackground;
     FCreatedForms: TObjectList<TForm>;
@@ -113,6 +118,7 @@ type
     FSelecionadoShape: TShape;
     FDragging: Boolean;
     FDragOffset: TPoint;
+    FPaint: ISkPaint;
     procedure RenderJson(const Atext : string);
     procedure CloseFormsCreated;
     procedure ValidateAndProcessJSON(const AJSON: string);
@@ -155,12 +161,18 @@ procedure TFormBuilderMain.CloseFormsCreated;
 begin
   for var I := FCreatedForms.Count - 1 downto 0 do
   begin
-    FCreatedForms[i].Close;
-    Application.ProcessMessages;
+    if Assigned(FCreatedForms[I]) then
+    begin
+      try
+        FCreatedForms[I].Close;
+        FCreatedForms[I].Free;
+        FCreatedForms.Remove(FCreatedForms[I]);
+      except
+        FCreatedForms.Remove(FCreatedForms[I]);
+      end;
+    end;
   end;
-
-  if not FCreatedForms.IsEmpty then
-    FCreatedForms.Clear;
+  FCreatedForms.Clear;
 end;
 
 destructor TFormBuilderMain.Destroy;
@@ -170,6 +182,7 @@ begin
   FJsonStructure.Free;
   FCreatedForms.Free;
   FBuilder.Free;
+  FPaint:= nil;
   inherited;
 end;
 
@@ -222,12 +235,54 @@ begin
   PanelSearchComponents.Visible:= not PanelSearchComponents.Visible;
 end;
 
+procedure TFormBuilderMain.Image3Click(Sender: TObject);
+begin
+  Clipboard.AsText:= Memo.Lines.Text;
+end;
+
+procedure TFormBuilderMain.Image5Click(Sender: TObject);
+begin
+  var OpenJson := TOpenDialog.Create(nil);
+  OpenJson.Filter:= 'JSON Files (*.json)|*.json';
+  try
+    if OpenJson.Execute(Application.Handle) then
+    begin
+      if not String(OpenJson.FileName).Trim.Equals('') then
+        Memo.Lines.LoadFromFile(OpenJson.FileName);
+    end;
+  finally
+    OpenJson.Free;
+  end;
+end;
+
 procedure TFormBuilderMain.Image6Click(Sender: TObject);
 begin
   if Screen.Cursor = crHandPoint then
     Screen.Cursor:= crDefault
   else
     Screen.Cursor:= crHandPoint;
+end;
+
+procedure TFormBuilderMain.Image7Click(Sender: TObject);
+begin
+  var SaveJSON:= TSaveDialog.Create(nil);
+  SaveJSON.Filter:= 'JSON Files (*.json)|*.json';
+  try
+    if SaveJSON.Execute(Application.Handle) then
+    begin
+      if not String(SaveJSON.FileName).Trim.Equals('') then
+      begin
+        Memo.Lines.SaveToFile(SaveJSON.FileName);
+      end;
+    end;
+  finally
+    SaveJSON.Free;
+  end;
+end;
+
+procedure TFormBuilderMain.Image8Click(Sender: TObject);
+begin
+  Memo.Lines.Clear;
 end;
 
 procedure TFormBuilderMain.ImageRenderClick(Sender: TObject);
@@ -329,14 +384,14 @@ procedure TFormBuilderMain.RenderJson(const Atext : string);
 begin
   if (Atext.Trim.Equals('')) or (Length(Atext) < 10) then Exit;
 
-  var JsonText := Atext;
-  FJsonStructure := TJSONObject.ParseJSONValue(JsonText) as TJSONObject;
   var MyForm: TForm;
   var FormsArray: TJSONArray;
   var FormJson: TJSONObject;
   var Node: TTreeNode;
   CloseFormsCreated;
   TreeView1.Items.Clear;
+
+  FJsonStructure := TJSONObject.ParseJSONValue(Atext) as TJSONObject;
   FTreeViewAdapter.FTreeView := TreeView1;
   FTreeViewAdapter.FCreatedForm := FCreatedForms;
   try
@@ -390,8 +445,7 @@ begin
   end;
 end;
 
-procedure TFormBuilderMain.SetBuilderBackground(
-  const Value: TBuilderBackground);
+procedure TFormBuilderMain.SetBuilderBackground(const Value: TBuilderBackground);
 begin
   FBuilderBackground := Value;
 end;
@@ -405,8 +459,6 @@ end;
 procedure TFormBuilderMain.SkPaintBackgroundDraw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
 const
   GridSize = 20;
-var
-  Paint: ISkPaint;
 begin
   case FBuilderBackground of
     bClear: ACanvas.Clear(TAlphaColors.White);
@@ -414,20 +466,20 @@ begin
     begin
       ACanvas.DrawRect(RectF(100, 100, 300, 200), TSkPaint.Create(TSkPaintStyle.Stroke));
       ACanvas.Clear($FFF5F5F5);
-      Paint := TSkPaint.Create;
-      Paint.Style := TSkPaintStyle.Stroke;
-      Paint.Color := $FFDDDDDD;
-      Paint.StrokeWidth := 1;
+      FPaint := TSkPaint.Create;
+      FPaint.Style := TSkPaintStyle.Stroke;
+      FPaint.Color := $FFDDDDDD;
+      FPaint.StrokeWidth := 1;
       var X := ADest.Left;
       while X <= ADest.Right do
       begin
-        ACanvas.DrawLine(X, ADest.Top, X, ADest.Bottom, Paint);
+        ACanvas.DrawLine(X, ADest.Top, X, ADest.Bottom, FPaint);
         X := X + GridSize;
       end;
       var Y := ADest.Top;
       while Y <= ADest.Bottom do
       begin
-        ACanvas.DrawLine(ADest.Left, Y, ADest.Right, Y, Paint);
+        ACanvas.DrawLine(ADest.Left, Y, ADest.Right, Y, FPaint);
         Y := Y + GridSize;
       end;
     end;
@@ -442,10 +494,10 @@ end;
 
 procedure TFormBuilderMain.SkPaintBox1Draw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
 begin
-  var LPaint: ISkPaint := TSkPaint.Create;
-      LPaint.Shader := TSkShader.MakeGradientSweep(ADest.CenterPoint,
-      [$FFF2F2F2, $FFCCCCCC, $FF999999, $FFCCCCCC, $FFF2F2F2]);
-      ACanvas.DrawPaint(LPaint);
+   FPaint:= TSkPaint.Create;
+   FPaint.Shader := TSkShader.MakeGradientSweep(ADest.CenterPoint,
+   [$FFF2F2F2, $FFCCCCCC, $FF999999, $FFCCCCCC, $FFF2F2F2]);
+   ACanvas.DrawPaint(FPaint);
 end;
 
 procedure TFormBuilderMain.SkPaintBox1MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -455,19 +507,16 @@ begin
 end;
 
 procedure TFormBuilderMain.SkPaintBox1MouseMove(Sender: TObject; Shift: TShiftState; X,  Y: Integer);
-var
-  NewLeft, NewTop: Integer;
 begin
   if FDragging then
   begin
-    NewLeft := SkPaintBox1.Left + Round(X) - FDragOffset.X;
-    NewTop := SkPaintBox1.Top + Round(Y) - FDragOffset.Y;
+    var NewLeft := SkPaintBox1.Left + Round(X) - FDragOffset.X;
+    var NewTop := SkPaintBox1.Top + Round(Y) - FDragOffset.Y;
     SkPaintBox1.SetBounds(NewLeft, NewTop, SkPaintBox1.Width, SkPaintBox1.Height);
   end;
 end;
 
-procedure TFormBuilderMain.SkPaintBox1MouseUp(Sender: TObject; Button: TMouseButton;
-  Shift: TShiftState; X, Y: Integer);
+procedure TFormBuilderMain.SkPaintBox1MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   FDragging := False;
 end;
@@ -595,44 +644,45 @@ end;
 
 procedure TFormBuilderMain.ValidateAndProcessJSON(const AJSON: string);
 begin
-  TThread.CreateAnonymousThread(
-  procedure
-  var
-    ErrorMsg: string;
-    Duplicates: TArray<string>;
+  var ErrorMsg: string;
+  var DupForms: TArray<TDuplicateInfo>;
+
+  LabelInfoJson.Caption:= 'Analizing json ... ';
+
+  var ValidJson:= TJSONHelper.ValidateJSON(AJSON, ErrorMsg);
+  if not (ValidJson) or (AJSON.Trim.Equals('')) then
   begin
-    LabelInfoJson.Caption:= 'Analizing json ... ';
-    try
-      if TJSONHelper.ValidateJSON(AJSON, ErrorMsg) and TJSONHelper.HasDuplicateNames(AJSON, Duplicates) then
-      begin
-        if String(Duplicates) = '' then
-        LabelInfoJson.Caption:= '        Invalid json'
-        else
-          LabelInfoJson.Caption:= 'Invalid json, Has Duplicate Names : ' + string.Join(', ', Duplicates);
-        ImageOk.Visible:= False;
-        ImageErro.Visible:= True;
-        PanelExecuteJson.Enabled:= False;
-        PanelExecuteJson.Font.Color:= clgray;
-        CloseFormsCreated;
-        TreeView1.Items.Clear;
-        Exit;
-      end else
-      begin
-        LabelInfoJson.Caption:= '      Valid json';
-        ImageOk.Visible:= True;
-        ImageErro.Visible:= False;
-        PanelExecuteJson.Font.Color:= clblack;
-        PanelExecuteJson.Enabled:= True;
-      end;
-    except
-      on E: Exception do
-        TThread.Queue(nil,
-          procedure
-          begin
-            ShowMessage('Erro: ' + E.Message);
-          end);
-    end;
-  end).Start;
+    LabelInfoJson.Caption:='Invalid json :'+ErrorMsg ;
+    ImageOk.Visible:= False;
+    ImageErro.Visible:= True;
+    PanelExecuteJson.Enabled:= False;
+    PanelExecuteJson.Font.Color:= clgray;
+    CloseFormsCreated;
+    TreeView1.Items.Clear;
+    Exit;
+  end;
+
+  var ValidNamesComponents:= TJSONHelper.HasDuplicateNamesPerForm(AJSON, DupForms);
+  if ValidNamesComponents then
+  begin
+    var duplicatenames: string;
+    for var Info in DupForms do
+      duplicatenames:= duplicatenames + string.Join(', ',  Info.DuplicatedNames);
+    LabelInfoJson.Caption:='Invalid json, Duplicate Names : ' +duplicatenames;
+    ImageOk.Visible:= False;
+    ImageErro.Visible:= True;
+    PanelExecuteJson.Enabled:= False;
+    PanelExecuteJson.Font.Color:= clgray;
+    CloseFormsCreated;
+    TreeView1.Items.Clear;
+    Exit;
+  end;
+
+  LabelInfoJson.Caption:= '      Valid json';
+  ImageOk.Visible:= True;
+  ImageErro.Visible:= False;
+  PanelExecuteJson.Font.Color:= clblack;
+  PanelExecuteJson.Enabled:= True;
 end;
 
 

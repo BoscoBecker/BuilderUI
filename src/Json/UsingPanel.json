@@ -1,20 +1,20 @@
 {
   "Type": "TForm",
-  "Name": "FrmCadastroCliente",
+  "Name": "FrmCustomerRegistration",
   "Align": "Client",
   "Children": [
     {
       "Type": "TPanel",
-      "Name": "PnlProfissao",
-      "Text": "Profissão:",
+      "Name": "PnlProfession",
+      "Text": "Profession:",
       "Position": { "X": 500, "Y": 20 },
       "Width": 300,
       "Height": 200
     },
     {
       "Type": "TLabel",
-      "Name": "LblTitulo",
-      "Text": "Cadastro de Cliente",
+      "Name": "LblTitle",
+      "Text": "Customer Registration",
       "Position": { "X": 5, "Y": 10 },
       "Width": 300,
       "Height": 30,
@@ -23,8 +23,8 @@
     },
     {
       "Type": "TLabel",
-      "Name": "LblInfoPessoais",
-      "Text": "Informações Pessoais",
+      "Name": "LblPersonalInfo",
+      "Text": "Personal Information",
       "Position": { "X": 5, "Y": 50 },
       "Width": 300,
       "Height": 20,
@@ -32,15 +32,15 @@
     },
     {
       "Type": "TLabel",
-      "Name": "LblNomeCompleto",
-      "Text": "Nome Completo:",
+      "Name": "LblFullName",
+      "Text": "Full Name:",
       "Position": { "X": 5, "Y": 80 },
       "Width": 300,
       "Height": 20
     },
     {
       "Type": "TEdit",
-      "Name": "EdtNomeCompleto",
+      "Name": "EdtFullName",
       "Text": "",
       "Position": { "X": 5, "Y": 100 },
       "Width": 300,
@@ -48,15 +48,15 @@
     },
     {
       "Type": "TLabel",
-      "Name": "LblNascimento",
-      "Text": "Data de Nascimento:",
+      "Name": "LblBirthDate",
+      "Text": "Birth Date:",
       "Position": { "X": 5, "Y": 140 },
       "Width": 300,
       "Height": 20
     },
     {
       "Type": "TEdit",
-      "Name": "EdtNascimento",
+      "Name": "EdtBirthDate",
       "Text": "",
       "Position": { "X": 5, "Y": 160 },
       "Width": 150,
@@ -96,15 +96,15 @@
     },
     {
       "Type": "TLabel",
-      "Name": "LblTelefone",
-      "Text": "Telefone:",
+      "Name": "LblPhone",
+      "Text": "Phone:",
       "Position": { "X": 165, "Y": 200 },
       "Width": 100,
       "Height": 20
     },
     {
       "Type": "TEdit",
-      "Name": "EdtTelefone",
+      "Name": "EdtPhone",
       "Text": "",
       "Position": { "X": 165, "Y": 220 },
       "Width": 140,
@@ -113,7 +113,7 @@
     {
       "Type": "TLabel",
       "Name": "LblEmail",
-      "Text": "E-mail:",
+      "Text": "Email:",
       "Position": { "X": 5, "Y": 260 },
       "Width": 300,
       "Height": 20
@@ -128,8 +128,8 @@
     },
     {
       "Type": "TLabel",
-      "Name": "LblEndereco",
-      "Text": "Endereço",
+      "Name": "LblAddress",
+      "Text": "Address",
       "Position": { "X": 5, "Y": 320 },
       "Width": 300,
       "Height": 20,
@@ -137,15 +137,15 @@
     },
     {
       "Type": "TLabel",
-      "Name": "LblCEP",
-      "Text": "CEP:",
+      "Name": "LblZIP",
+      "Text": "ZIP Code:",
       "Position": { "X": 5, "Y": 350 },
       "Width": 100,
       "Height": 20
     },
     {
       "Type": "TEdit",
-      "Name": "EdtCEP",
+      "Name": "EdtZIP",
       "Text": "",
       "Position": { "X": 5, "Y": 370 },
       "Width": 100,
@@ -153,15 +153,15 @@
     },
     {
       "Type": "TLabel",
-      "Name": "LblLogradouro",
-      "Text": "Logradouro:",
+      "Name": "LblStreet",
+      "Text": "Street:",
       "Position": { "X": 115, "Y": 350 },
       "Width": 190,
       "Height": 20
     },
     {
       "Type": "TEdit",
-      "Name": "EdtLogradouro",
+      "Name": "EdtStreet",
       "Text": "",
       "Position": { "X": 115, "Y": 370 },
       "Width": 190,
@@ -169,15 +169,15 @@
     },
     {
       "Type": "TLabel",
-      "Name": "LblNumero",
-      "Text": "Número:",
+      "Name": "LblNumber",
+      "Text": "Number:",
       "Position": { "X": 5, "Y": 410 },
       "Width": 80,
       "Height": 20
     },
     {
       "Type": "TEdit",
-      "Name": "EdtNumero",
+      "Name": "EdtNumber",
       "Text": "",
       "Position": { "X": 5, "Y": 430 },
       "Width": 80,
@@ -185,15 +185,15 @@
     },
     {
       "Type": "TLabel",
-      "Name": "LblComplemento",
-      "Text": "Complemento:",
+      "Name": "LblComplement",
+      "Text": "Complement:",
       "Position": { "X": 95, "Y": 410 },
       "Width": 210,
       "Height": 20
     },
     {
       "Type": "TEdit",
-      "Name": "EdtComplemento",
+      "Name": "EdtComplement",
       "Text": "",
       "Position": { "X": 95, "Y": 430 },
       "Width": 210,
@@ -201,15 +201,15 @@
     },
     {
       "Type": "TLabel",
-      "Name": "LblBairro",
-      "Text": "Bairro:",
+      "Name": "LblDistrict",
+      "Text": "District:",
       "Position": { "X": 5, "Y": 470 },
       "Width": 150,
       "Height": 20
     },
     {
       "Type": "TEdit",
-      "Name": "EdtBairro",
+      "Name": "EdtDistrict",
       "Text": "",
       "Position": { "X": 5, "Y": 490 },
       "Width": 150,
@@ -217,15 +217,15 @@
     },
     {
       "Type": "TLabel",
-      "Name": "LblCidade",
-      "Text": "Cidade:",
+      "Name": "LblCity",
+      "Text": "City:",
       "Position": { "X": 165, "Y": 470 },
       "Width": 140,
       "Height": 20
     },
     {
       "Type": "TEdit",
-      "Name": "EdtCidade",
+      "Name": "EdtCity",
       "Text": "",
       "Position": { "X": 165, "Y": 490 },
       "Width": 140,
@@ -233,15 +233,15 @@
     },
     {
       "Type": "TLabel",
-      "Name": "LblEstado",
-      "Text": "Estado:",
+      "Name": "LblState",
+      "Text": "State:",
       "Position": { "X": 5, "Y": 530 },
       "Width": 80,
       "Height": 20
     },
     {
       "Type": "TEdit",
-      "Name": "EdtEstado",
+      "Name": "EdtState",
       "Text": "",
       "Position": { "X": 5, "Y": 550 },
       "Width": 80,
@@ -249,15 +249,15 @@
     },
     {
       "Type": "TLabel",
-      "Name": "LblPais",
-      "Text": "País:",
+      "Name": "LblCountry",
+      "Text": "Country:",
       "Position": { "X": 95, "Y": 530 },
       "Width": 210,
       "Height": 20
     },
     {
       "Type": "TEdit",
-      "Name": "EdtPais",
+      "Name": "EdtCountry",
       "Text": "",
       "Position": { "X": 95, "Y": 550 },
       "Width": 210,
@@ -265,8 +265,8 @@
     },
     {
       "Type": "TLabel",
-      "Name": "LblInfoProfissionais",
-      "Text": "Informações Profissionais",
+      "Name": "LblProfessionalInfo",
+      "Text": "Professional Information",
       "Position": { "X": 5, "Y": 590 },
       "Width": 300,
       "Height": 20,
@@ -274,15 +274,15 @@
     },
     {
       "Type": "TLabel",
-      "Name": "LblProfissao",
-      "Text": "Profissão:",
+      "Name": "LblProfession",
+      "Text": "Profession:",
       "Position": { "X": 5, "Y": 620 },
       "Width": 300,
       "Height": 20
     },
     {
       "Type": "TEdit",
-      "Name": "EdtProfissao",
+      "Name": "EdtProfession",
       "Text": "",
       "Position": { "X": 5, "Y": 640 },
       "Width": 300,
@@ -290,15 +290,15 @@
     },
     {
       "Type": "TLabel",
-      "Name": "LblEmpresa",
-      "Text": "Empresa:",
+      "Name": "LblCompany",
+      "Text": "Company:",
       "Position": { "X": 5, "Y": 680 },
       "Width": 300,
       "Height": 20
     },
     {
       "Type": "TEdit",
-      "Name": "EdtEmpresa",
+      "Name": "EdtCompany",
       "Text": "",
       "Position": { "X": 5, "Y": 700 },
       "Width": 300,
@@ -306,15 +306,15 @@
     },
     {
       "Type": "TLabel",
-      "Name": "LblRendaMensal",
-      "Text": "Renda Mensal:",
+      "Name": "LblMonthlyIncome",
+      "Text": "Monthly Income:",
       "Position": { "X": 5, "Y": 740 },
       "Width": 150,
       "Height": 20
     },
     {
       "Type": "TEdit",
-      "Name": "EdtRendaMensal",
+      "Name": "EdtMonthlyIncome",
       "Text": "",
       "Position": { "X": 5, "Y": 760 },
       "Width": 150,
@@ -322,16 +322,16 @@
     },
     {
       "Type": "TButton",
-      "Name": "BtnSalvarCadastro",
-      "Text": "Salvar Cadastro",
+      "Name": "BtnSaveRegistration",
+      "Text": "Save Registration",
       "Position": { "X": 5, "Y": 800 },
       "Width": 150,
       "Height": 40
     },
     {
       "Type": "TButton",
-      "Name": "BtnCancelar",
-      "Text": "Cancelar",
+      "Name": "BtnCancel",
+      "Text": "Cancel",
       "Position": { "X": 165, "Y": 800 },
       "Width": 140,
       "Height": 40

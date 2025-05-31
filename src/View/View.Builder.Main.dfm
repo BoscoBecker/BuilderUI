@@ -81,8 +81,6 @@ object FormBuilderMain: TFormBuilderMain
       item
         Width = 150
       end>
-    ExplicitTop = 687
-    ExplicitWidth = 1034
   end
   object PanelRenderJson: TPanel
     Left = 828
@@ -94,20 +92,28 @@ object FormBuilderMain: TFormBuilderMain
     Caption = 'PanelRenderJson'
     TabOrder = 1
     Visible = False
-    ExplicitLeft = 792
-    ExplicitHeight = 601
+    object Splitter3: TSplitter
+      Left = 0
+      Top = 649
+      Width = 242
+      Height = 3
+      Cursor = crVSplit
+      Align = alBottom
+      ExplicitLeft = -8
+      ExplicitTop = 658
+    end
     object Memo: TMemo
       Left = 0
       Top = 33
       Width = 242
-      Height = 553
+      Height = 550
       Align = alClient
       BorderStyle = bsNone
       ScrollBars = ssVertical
       TabOrder = 0
       WantTabs = True
       OnChange = MemoChange
-      ExplicitHeight = 542
+      ExplicitHeight = 553
     end
     object Panel13: TPanel
       Left = 0
@@ -174,17 +180,19 @@ object FormBuilderMain: TFormBuilderMain
         Font.Style = []
         ParentFont = False
         WordWrap = True
-        ExplicitHeight = 40
+        ExplicitWidth = 3
+        ExplicitHeight = 15
       end
     end
     object Panel5: TPanel
       Left = 0
-      Top = 616
+      Top = 613
       Width = 242
       Height = 36
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 3
+      ExplicitTop = 616
       object ImageErro: TImage
         Left = 158
         Top = 0
@@ -255,23 +263,23 @@ object FormBuilderMain: TFormBuilderMain
         ParentFont = False
         TabOrder = 0
         OnClick = PanelExecuteJsonClick
-        ExplicitHeight = 41
       end
     end
     object Panel8: TPanel
       Left = 0
-      Top = 586
+      Top = 583
       Width = 242
       Height = 30
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 4
-      ExplicitTop = 585
+      ExplicitTop = 586
       object Image3: TImage
         Left = 208
         Top = 0
         Width = 34
         Height = 30
+        Cursor = crHandPoint
         Hint = 'Copy'
         Align = alRight
         Center = True
@@ -292,6 +300,7 @@ object FormBuilderMain: TFormBuilderMain
           49C4E7A993A1998F898408D78A25CB534D151CA37F970000000049454E44AE42
           6082}
         ShowHint = True
+        OnClick = Image3Click
         ExplicitLeft = 201
         ExplicitTop = 5
         ExplicitHeight = 34
@@ -301,6 +310,7 @@ object FormBuilderMain: TFormBuilderMain
         Top = 0
         Width = 34
         Height = 30
+        Cursor = crHandPoint
         Hint = 'Load json'
         Align = alLeft
         Center = True
@@ -318,6 +328,7 @@ object FormBuilderMain: TFormBuilderMain
           543860035780F8322E0309155FE80014EBDB81F8372E0361860A1269E07B64C3
           701948110000854B3A153A1A4DE00000000049454E44AE426082}
         ShowHint = True
+        OnClick = Image5Click
         ExplicitLeft = 6
         ExplicitTop = -6
       end
@@ -326,6 +337,7 @@ object FormBuilderMain: TFormBuilderMain
         Top = 0
         Width = 34
         Height = 30
+        Cursor = crHandPoint
         Hint = 'Save json'
         Align = alLeft
         Center = True
@@ -345,6 +357,7 @@ object FormBuilderMain: TFormBuilderMain
           A416B0E8C01788E740D91341DE662452233EB000880DA0980100C9A339452A50
           EC060000000049454E44AE426082}
         ShowHint = True
+        OnClick = Image7Click
         ExplicitLeft = 201
         ExplicitTop = 5
         ExplicitHeight = 34
@@ -354,6 +367,7 @@ object FormBuilderMain: TFormBuilderMain
         Top = 0
         Width = 34
         Height = 30
+        Cursor = crHandPoint
         Hint = 'Clear '
         Align = alLeft
         Center = True
@@ -372,6 +386,7 @@ object FormBuilderMain: TFormBuilderMain
           83E23A5250EC05E257D8C2901B8A41801FC9C520177C84B2E5805816CA3E0AC4
           5FA1186BA4500C0036AD3515D9A1006D0000000049454E44AE426082}
         ShowHint = True
+        OnClick = Image8Click
         ExplicitLeft = 43
         ExplicitTop = -4
         ExplicitHeight = 28
@@ -381,6 +396,7 @@ object FormBuilderMain: TFormBuilderMain
         Top = 0
         Width = 34
         Height = 30
+        Cursor = crHandPoint
         Hint = 'High size'
         Align = alRight
         Center = True
@@ -419,7 +435,6 @@ object FormBuilderMain: TFormBuilderMain
     Placement = svpLeft
     ShowHint = True
     TabOrder = 2
-    ExplicitHeight = 601
     object Panel6: TPanel
       Left = 0
       Top = 648
@@ -432,7 +447,6 @@ object FormBuilderMain: TFormBuilderMain
       Padding.Right = 2
       Padding.Bottom = 2
       TabOrder = 0
-      ExplicitTop = 560
       object ImgSettings: TImage
         Left = 2
         Top = 2
@@ -624,7 +638,6 @@ object FormBuilderMain: TFormBuilderMain
       BevelOuter = bvNone
       TabOrder = 5
       Visible = False
-      ExplicitTop = 546
       object SkLabelSettings: TSkLabel
         AlignWithMargins = True
         Left = 3
@@ -657,7 +670,6 @@ object FormBuilderMain: TFormBuilderMain
     Padding.Right = 5
     TabOrder = 3
     Visible = False
-    ExplicitHeight = 601
     object Panel11: TPanel
       Left = 5
       Top = 33
@@ -734,7 +746,6 @@ object FormBuilderMain: TFormBuilderMain
       TabOrder = 1
       ToolTips = False
       OnClick = TreeView1Click
-      ExplicitHeight = 511
     end
     object PanelSearchComponents: TPanel
       Left = 5
@@ -842,8 +853,6 @@ object FormBuilderMain: TFormBuilderMain
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 4
-    ExplicitTop = 658
-    ExplicitWidth = 1034
   end
   object PanelToolPalette: TPanel
     Left = 400
@@ -1013,7 +1022,6 @@ object FormBuilderMain: TFormBuilderMain
     ParentBackground = False
     ParentFont = False
     TabOrder = 6
-    ExplicitWidth = 1034
     object SkLabel1: TSkLabel
       AlignWithMargins = True
       Left = 3

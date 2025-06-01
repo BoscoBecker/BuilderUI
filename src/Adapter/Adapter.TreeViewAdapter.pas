@@ -11,22 +11,19 @@ uses  Vcl.Graphics,Vcl.Controls, Vcl.Forms,
 
 type
   TTreeViewAdapterHelper = class helper for TTreeView
-    procedure Expand();
-    procedure Colapse();
+    procedure Expand;
+    procedure Colapse;
  end;
 
 type
   TTreeViewAdapter = class
-  private
-
-  public
-    class var FTreeView: TTreeView;
-    class var FCreatedForm: TObjectList<TForm>;
-    procedure CloseFormsTreeview(Sender: TObject; var Action: TCloseAction);
-    class procedure AddJSONToTreeView(JSONValue: TJSONValue; ParentNode: TTreeNode; NodeName: string; FTreeView: TTreeView ); static;
-    class procedure ExpandFathers(Node: TTreeNode);
-    class procedure FindComponentInTreeView(const Aterm : string); static;
-    class function FindNodeByComponent(TreeView: TTreeView;const ComponentName: string): TTreeNode;
+    public class var FTreeView: TTreeView;
+    public class var FCreatedForm: TObjectList<TForm>;
+    public procedure CloseFormsTreeview(Sender: TObject; var Action: TCloseAction);
+    public class procedure AddJSONToTreeView(JSONValue: TJSONValue; ParentNode: TTreeNode; NodeName: string; FTreeView: TTreeView ); static;
+    public class procedure ExpandFathers(Node: TTreeNode); static;
+    public class procedure FindComponentInTreeView(const Aterm : string); static;
+    public class function FindNodeByComponent(TreeView: TTreeView;const ComponentName: string): TTreeNode; static;
   end;
 
 implementation
@@ -78,7 +75,6 @@ begin
   begin
     TForm(Sender).FormStyle:= fsMDIForm;
     TForm(Sender).Visible:= False;
-    TForm(Sender).Left:= -5000;
     TForm(Sender).Top:=  -5000;
 
     for var I := FTreeView.Items.Count - 1 downto 0 do

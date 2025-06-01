@@ -12,7 +12,8 @@ uses
   System.Skia, Vcl.Skia, System.Types, System.UITypes,
   Vcl.Imaging.pngimage, Vcl.WinXCtrls,
 
-  Util.Json, System.Math, System.ImageList, Vcl.ImgList;
+  Util.Json, System.Math, System.ImageList, Vcl.ImgList,
+  View.Export.Forms, View.Menu.Context.Windows;
 
 type  TBuilderBackground = ( bClear, bGrid);
 
@@ -21,7 +22,7 @@ type
     StatusBarBottom: TStatusBar;
     PanelRenderJson: TPanel;
     Memo: TMemo;
-    Splitter2: TSplitter;
+    SplitterRight: TSplitter;
     SplitView1: TSplitView;
     Panel6: TPanel;
     ImgSettings: TImage;
@@ -33,18 +34,11 @@ type
     ImageRenderJson: TImage;
     Panel12: TPanel;
     ImageOpenTemplate: TImage;
-    PanelTree: TPanel;
-    Panel11: TPanel;
-    ImageExpand: TImage;
-    ImageColapse: TImage;
-    TreeView1: TTreeView;
     Panel13: TPanel;
     Image12: TImage;
     SkLabel3: TSkLabel;
-    Splitter1: TSplitter;
+    SplitterLeft: TSplitter;
     Panel2: TPanel;
-    PanelSearchComponents: TPanel;
-    SearchBoxComponents: TSearchBox;
     PanelToolPalette: TPanel;
     Image6: TImage;
     Image11: TImage;
@@ -54,21 +48,15 @@ type
     Image16: TImage;
     PanelSettings: TPanel;
     SkLabelSettings: TSkLabel;
-    Panel3: TPanel;
-    Image1: TImage;
-    Image2: TImage;
-    SkLabel2: TSkLabel;
     SkPaintBox1: TSkPaintBox;
     Panel1: TPanel;
     SkLabel1: TSkLabel;
-    SkPaintBackground: TSkPaintBox;
     Panel4: TPanel;
     LabelInfoJson: TLabel;
     ImageOk: TImage;
     ImageErro: TImage;
     Panel5: TPanel;
     PanelExecuteJson: TPanel;
-    ActivityIndicatorExplorer: TActivityIndicator;
     Panel8: TPanel;
     Image3: TImage;
     Image5: TImage;
@@ -76,6 +64,26 @@ type
     Image8: TImage;
     Image17: TImage;
     Splitter3: TSplitter;
+    SkLabel4: TSkLabel;
+    SkLabel5: TSkLabel;
+    SkLabel6: TSkLabel;
+    SkPaintBackground: TSkPaintBox;
+    PanelTree: TPanel;
+    Panel11: TPanel;
+    ImageExpand: TImage;
+    ImageColapse: TImage;
+    ActivityIndicatorExplorer: TActivityIndicator;
+    Panel3: TPanel;
+    PanelSearchComponents: TPanel;
+    SearchBoxComponents: TSearchBox;
+    TreeView1: TTreeView;
+    SkPaintBox2: TSkPaintBox;
+    Image1: TImage;
+    Image2: TImage;
+    SkLabel2: TSkLabel;
+    SkPaintBox3: TSkPaintBox;
+    Image4: TImage;
+    Image18: TImage;
     procedure FormCreate(Sender: TObject);
     procedure ImgSettingsClick(Sender: TObject);
     procedure Image9Click(Sender: TObject);
@@ -104,10 +112,18 @@ type
     procedure PanelExecuteJsonClick(Sender: TObject);
     procedure Image6Click(Sender: TObject);
     procedure Image13Click(Sender: TObject);
-    procedure Image8Click(Sender: TObject);
+    procedure Image4Click(Sender: TObject);
     procedure Image5Click(Sender: TObject);
     procedure Image7Click(Sender: TObject);
     procedure Image3Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Image1Click(Sender: TObject);
+    procedure SkPaintBox2Draw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
+    procedure SkPaintBox3Draw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
+    procedure Image14Click(Sender: TObject);
+    procedure Image11Click(Sender: TObject);
+    procedure Image15Click(Sender: TObject);
+    procedure Image8Click(Sender: TObject);
   private
     FBuilderBackground: TBuilderBackground;
     FCreatedForms: TObjectList<TForm>;
@@ -125,6 +141,7 @@ type
     procedure BuildStatusBar;
     procedure SetSelectedComponent(const Value: String);
     procedure SetBuilderBackground(const Value: TBuilderBackground);
+
   public
     destructor Destroy; override;
     property SelectedComponent: String read FSelectedComponent write SetSelectedComponent;
@@ -138,18 +155,16 @@ implementation
 
 {$R *.dfm}
 
-{ TForm2 }
-
 procedure TFormBuilderMain.BuildStatusBar;
 begin
-  StatusBarBottom.Panels[0].Text:= 'X: 0 Y: 0';                 // Panel 0 - Coordenadas do Mouse
-  StatusBarBottom.Panels[1].Text := 'Selecionado: Nenhum';       // Panel 1 - Componente Selecionado
-  StatusBarBottom.Panels[2].Text := 'Tamanho: 0x0';              // Panel 2 - Tamanho do componente
-  StatusBarBottom.Panels[3].Text := 'Date: ' +FormatDateTime('YYYY/MM/DD',now());             // Panel 3 - Snap/Grid
-  StatusBarBottom.Panels[4].Text := 'Zoom: 100%';                // Panel 4 - Zoom
-  StatusBarBottom.Panels[5].Text := 'Modo: Seleção';             // Panel 5 - Modo atual
-  StatusBarBottom.Panels[6].Text := 'Projeto: (vazio)';          // Panel 6 - Nome do Projeto
-  StatusBarBottom.Panels[7].Text := '';                          // Panel 7 - Mensagens temporárias
+  StatusBarBottom.Panels[0].Text:= 'X: 0 Y: 0';
+  StatusBarBottom.Panels[1].Text := 'Selected: Nenhum';
+  StatusBarBottom.Panels[2].Text := 'Size: 0x0';
+  StatusBarBottom.Panels[3].Text := 'Date: ' +FormatDateTime('YYYY/MM/DD',now());
+  StatusBarBottom.Panels[4].Text := 'Zoom: 100%';
+  StatusBarBottom.Panels[5].Text := 'Mode: Mouse';
+  StatusBarBottom.Panels[6].Text := 'Project: (None)';
+  StatusBarBottom.Panels[7].Text := '';
 end;
 
 procedure TFormBuilderMain.ButtonRunJsonClick(Sender: TObject);
@@ -196,6 +211,11 @@ begin
   end;
 end;
 
+procedure TFormBuilderMain.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action:= TCloseAction.caFree;
+end;
+
 procedure TFormBuilderMain.FormCreate(Sender: TObject);
 begin
   FCreatedForms := TObjectList<TForm>.Create(False);
@@ -212,9 +232,20 @@ begin
   BuildStatusBar();
 end;
 
+procedure TFormBuilderMain.Image11Click(Sender: TObject);
+begin
+  var FormContext:= TFormContextWindows.Create(NIl,FCreatedForms);
+  try
+    FormContext.ShowModal;
+  finally
+    FormContext.Free;
+  end;
+end;
+
 procedure TFormBuilderMain.Image12Click(Sender: TObject);
 begin
-  PanelRenderJson.Visible:= False;
+  PanelRenderJson.Visible:= not PanelRenderJson.Visible;
+  SplitterRight.Visible:= not SplitterRight.Visible;
 end;
 
 procedure TFormBuilderMain.Image13Click(Sender: TObject);
@@ -228,6 +259,27 @@ begin
     FBuilderBackground := bCLear;
     SkPaintBackground.Width:= SkPaintBackground.Width - 1;
   end;
+end;
+
+procedure TFormBuilderMain.Image14Click(Sender: TObject);
+begin
+  PanelTree.Visible:= not PanelTree.Visible;
+end;
+
+procedure TFormBuilderMain.Image15Click(Sender: TObject);
+begin
+  var ExportForm:= TFormExports.Create(nil);
+  try
+    ExportForm.SetJsonData(FJsonStructure);
+    ExportForm.ShowModal;
+  finally
+    ExportForm.Free;
+  end;
+end;
+
+procedure TFormBuilderMain.Image1Click(Sender: TObject);
+begin
+  PanelTree.Visible:= not PanelTree.Visible;
 end;
 
 procedure TFormBuilderMain.Image2Click(Sender: TObject);
@@ -282,6 +334,11 @@ end;
 
 procedure TFormBuilderMain.Image8Click(Sender: TObject);
 begin
+  Memo.lines.Text:= TJSONHelper.BeautifyJSON(Memo.lines.Text);
+end;
+
+procedure TFormBuilderMain.Image4Click(Sender: TObject);
+begin
   Memo.Lines.Clear;
 end;
 
@@ -293,7 +350,7 @@ end;
 procedure TFormBuilderMain.ImageRenderJsonClick(Sender: TObject);
 begin
   PanelRenderJson.Visible:= True;
-  Splitter2.Visible:= True;
+  SplitterRight.Visible:= True;
 end;
 
 procedure TFormBuilderMain.ImgSettingsClick(Sender: TObject);
@@ -303,6 +360,7 @@ begin
   else
     PanelSettings.Visible:= False;
   SplitView1.Opened := not SplitView1.Opened;
+  SplitterLeft.Visible:= True;
 end;
 
 procedure TFormBuilderMain.Image9Click(Sender: TObject);
@@ -402,7 +460,6 @@ begin
         begin
           FormJson := FormsArray.Items[I] as TJSONObject;
           MyForm := FBuilder.CreateFormFromJson(SkPaintBackground, FormJson);
-
           Node := TreeView1.Items.Add(nil, FormJson.GetValue<string>('Name'));
           Node.Data := MyForm;
           FTreeViewAdapter.AddJSONToTreeView(FormJson,Node,'root',TreeView1);
@@ -519,6 +576,45 @@ end;
 procedure TFormBuilderMain.SkPaintBox1MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   FDragging := False;
+end;
+
+procedure TFormBuilderMain.SkPaintBox2Draw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
+var
+  Shader: ISkShader;
+  BorderRect: TRectF;
+  Center: TPointF;
+begin
+  FPaint := TSkPaint.Create;
+  FPaint.Style := TSkPaintStyle.Stroke;
+  FPaint.StrokeWidth := 1;
+
+  Center := PointF(ADest.Left + ADest.Width / 2, ADest.Top + ADest.Height / 2);
+  Shader := TSkShader.MakeGradientSweep(Center,[$FFB0B0B0, $FFD0D0D0, $FFFFFFFF, $FFD0D0D0, $FFB0B0B0]);
+  FPaint.Shader := Shader;
+  BorderRect := ADest;
+
+  InflateRect(BorderRect, -FPaint.StrokeWidth / 2, -FPaint.StrokeWidth / 2);
+  ACanvas.DrawRect(BorderRect, FPaint);
+end;
+
+procedure TFormBuilderMain.SkPaintBox3Draw(ASender: TObject;
+  const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
+var
+  Shader: ISkShader;
+  BorderRect: TRectF;
+  Center: TPointF;
+begin
+  FPaint := TSkPaint.Create;
+  FPaint.Style := TSkPaintStyle.Stroke;
+  FPaint.StrokeWidth := 1;
+
+  Center := PointF(ADest.Left + ADest.Width / 2, ADest.Top + ADest.Height / 2);
+  Shader := TSkShader.MakeGradientSweep(Center,[$FFFFFFFF, $FFD0D0D0, $FFB0B0B0, $FFD0D0D0, $FFFFFFFF]);
+  FPaint.Shader := Shader;
+  BorderRect := ADest;
+
+  InflateRect(BorderRect, -FPaint.StrokeWidth / 2, -FPaint.StrokeWidth / 2);
+  ACanvas.DrawRect(BorderRect, FPaint);
 end;
 
 procedure TFormBuilderMain.TreeView1Click(Sender: TObject);

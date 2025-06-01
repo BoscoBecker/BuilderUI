@@ -121,6 +121,8 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
         <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
@@ -134,6 +136,19 @@
         <DCCReference Include="Core\Core.IUIBuilder.pas"/>
         <DCCReference Include="Adapter\Adapter.TreeViewAdapter.pas"/>
         <DCCReference Include="Utils\Util.JSON.pas"/>
+        <DCCReference Include="Factory\Factory.ICodeGenerator.pas"/>
+        <DCCReference Include="View\View.Menu.Context.Windows.pas">
+            <Form>FormContextWindows</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="View\View.Export.Forms.pas">
+            <Form>FormExports</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Utils\Util.Form.Arranger.pas"/>
+        <DCCReference Include="Strategy\Strategy.IExport.pas"/>
+        <DCCReference Include="Factory\Delphi\Factory.CodeGenerator.Delphi.pas"/>
+        <DCCReference Include="Factory\Factory.ICodeGeneratorFactory.pas"/>
         <None Include=".gitignore"/>
         <None Include="BuilderUI.dpr"/>
         <BuildConfiguration Include="Base">
@@ -238,6 +253,12 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName=".gitignore" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="BuilderUI.dpr" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
@@ -245,6 +266,12 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="BuilderUI.dpr" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="BuilderUI.dpr" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win64">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
@@ -265,6 +292,12 @@
                 <DeployFile LocalName="Win64\Debug\BuilderUI.rsm" Configuration="Debug" Class="DebugSymbols">
                     <Platform Name="Win64">
                         <RemoteName>BuilderUI.rsm</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="Win64\Release\BuilderUI.exe" Configuration="Release" Class="ProjectOutput">
+                    <Platform Name="Win64">
+                        <RemoteName>BuilderUI.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

@@ -37,14 +37,14 @@ implementation
 procedure TUIBuilderEngine.ControlClick(Sender: TObject);
 
 begin
-  if Length(TControl(Sender).Name) <=0 then Exit;
-  try
-    if TTreeViewAdapter.FTreeView.CanFocus then
-      TTreeViewAdapter.FTreeView.SetFocus;
-    TTreeViewAdapter.FindComponentInTreeView(TControl(Sender).Name);
-    TTreeViewAdapter.FTreeView.OnClick(Sender);
-  except
-  end;
+//  if Length(TControl(Sender).Name) <=0 then Exit;
+//  try
+//    if TTreeViewAdapter.FTreeView.CanFocus then
+//      TTreeViewAdapter.FTreeView.SetFocus;
+//    TTreeViewAdapter.FindComponentInTreeView(TControl(Sender).Name);
+//    TTreeViewAdapter.FTreeView.OnClick(Sender);
+//  except
+//  end;
 end;
 
 procedure TUIBuilderEngine.ControlDblClickImage(Sender: TObject);
@@ -201,6 +201,7 @@ begin
   Form:= TForm.Create(AOwner);
   Form.Position:= poDefault;
   Form.FormStyle:= fsMDIChild;
+  Form.BorderIcons := Form.BorderIcons - [biMaximize];
   Form.BorderStyle:= bsSizeable;
   Form.Name:= Json.GetValue<string>('Name');
   Form.Caption:= Json.GetValue<string>('Caption','');

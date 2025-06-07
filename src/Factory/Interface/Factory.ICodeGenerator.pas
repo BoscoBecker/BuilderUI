@@ -8,6 +8,10 @@ type
   ICodeGenerator = interface
     ['{1C4B0C41-4F37-42BC-9A23-A1EA902E1F63}']
     function GenerateCode(const Json: TJSONObject; const Indent: string = '  '): string;
+    function GetDfmText: string;
+    function GetPasText: string;
+    property DfmText: string read GetDfmText;
+    property PasText: string read GetPasText;
   end;
 
 

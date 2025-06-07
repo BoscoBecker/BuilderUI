@@ -452,6 +452,8 @@ begin
   CloseFormsCreated;
   TreeView1.Items.Clear;
 
+  if Assigned(FJsonStructure) then
+    FreeAndNil(FJsonStructure);
   FJsonStructure := TJSONObject.ParseJSONValue(Atext) as TJSONObject;
   FTreeViewAdapter.FTreeView := TreeView1;
   FTreeViewAdapter.FCreatedForm := FCreatedForms;

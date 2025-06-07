@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.Json,  Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Skia, Vcl.Skia,
-  Vcl.Imaging.pngimage, Vcl.ExtCtrls;
+  Vcl.Imaging.pngimage, Vcl.ExtCtrls, Strategy.Export.Delphi;
 
 type
   TFormExports = class(TForm)
@@ -39,12 +39,19 @@ implementation
 { TFormExports }
 
 
-uses Factory.ICodeGenerator, Factory.ICodeGeneratorFactory;
+uses Factory.ICodeGenerator, Factory.CodeGeneratorFactory;
 
 procedure TFormExports.ExportToDelphi;
 begin
-  var Generator := TCodeGeneratorFactory.CreateGenerator('Delphi');
-      Generator.GenerateCode(FJsonData);
+  var ExportFiles:= TDelphiExport.Create;
+  try
+    var Generator := TCodeGeneratorFactory.CreateGenerator('Delphi');
+        Generator.GenerateCode(FJsonData);
+    ExportFiles.ExportData(Generator.PasText);
+    ExportFiles.ExportData(Generator.DfmText);
+  finally
+    ExportFiles.Free;
+  end;
 end;
 
 procedure TFormExports.ImageDelphiClick(Sender: TObject);

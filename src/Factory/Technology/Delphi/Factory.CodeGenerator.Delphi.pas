@@ -12,13 +12,22 @@ type
     Name, CompType: string;
   end;
 
-  TDelphiGenerator = class(TInterfacedObject, ICodeGenerator)
+
+  TDelphiGenerator = class(TInterfacedObject,ICodeGenerator)
   private
     ComponentFields: TArray<TComponentField>;
+    FDfmText: string;
+    FPasText: string;
     procedure CollectComponentFields(const CompJson: TJSONObject);
     function GenerateComponent(const CompJson: TJSONObject; const Indent: string = '  '): string;
+    procedure SetDfmText(const Value: string);
+    procedure SetPasText(const Value: string);
   public
+    function GetDfmText: string;
+    function GetPasText: string;
     function GenerateCode(const Json: TJSONObject; const Indent: string = '  '): string;
+    property DfmText: string read FDfmText write SetDfmText;
+    property PasText: string read FPasText write SetPasText;
   end;
 
 implementation
@@ -104,14 +113,32 @@ begin
   Result := Result + Indent + 'end' + sLineBreak;
 end;
 
+function TDelphiGenerator.GetDfmText: string;
+begin
+
+end;
+
+function TDelphiGenerator.GetPasText: string;
+begin
+
+end;
+
+procedure TDelphiGenerator.SetDfmText(const Value: string);
+begin
+  FDfmText := Value;
+end;
+
+procedure TDelphiGenerator.SetPasText(const Value: string);
+begin
+  FPasText := Value;
+end;
+
 procedure TDelphiGenerator.CollectComponentFields(const CompJson: TJSONObject);
 var
-  CompType, CompName: string;
   Children: TJSONArray;
-  I: Integer;
 begin
-  CompType := CompJson.GetValue<string>('Type', '');
-  CompName := CompJson.GetValue<string>('Name', '');
+  var CompType := CompJson.GetValue<string>('Type', '');
+  var CompName := CompJson.GetValue<string>('Name', '');
   if (CompType <> '') and (CompName <> '') and (CompType <> 'TForm') then
   begin
     SetLength(ComponentFields, Length(ComponentFields) + 1);
@@ -119,7 +146,7 @@ begin
     ComponentFields[High(ComponentFields)].CompType := CompType;
   end;
   if CompJson.TryGetValue('Children', Children) then
-    for I := 0 to Children.Count - 1 do
+    for var I := 0 to Children.Count - 1 do
       CollectComponentFields(Children.Items[I] as TJSONObject);
 end;
 
@@ -127,7 +154,6 @@ function TDelphiGenerator.GenerateCode(const Json: TJSONObject; const Indent: st
 var
   FormType,PasText, FieldsBlock: string;
   Children: TJSONArray;
-
 begin
   // 1. Ler o nome do form
   var FormName := Json.GetValue<string>('Name');
@@ -210,6 +236,8 @@ begin
     SaveFile.Free;
   end;
 
+  SetDfmText(DfmText);
+  SetPasText(PasText);
   Result := DfmText + sLineBreak + '---' + sLineBreak + PasText;
 end;
 

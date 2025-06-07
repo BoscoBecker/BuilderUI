@@ -11,13 +11,14 @@ uses
   Vcl.Themes,
   Vcl.Styles,
   Util.JSON in 'Utils\Util.JSON.pas',
-  Factory.ICodeGenerator in 'Factory\Factory.ICodeGenerator.pas',
+  Factory.ICodeGenerator in 'Factory\Interface\Factory.ICodeGenerator.pas',
   View.Menu.Context.Windows in 'View\View.Menu.Context.Windows.pas' {FormContextWindows},
   View.Export.Forms in 'View\View.Export.Forms.pas' {FormExports},
   Util.Form.Arranger in 'Utils\Util.Form.Arranger.pas',
-  Strategy.IExport in 'Strategy\Strategy.IExport.pas',
-  Factory.CodeGenerator.Delphi in 'Factory\Delphi\Factory.CodeGenerator.Delphi.pas',
-  Factory.ICodeGeneratorFactory in 'Factory\Factory.ICodeGeneratorFactory.pas';
+  Factory.CodeGenerator.Delphi in 'Factory\Technology\Delphi\Factory.CodeGenerator.Delphi.pas',
+  Factory.CodeGeneratorFactory in 'Factory\Base\Factory.CodeGeneratorFactory.pas',
+  Strategy.Export.Delphi in 'Strategy\Technology\Delphi\Strategy.Export.Delphi.pas',
+  Strategy.IExport in 'Strategy\Interface\Strategy.IExport.pas';
 
 {$R *.res}
 

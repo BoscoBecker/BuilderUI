@@ -136,7 +136,7 @@
         <DCCReference Include="Core\Core.IUIBuilder.pas"/>
         <DCCReference Include="Adapter\Adapter.TreeViewAdapter.pas"/>
         <DCCReference Include="Utils\Util.JSON.pas"/>
-        <DCCReference Include="Factory\Factory.ICodeGenerator.pas"/>
+        <DCCReference Include="Factory\Interface\Factory.ICodeGenerator.pas"/>
         <DCCReference Include="View\View.Menu.Context.Windows.pas">
             <Form>FormContextWindows</Form>
             <FormType>dfm</FormType>
@@ -146,9 +146,10 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="Utils\Util.Form.Arranger.pas"/>
-        <DCCReference Include="Strategy\Strategy.IExport.pas"/>
-        <DCCReference Include="Factory\Delphi\Factory.CodeGenerator.Delphi.pas"/>
-        <DCCReference Include="Factory\Factory.ICodeGeneratorFactory.pas"/>
+        <DCCReference Include="Factory\Technology\Delphi\Factory.CodeGenerator.Delphi.pas"/>
+        <DCCReference Include="Factory\Base\Factory.CodeGeneratorFactory.pas"/>
+        <DCCReference Include="Strategy\Technology\Delphi\Strategy.Export.Delphi.pas"/>
+        <DCCReference Include="Strategy\Interface\Strategy.IExport.pas"/>
         <None Include=".gitignore"/>
         <None Include="BuilderUI.dpr"/>
         <BuildConfiguration Include="Base">
@@ -286,12 +287,6 @@
                 <DeployFile LocalName="Win64\Debug\BuilderUI.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win64">
                         <RemoteName>BuilderUI.exe</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="Win64\Debug\BuilderUI.rsm" Configuration="Debug" Class="DebugSymbols">
-                    <Platform Name="Win64">
-                        <RemoteName>BuilderUI.rsm</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

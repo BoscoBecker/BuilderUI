@@ -1,0 +1,197 @@
+{
+  "Forms": [
+    {
+      "Name": "FrmLogin",
+      "Caption": "Login",
+      "Type": "TForm",
+      "Align": "Client",
+      "Children": [
+        {
+          "Name": "PnlLogin",
+          "Type": "TPanel",
+          "Caption": "",
+          "Position": { "X": 80, "Y": 60 },
+          "Width": 340,
+          "Height": 220,
+          "Color": "#F0F0F0",
+          "Children": [
+            {
+              "Name": "LblTitulo",
+              "Type": "TLabel",
+              "Text": "Welcome! Please Login",
+              "Position": { "X": 20, "Y": 20 },
+              "Width": 300,
+              "Height": 30,
+              "FontSize": 18,
+              "FontStyle": ["Bold"],
+              "Alignment": "Center"
+            },
+            {
+              "Name": "LblUsuario",
+              "Type": "TLabel",
+              "Text": "Username:",
+              "Position": { "X": 20, "Y": 70 },
+              "Width": 80,
+              "Height": 20
+            },
+            {
+              "Name": "EdtUsuario",
+              "Type": "TEdit",
+              "Text": "",
+              "Position": { "X": 110, "Y": 65 },
+              "Width": 200,
+              "Height": 28
+            },
+            {
+              "Name": "LblSenha",
+              "Type": "TLabel",
+              "Text": "Password:",
+              "Position": { "X": 20, "Y": 110 },
+              "Width": 80,
+              "Height": 20
+            },
+            {
+              "Name": "EdtSenha",
+              "Type": "TEdit",
+              "Text": "",
+              "PasswordChar": "*",
+              "Position": { "X": 110, "Y": 105 },
+              "Width": 200,
+              "Height": 28
+            },
+            {
+              "Name": "BtnEntrar",
+              "Type": "TButton",
+              "Caption": "Login",
+              "Position": { "X": 110, "Y": 160 },
+              "Width": 120,
+              "Height": 36
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "FrmPrincipal",
+      "Caption": "Main Application",
+      "Type": "TForm",
+      "Align": "Client",
+      "Children": [
+        {
+          "Name": "PnlTopo",
+          "Type": "TPanel",
+          "Caption": "",
+          "Position": { "X": 0, "Y": 0 },
+          "Width": 800,
+          "Height": 60,
+          "Color": "#1976D2",
+          "Children": [
+            {
+              "Name": "LblAppTitle",
+              "Type": "TLabel",
+              "Text": "BuilderUI - Main Screen",
+              "Position": { "X": 20, "Y": 15 },
+              "Width": 400,
+              "Height": 30,
+              "FontSize": 20,
+              "FontStyle": ["Bold"],
+              "FontColor": "#FFFFFF"
+            }
+          ]
+        },
+        {
+          "Name": "PnlMenu",
+          "Type": "TPanel",
+          "Caption": "",
+          "Position": { "X": 0, "Y": 60 },
+          "Width": 180,
+          "Height": 540,
+          "Color": "#E3E3E3",
+          "Children": [
+            {
+              "Name": "BtnClientes",
+              "Type": "TButton",
+              "Caption": "Clientes",
+              "Position": { "X": 20, "Y": 30 },
+              "Width": 140,
+              "Height": 40
+            },
+            {
+              "Name": "BtnProdutos",
+              "Type": "TButton",
+              "Caption": "Produtos",
+              "Position": { "X": 20, "Y": 80 },
+              "Width": 140,
+              "Height": 40
+            },
+            {
+              "Name": "BtnSair",
+              "Type": "TButton",
+              "Caption": "Sair",
+              "Position": { "X": 20, "Y": 500 },
+              "Width": 140,
+              "Height": 40
+            }
+          ]
+        },
+        {
+          "Name": "PnlConteudo",
+          "Type": "TPanel",
+          "Caption": "",
+          "Position": { "X": 180, "Y": 60 },
+          "Width": 620,
+          "Height": 540,
+          "Color": "#FFFFFF",
+          "Children": [
+            {
+              "Name": "LblBemVindo",
+              "Type": "TLabel",
+              "Text": "Bem-vindo ao BuilderUI!",
+              "Position": { "X": 40, "Y": 40 },
+              "Width": 400,
+              "Height": 40,
+              "FontSize": 18,
+              "FontStyle": ["Bold"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "FrmSobre",
+      "Caption": "Sobre o BuilderUI",
+      "Type": "TForm",
+      "Align": "Client",
+      "Children": [
+        {
+          "Name": "LblTituloSobre",
+          "Type": "TLabel",
+          "Text": "Sobre o BuilderUI em Delphi",
+          "Position": { "X": 30, "Y": 20 },
+          "Width": 400,
+          "Height": 32,
+          "FontSize": 18,
+          "FontStyle": ["Bold"]
+        },
+        {
+          "Name": "ImgLogo",
+          "Type": "TImage",
+          "Position": { "X": 30, "Y": 70 },
+          "Width": 120,
+          "Height": 120,
+          "Picture": "logo_builderui.png"
+        },
+        {
+          "Name": "LblDescricao",
+          "Type": "TLabel",
+          "Text": "O BuilderUI é uma solução desenvolvida em Delphi para criar interfaces dinâmicas a partir de arquivos JSON. Com ele, é possível montar telas de cadastro, consulta e navegação sem alterar o código-fonte, tornando o desenvolvimento mais ágil, flexível e moderno.",
+          "Position": { "X": 170, "Y": 80 },
+          "Width": 400,
+          "Height": 100,
+          "WordWrap": true,
+          "FontSize": 12
+        }
+      ]
+    }
+  ]
+}

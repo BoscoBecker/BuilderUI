@@ -79,7 +79,6 @@ object FormBuilderMain: TFormBuilderMain
       item
         Width = 150
       end>
-    ExplicitWidth = 1070
   end
   object PanelRenderJson: TPanel
     Left = 772
@@ -91,7 +90,6 @@ object FormBuilderMain: TFormBuilderMain
     Caption = 'PanelRenderJson'
     TabOrder = 1
     Visible = False
-    ExplicitLeft = 828
     object Splitter3: TSplitter
       Left = 0
       Top = 649
@@ -113,8 +111,6 @@ object FormBuilderMain: TFormBuilderMain
       TabOrder = 0
       WantTabs = True
       OnChange = MemoChange
-      ExplicitTop = 39
-      ExplicitHeight = 550
     end
     object Panel13: TPanel
       Left = 0
@@ -602,7 +598,6 @@ object FormBuilderMain: TFormBuilderMain
       Padding.Right = 2
       Padding.Bottom = 2
       TabOrder = 1
-      ExplicitTop = 123
       object Image9: TImage
         Left = 2
         Top = 2
@@ -679,7 +674,6 @@ object FormBuilderMain: TFormBuilderMain
       Padding.Right = 2
       Padding.Bottom = 2
       TabOrder = 3
-      ExplicitTop = 41
       object ImageRenderJson: TImage
         Left = 2
         Top = 2
@@ -717,7 +711,6 @@ object FormBuilderMain: TFormBuilderMain
       Padding.Right = 2
       Padding.Bottom = 2
       TabOrder = 4
-      ExplicitTop = 82
       object ImageOpenTemplate: TImage
         Left = 2
         Top = 2
@@ -784,7 +777,6 @@ object FormBuilderMain: TFormBuilderMain
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 3
-    ExplicitWidth = 1070
   end
   object PanelToolPalette: TPanel
     Left = 400
@@ -967,7 +959,6 @@ object FormBuilderMain: TFormBuilderMain
     ParentBackground = False
     ParentFont = False
     TabOrder = 5
-    ExplicitWidth = 1070
     object SkLabel1: TSkLabel
       AlignWithMargins = True
       Left = 3
@@ -1010,9 +1001,6 @@ object FormBuilderMain: TFormBuilderMain
       DoubleBuffered = True
       ParentDoubleBuffered = False
       TabOrder = 0
-      ExplicitLeft = 2
-      ExplicitTop = 84
-      ExplicitWidth = 221
       object ImageExpand: TImage
         Left = 64
         Top = 0
@@ -1157,9 +1145,6 @@ object FormBuilderMain: TFormBuilderMain
       ParentDoubleBuffered = False
       TabOrder = 2
       Visible = False
-      ExplicitLeft = 5
-      ExplicitTop = 65
-      ExplicitWidth = 213
       object SearchBoxComponents: TSearchBox
         Left = 0
         Top = 0
@@ -1169,9 +1154,7 @@ object FormBuilderMain: TFormBuilderMain
         TabOrder = 0
         TextHint = 'Type: label1'
         OnChange = SearchBoxComponentsChange
-        ExplicitLeft = 5
-        ExplicitTop = -19
-        ExplicitWidth = 221
+        ExplicitHeight = 23
       end
     end
     object TreeView1: TTreeView
@@ -1192,8 +1175,6 @@ object FormBuilderMain: TFormBuilderMain
       TabOrder = 3
       ToolTips = False
       OnClick = TreeView1Click
-      ExplicitLeft = 2
-      ExplicitWidth = 221
     end
   end
 end

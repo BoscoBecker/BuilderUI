@@ -2,6 +2,8 @@
   "Type": "TForm",
   "Name": "FrmCustomerRegistration",
   "Caption": "Customer Registration",
+  "Width": 550,
+  "Height": 650,
   "Align": "Client",
   "Children": [
     {

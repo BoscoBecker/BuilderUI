@@ -334,7 +334,10 @@ end;
 
 procedure TFormBuilderMain.Image8Click(Sender: TObject);
 begin
-  Memo.lines.Text:= TJSONHelper.BeautifyJSON(Memo.lines.Text);
+  var erromessage:='';
+  if not Memo.lines.Text.Trim.Equals('') then
+    if TJSONHelper.ValidateJSON(Memo.lines.Text, erromessage ) then
+      Memo.lines.Text:= TJSONHelper.BeautifyJSON(Memo.lines.Text);
 end;
 
 procedure TFormBuilderMain.Image4Click(Sender: TObject);

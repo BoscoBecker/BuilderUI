@@ -44,7 +44,7 @@ uses Factory.ICodeGenerator, Factory.ICodeGeneratorFactory;
 procedure TFormExports.ExportToDelphi;
 begin
   var Generator := TCodeGeneratorFactory.CreateGenerator('Delphi');
-  Generator.GenerateCode(FJsonData);
+      Generator.GenerateCode(FJsonData);
 end;
 
 procedure TFormExports.ImageDelphiClick(Sender: TObject);

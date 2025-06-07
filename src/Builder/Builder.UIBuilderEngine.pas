@@ -82,8 +82,10 @@ begin
 
   Ctrl.Parent := AParent;
   SetControlEvent(Ctrl);
-  SetControlCaption(Ctrl, Json.GetValue<string>('Caption',CaptionStr));
-  SetControlCaption(Ctrl, Json.GetValue<string>('Text',CaptionStr));
+  var CaptionOrText := Json.GetValue<string>('Caption', '');
+  if CaptionOrText = '' then
+    CaptionOrText := Json.GetValue<string>('Text', '');
+  SetControlCaption(Ctrl, CaptionOrText);
   SetControlWidth(Ctrl,Json.GetValue<string>('Width','100'));
   SetControlHeight(Ctrl,Json.GetValue<string>('Height', '50'));
 
@@ -165,11 +167,10 @@ begin
       ChildJson := ChildrenArr.Items[I] as TJSONObject;
       var Tab := TTabSheet.Create(AOwner);
       Tab.PageControl := TPageControl(Ctrl);
-      Tab.Caption := ChildJson.GetValue<string>('Caption', 'Sem Título');
-      Tab.Name := Format('%s_Tab%d', [Ctrl.Name, I]); // opcional
-      Tab.Parent := TPageControl(Ctrl); // garante visualização
+      Tab.Caption := ChildJson.GetValue<string>('Caption', ' No Title ');
+      Tab.Name := Ctrl.Name;
+      Tab.Parent := TPageControl(Ctrl);
 
-      // Agora adiciona os filhos da página (Children)
       var TabChildren: TJSONArray;
       if ChildJson.TryGetValue<TJSONArray>('Children', TabChildren) then
       begin
@@ -339,58 +340,69 @@ begin
   else if Ctrl is TBitBtn then
     TBitBtn(Ctrl).Caption := Text
   else if Ctrl is TSpeedButton then
-    TSpeedButton(Ctrl).Caption :=  Text
+    TSpeedButton(Ctrl).Caption := Text
   else if Ctrl is TRadioButton then
-    TRadioButton(Ctrl).Caption :=  Text
+    TRadioButton(Ctrl).Caption := Text
   else if Ctrl is TCheckBox then
     TCheckBox(Ctrl).Caption := Text
   else if Ctrl is TRadioGroup then
-    TRadioGroup(Ctrl).Caption :=  Text
-  else  if Ctrl is TEdit then
+    TRadioGroup(Ctrl).Caption := Text
+  else if Ctrl is TPanel then
+    TPanel(Ctrl).Caption := Text
+  else if Ctrl is TGroupBox then
+    TGroupBox(Ctrl).Caption := Text
+  else if Ctrl is TEdit then
     TEdit(Ctrl).Text := Text
   else if Ctrl is TMemo then
     TMemo(Ctrl).Text := Text;
 end;
+
 function TUIBuilderEngine.SetControlColor(const Text: string): TColor;
 var
   ColorStr: string;
   ColorValue: integer;
 begin
-  ColorStr:= Text;
-  if (not Text.Trim.Equals('') ) then
+  Result := clNone;
+  ColorStr := Trim(Text);
+  if ColorStr = '' then Exit;
+
+  if ColorStr[1] = '#' then
   begin
-    if (ColorStr[1] = '#') then
+    // #RRGGBB
+    if Length(ColorStr) = 7 then
     begin
-      if Length(ColorStr) = 7 then
-      begin
-        ColorValue := RGB(
-          StrToInt('$' + Copy(ColorStr, 2, 2)),
-          StrToInt('$' + Copy(ColorStr, 4, 2)),
-          StrToInt('$' + Copy(ColorStr, 6, 2))
-        );
-      end
-      else if Length(ColorStr) = 4 then
-      begin
-        ColorValue := RGB(
-          StrToInt('$' + StringOfChar(ColorStr[2], 2)),
-          StrToInt('$' + StringOfChar(ColorStr[3], 2)),
-          StrToInt('$' + StringOfChar(ColorStr[4], 2))
-        );
-      end;
+      ColorValue := RGB(
+        StrToInt('$' + Copy(ColorStr, 2, 2)),
+        StrToInt('$' + Copy(ColorStr, 4, 2)),
+        StrToInt('$' + Copy(ColorStr, 6, 2))
+      );
+      Result := ColorValue;
+      Exit;
     end
-    // Delphi (clRed, clBlue, etc.)
-    else if SameText(Copy(ColorStr, 1, 2), 'cl') then
+    // #RGB
+    else if Length(ColorStr) = 4 then
     begin
-      ColorValue := StringToColor(ColorStr);
-    end
-    // decimal (0-16777215)
-    else if TryStrToInt(ColorStr, Integer(ColorValue)) then
-    begin
-      // Já convertido pelo TryStrToInt
-      ColorValue := ColorValue;
+      ColorValue := RGB(
+        StrToInt('$' + StringOfChar(ColorStr[2], 2)),
+        StrToInt('$' + StringOfChar(ColorStr[3], 2)),
+        StrToInt('$' + StringOfChar(ColorStr[4], 2))
+      );
+      Result := ColorValue;
+      Exit;
     end;
-    result:= ColorValue;
-  end else result:= clNone;
+  end
+  // Delphi color name (clRed, clBlue, etc.)
+  else if SameText(Copy(ColorStr, 1, 2), 'cl') then
+  begin
+    Result := StringToColor(ColorStr);
+    Exit;
+  end
+  // decimal (0-16777215)
+  else if TryStrToInt(ColorStr, ColorValue) then
+  begin
+    Result := ColorValue;
+    Exit;
+  end;
 end;
 
 function TUIBuilderEngine.SetControlType(const AOwner: TComponent; Ctrl: TControl; const CtrlType: string) : TControl;

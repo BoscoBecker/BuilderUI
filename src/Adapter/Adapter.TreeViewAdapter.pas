@@ -1,4 +1,4 @@
-unit Adapter.TreeViewAdapter;
+﻿unit Adapter.TreeViewAdapter;
 
 interface
 
@@ -24,6 +24,8 @@ type
     public class procedure ExpandFathers(Node: TTreeNode); static;
     public class procedure FindComponentInTreeView(const Aterm : string); static;
     public class function FindNodeByComponent(TreeView: TTreeView;const ComponentName: string): TTreeNode; static;
+    public class procedure AddFormsToTreeView(Forms: TObjectList<TForm>; TreeView: TTreeView); static;
+    public procedure CopyRootNodes(SourceTree, TargetTree: TTreeView);
   end;
 
 implementation
@@ -140,6 +142,46 @@ begin
         Exit;
       end;
     end;
+  end;
+end;
+
+class procedure TTreeViewAdapter.AddFormsToTreeView(Forms: TObjectList<TForm>; TreeView: TTreeView);
+var
+  RootNode, FormNode: TTreeNode;
+  Form: TForm;
+begin
+  if not Assigned(TreeView) or not Assigned(Forms) then Exit;
+
+  TreeView.Items.BeginUpdate;
+  try
+    RootNode := TreeView.Items.Add(nil, 'Forms');
+    for Form in Forms do
+    begin
+      FormNode := TreeView.Items.AddChild(RootNode, Form.Name);
+      FormNode.Data := Form;
+    end;
+    RootNode.Expand(False);
+  finally
+    TreeView.Items.EndUpdate;
+  end;
+end;
+
+procedure TTreeViewAdapter.CopyRootNodes(SourceTree, TargetTree: TTreeView);
+begin
+  TargetTree.Items.BeginUpdate;
+  try
+    TargetTree.Items.Clear;
+    for var I := 0 to SourceTree.Items.Count - 1 do
+    begin
+      var SourceNode := SourceTree.Items[I];
+      if SourceNode.Parent = nil then
+      begin
+        var NewNode := TargetTree.Items.Add(Nil, SourceNode.Text);
+        NewNode.Data := SourceNode.Data;
+      end;
+    end;
+  finally
+    TargetTree.Items.EndUpdate;
   end;
 end;
 

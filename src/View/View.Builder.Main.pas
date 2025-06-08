@@ -76,7 +76,7 @@ type
     Panel3: TPanel;
     PanelSearchComponents: TPanel;
     SearchBoxComponents: TSearchBox;
-    TreeView1: TTreeView;
+    TreeViewExplorer: TTreeView;
     SkPaintBox2: TSkPaintBox;
     Image1: TImage;
     Image2: TImage;
@@ -96,7 +96,7 @@ type
     procedure PanelToolPaletteMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure PanelToolPaletteMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure FormCanResize(Sender: TObject; var NewWidth, NewHeight: Integer; var Resize: Boolean);
-    procedure TreeView1Click(Sender: TObject);
+    procedure TreeViewExplorerClick(Sender: TObject);
     procedure ImageExpandClick(Sender: TObject);
     procedure ImageColapseClick(Sender: TObject);
     procedure Image2Click(Sender: TObject);
@@ -270,6 +270,7 @@ procedure TFormBuilderMain.Image15Click(Sender: TObject);
 begin
   var ExportForm:= TFormExports.Create(nil);
   try
+    FTreeViewAdapter.CopyRootNodes(TreeViewExplorer,ExportForm.TreeViewForms);
     ExportForm.SetJsonData(FJsonStructure);
     ExportForm.ShowModal;
   finally
@@ -378,7 +379,7 @@ begin
     TThread.Synchronize(nil,
     procedure
     begin
-      TreeView1.Colapse;
+      TreeViewExplorer.Colapse;
     end)
   Finally
     ActivityIndicatorExplorer.Animate:= False;
@@ -392,7 +393,7 @@ begin
     TThread.Synchronize(nil,
     procedure
     begin
-      TreeView1.Expand;
+      TreeViewExplorer.Expand;
     end)
   Finally
     ActivityIndicatorExplorer.Animate:= False;
@@ -450,12 +451,12 @@ begin
   var FormJson: TJSONObject;
   var Node: TTreeNode;
   CloseFormsCreated;
-  TreeView1.Items.Clear;
+  TreeViewExplorer.Items.Clear;
 
   if Assigned(FJsonStructure) then
     FreeAndNil(FJsonStructure);
   FJsonStructure := TJSONObject.ParseJSONValue(Atext) as TJSONObject;
-  FTreeViewAdapter.FTreeView := TreeView1;
+  FTreeViewAdapter.FTreeView := TreeViewExplorer;
   FTreeViewAdapter.FCreatedForm := FCreatedForms;
   try
     try
@@ -465,9 +466,9 @@ begin
         begin
           FormJson := FormsArray.Items[I] as TJSONObject;
           MyForm := FBuilder.CreateFormFromJson(SkPaintBackground, FormJson);
-          Node := TreeView1.Items.Add(nil, FormJson.GetValue<string>('Name'));
+          Node := TreeViewExplorer.Items.Add(nil, FormJson.GetValue<string>('Name'));
           Node.Data := MyForm;
-          FTreeViewAdapter.AddJSONToTreeView(FormJson,Node,'root',TreeView1);
+          FTreeViewAdapter.AddJSONToTreeView(FormJson,Node,'root',TreeViewExplorer);
 
           MyForm.OnClose := FTreeViewAdapter.CloseFormsTreeview;
           FCreatedForms.Add(MyForm);
@@ -475,10 +476,10 @@ begin
         end;
       end else
       begin
-        Node := TreeView1.Items.Add(nil, FJsonStructure.GetValue<string>('Name'));
+        Node := TreeViewExplorer.Items.Add(nil, FJsonStructure.GetValue<string>('Name'));
         MyForm := FBuilder.CreateFormFromJson(SkPaintBackground, FJsonStructure);
         Node.Data := MyForm;
-        FTreeViewAdapter.AddJSONToTreeView(FJsonStructure,Node,'root',TreeView1);
+        FTreeViewAdapter.AddJSONToTreeView(FJsonStructure,Node,'root',TreeViewExplorer);
 
         MyForm.OnClose := FTreeViewAdapter.CloseFormsTreeview;
         FCreatedForms.Add(MyForm);
@@ -602,8 +603,7 @@ begin
   ACanvas.DrawRect(BorderRect, FPaint);
 end;
 
-procedure TFormBuilderMain.SkPaintBox3Draw(ASender: TObject;
-  const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
+procedure TFormBuilderMain.SkPaintBox3Draw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
 var
   Shader: ISkShader;
   BorderRect: TRectF;
@@ -622,7 +622,7 @@ begin
   ACanvas.DrawRect(BorderRect, FPaint);
 end;
 
-procedure TFormBuilderMain.TreeView1Click(Sender: TObject);
+procedure TFormBuilderMain.TreeViewExplorerClick(Sender: TObject);
 var
   Node: TTreeNode;
   NomeReal: string;
@@ -698,11 +698,11 @@ var
 
 begin
   try
-    if TreeView1.CanFocus then
-      TreeView1.SetFocus;
-    TreeView1.BringToFront;
+    if TreeViewExplorer.CanFocus then
+      TreeViewExplorer.SetFocus;
+    TreeViewExplorer.BringToFront;
 
-    Node := TreeView1.Selected;
+    Node := TreeViewExplorer.Selected;
     if Node <> nil then
     begin
       NomeReal := Node.Text;
@@ -759,7 +759,7 @@ begin
     PanelExecuteJson.Enabled:= False;
     PanelExecuteJson.Font.Color:= clgray;
     CloseFormsCreated;
-    TreeView1.Items.Clear;
+    TreeViewExplorer.Items.Clear;
     Exit;
   end;
 
@@ -775,7 +775,7 @@ begin
     PanelExecuteJson.Enabled:= False;
     PanelExecuteJson.Font.Color:= clgray;
     CloseFormsCreated;
-    TreeView1.Items.Clear;
+    TreeViewExplorer.Items.Clear;
     Exit;
   end;
 

@@ -4,8 +4,8 @@ object FormExports: TFormExports
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Export forms to you prefered GUI '
-  ClientHeight = 332
-  ClientWidth = 482
+  ClientHeight = 351
+  ClientWidth = 556
   Color = clWhite
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
@@ -15,42 +15,9 @@ object FormExports: TFormExports
   Font.Style = []
   Position = poScreenCenter
   TextHeight = 15
-  object SkLabel5: TSkLabel
-    Left = 192
-    Top = 84
-    Width = 41
-    Height = 19
-    Hint = 'Arrange Windows Cascade'
-    Words = <
-      item
-        Caption = 'Delphi'
-      end>
-  end
-  object SkLabel6: TSkLabel
-    Left = 192
-    Top = 123
-    Width = 46
-    Height = 19
-    Hint = 'Arrange Windows Stacked'
-    Words = <
-      item
-        Caption = 'Lazarus'
-      end>
-  end
-  object SkLabel7: TSkLabel
-    Left = 192
-    Top = 162
-    Width = 120
-    Height = 19
-    Hint = 'Arrange Windows Side By Side'
-    Words = <
-      item
-        Caption = 'C# Windows Forms'
-      end>
-  end
   object SkLabelTitle: TSkLabel
-    Left = 90
-    Top = 32
+    Left = 91
+    Top = 0
     Width = 304
     Height = 33
     TextSettings.Font.Size = 25.000000000000000000
@@ -59,33 +26,11 @@ object FormExports: TFormExports
         Caption = 'Export to you prefered GUI '
       end>
   end
-  object SkLabel9: TSkLabel
-    Left = 192
-    Top = 201
-    Width = 26
-    Height = 19
-    Hint = 'Arrange Windows Side By Side'
-    Words = <
-      item
-        Caption = 'Java'
-      end>
-  end
-  object SkLabel10: TSkLabel
-    Left = 192
-    Top = 239
-    Width = 94
-    Height = 19
-    Hint = 'Arrange Windows Side By Side'
-    Words = <
-      item
-        Caption = 'Visual basic/VB'
-      end>
-  end
   object ImageDelphi: TImage
-    Left = 153
-    Top = 76
-    Width = 33
-    Height = 36
+    Left = 9
+    Top = 82
+    Width = 34
+    Height = 34
     Hint = 'Delphi '
     Center = True
     ParentShowHint = False
@@ -103,13 +48,12 @@ object FormExports: TFormExports
       10269402DDDFB557C8922D5502B9CD0A1F0A4EE0A81248C8ADA6BA32DD955FDD
       C9FD0491C5D7054F18E14B19120984890000000049454E44AE426082}
     ShowHint = True
-    OnClick = ImageDelphiClick
   end
   object ImageLazarus: TImage
-    Left = 153
-    Top = 114
-    Width = 33
-    Height = 36
+    Left = 9
+    Top = 120
+    Width = 34
+    Height = 34
     Hint = 'Lazarus'
     Center = True
     ParentShowHint = False
@@ -134,10 +78,10 @@ object FormExports: TFormExports
     ShowHint = True
   end
   object ImageCSharp: TImage
-    Left = 153
-    Top = 153
-    Width = 33
-    Height = 36
+    Left = 9
+    Top = 157
+    Width = 34
+    Height = 34
     Hint = 'C# Windows Forms'
     Center = True
     ParentShowHint = False
@@ -173,10 +117,10 @@ object FormExports: TFormExports
     ShowHint = True
   end
   object ImageJava: TImage
-    Left = 153
-    Top = 191
-    Width = 33
-    Height = 36
+    Left = 9
+    Top = 194
+    Width = 34
+    Height = 34
     Hint = 'Java'
     Center = True
     ParentShowHint = False
@@ -199,10 +143,10 @@ object FormExports: TFormExports
     ShowHint = True
   end
   object ImageVB: TImage
-    Left = 153
+    Left = 9
     Top = 231
-    Width = 33
-    Height = 36
+    Width = 34
+    Height = 34
     Hint = 'Visual Basic'
     Center = True
     ParentShowHint = False
@@ -222,5 +166,227 @@ object FormExports: TFormExports
       6DAFEB852CBE4A907BEC051BE3179C7C5519DDF0039B0000000049454E44AE42
       6082}
     ShowHint = True
+  end
+  object LabelDelphi: TLabel
+    Left = 72
+    Top = 86
+    Width = 45
+    Height = 21
+    Hint = 'Delphi'
+    Caption = 'Delphi'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
+    OnMouseEnter = LabelDelphiMouseEnter
+    OnMouseLeave = LabelDelphiMouseLeave
+  end
+  object LabelLazarus: TLabel
+    Left = 72
+    Top = 122
+    Width = 53
+    Height = 21
+    Hint = 'Lazarus'
+    Caption = 'Lazarus'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
+    OnMouseEnter = LabelDelphiMouseEnter
+    OnMouseLeave = LabelDelphiMouseLeave
+  end
+  object LabelCSharp: TLabel
+    Left = 72
+    Top = 163
+    Width = 19
+    Height = 21
+    Hint = 'C#'
+    Caption = 'C#'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
+    OnMouseEnter = LabelDelphiMouseEnter
+    OnMouseLeave = LabelDelphiMouseLeave
+  end
+  object LabelJava: TLabel
+    Left = 72
+    Top = 201
+    Width = 30
+    Height = 21
+    Hint = 'Java'
+    Caption = 'Java'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
+    OnMouseEnter = LabelDelphiMouseEnter
+    OnMouseLeave = LabelDelphiMouseLeave
+  end
+  object LabelVB: TLabel
+    Left = 72
+    Top = 237
+    Width = 81
+    Height = 21
+    Hint = 'Visual Basic/VB'
+    Caption = 'Visual Basic'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
+    OnMouseEnter = LabelDelphiMouseEnter
+    OnMouseLeave = LabelDelphiMouseLeave
+  end
+  object LabelInfo: TLabel
+    Left = 8
+    Top = 325
+    Width = 498
+    Height = 19
+    AutoSize = False
+    Caption = 'Waiting...'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowFrame
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
+    Visible = False
+  end
+  object GroupBoxOptionsForms: TGroupBox
+    Left = 168
+    Top = 49
+    Width = 376
+    Height = 259
+    Caption = 'Options Forms'
+    TabOrder = 0
+    object LabelInfoExportPath: TLabel
+      Left = 28
+      Top = 157
+      Width = 75
+      Height = 15
+      Caption = 'Path to export'
+    end
+    object EditPath: TEdit
+      Left = 42
+      Top = 178
+      Width = 245
+      Height = 23
+      TabOrder = 0
+      TextHint = 'C:\Forms\'
+    end
+    object ButtonSelectFolder: TButton
+      Left = 295
+      Top = 178
+      Width = 34
+      Height = 23
+      Caption = '...'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 1
+      OnClick = ButtonSelectFolderClick
+    end
+    object CheckBoxOnlyGUI: TCheckBox
+      Left = 42
+      Top = 207
+      Width = 97
+      Height = 17
+      Hint = 'Export just the GUI form'
+      Caption = 'Only GUI'
+      TabOrder = 2
+    end
+    object CheckBoxShowFolder: TCheckBox
+      Left = 42
+      Top = 230
+      Width = 158
+      Height = 17
+      Hint = 'Show folder before export'
+      Caption = 'Show folder after export'
+      TabOrder = 3
+    end
+    object ButtonStartProcess: TButton
+      Left = 254
+      Top = 218
+      Width = 75
+      Height = 25
+      Caption = 'Start'
+      TabOrder = 4
+      OnClick = ButtonStartProcessClick
+    end
+    object TreeViewForms: TTreeView
+      Left = 11
+      Top = 20
+      Width = 355
+      Height = 124
+      BorderStyle = bsNone
+      CheckBoxes = True
+      Indent = 19
+      ReadOnly = True
+      TabOrder = 5
+    end
+  end
+  object RadioButtonDelphi: TRadioButton
+    Left = 49
+    Top = 89
+    Width = 21
+    Height = 17
+    Checked = True
+    TabOrder = 1
+    TabStop = True
+  end
+  object RadioButtonVisualBasic: TRadioButton
+    Left = 49
+    Top = 239
+    Width = 21
+    Height = 17
+    TabOrder = 2
+  end
+  object RadioButtonLazarus: TRadioButton
+    Left = 49
+    Top = 125
+    Width = 21
+    Height = 17
+    TabOrder = 3
+  end
+  object RadioButtonCSharp: TRadioButton
+    Left = 49
+    Top = 165
+    Width = 21
+    Height = 17
+    TabOrder = 4
+  end
+  object RadioButtonJava: TRadioButton
+    Left = 49
+    Top = 203
+    Width = 21
+    Height = 17
+    TabOrder = 5
+  end
+  object ActivityIndicatorLoading: TActivityIndicator
+    Left = 512
+    Top = 314
   end
 end

@@ -1,147 +1,224 @@
 {
-  "Type": "TForm",
-  "Name": "FrmCadastroCliente",
-  "Caption": "Customer Registration",
-  "Align": "Client",
-  "Children": [
+  "Forms": [
     {
-      "Type": "TComboBox",
-      "Name": "ComboBox1",
-      "Position": { "X": 30, "Y": 30 },
-      "Width": 150,
-      "Items": ["Item 1", "Item 2", "Item 3"]
+      "Type": "TForm",
+      "Name": "FrmCustomerRegistration",
+      "Caption": "Customer Registration",
+      "Align": "Client",
+      "Width": 800,
+      "Height": 600,
+      "Children": [
+        {
+          "Type": "TComboBox",
+          "Name": "ComboBox1",
+          "Position": { "X": 30, "Y": 30 },
+          "Width": 150,
+          "Items": ["Item 1", "Item 2", "Item 3"]
+        },
+        {
+          "Type": "TComboBox",
+          "Name": "ComboBox2",
+          "Position": { "X": 30, "Y": 70 },
+          "Width": 150,
+          "Items": ["A", "B", "C"]
+        },
+        {
+          "Type": "TEdit",
+          "Name": "Edit1",
+          "Position": { "X": 30, "Y": 110 },
+          "Width": 200,
+          "Text": "Type here"
+        },
+        {
+          "Type": "TDateTimePicker",
+          "Name": "DateTimePicker1",
+          "Position": { "X": 30, "Y": 150 }
+        },
+        {
+          "Type": "TCheckBox",
+          "Name": "CheckBox1",
+          "Position": { "X": 250, "Y": 30 },
+          "Caption": "Check me"
+        },
+        {
+          "Type": "TCheckBox",
+          "Name": "CheckBox2",
+          "Position": { "X": 250, "Y": 60 },
+          "Caption": "Another checkbox"
+        },
+        {
+          "Type": "TCheckBox",
+          "Name": "CheckBox3",
+          "Position": { "X": 250, "Y": 90 },
+          "Caption": "Extra checkbox"
+        },
+        {
+          "Type": "TRadioButton",
+          "Name": "RadioButton1",
+          "Position": { "X": 250, "Y": 130 },
+          "Caption": "Radio option"
+        },
+        {
+          "Type": "TRadioGroup",
+          "Name": "RadioGroup1",
+          "Position": { "X": 250, "Y": 180 },
+          "Caption": "Choose one",
+          "Items": ["Option A", "Option B"]
+        },
+        {
+          "Type": "TPanel",
+          "Name": "Panel1",
+          "Position": { "X": 500, "Y": 30 },
+          "Width": 200,
+          "Height": 100,
+          "Caption": "Panel"
+        },
+        {
+          "Type": "TPanel",
+          "Name": "Panel2",
+          "Position": { "X": 500, "Y": 140 },
+          "Width": 200,
+          "Height": 100,
+          "Color": "#0000FF",
+          "Caption": "Second Panel"
+        },
+        {
+          "Type": "TShape",
+          "Name": "Shape1",
+          "Position": { "X": 500, "Y": 250 },
+          "Shape": "stRectangle",
+          "Width": 50,
+          "Height": 50
+        },
+        {
+          "Type": "TButton",
+          "Name": "Button1",
+          "Position": { "X": 30, "Y": 200 },
+          "Caption": "Click Me"
+        },
+        {
+          "Type": "TBitBtn",
+          "Name": "BitBtn1",
+          "Position": { "X": 120, "Y": 200 },
+          "Caption": "Bit Button",
+          "Kind": "bkOK"
+        },
+        {
+          "Type": "TSpeedButton",
+          "Name": "SpeedButton1",
+          "Position": { "X": 220, "Y": 200 },
+          "Caption": "Speed"
+        },
+        {
+          "Type": "TStringGrid",
+          "Name": "StringGrid1",
+          "Position": { "X": 30, "Y": 250 },
+          "ColCount": 3,
+          "RowCount": 5,
+          "Width": 300,
+          "Height": 100
+        },
+        {
+          "Type": "TDBGrid",
+          "Name": "DBGrid1",
+          "Position": { "X": 30, "Y": 360 },
+          "Width": 470,
+          "Height": 120
+        },
+        {
+          "Type": "TMemo",
+          "Name": "TMemo1",
+          "Position": { "X": 520, "Y": 310 },
+          "Width": 180,
+          "Height": 60,
+          "Lines": ["Line 1", "Line 2"]
+        },
+        {
+          "Type": "TListBox",
+          "Name": "ListBox1",
+          "Position": { "X": 520, "Y": 380 },
+          "Items": ["Option 1", "Option 2"]
+        },
+        {
+          "Type": "TGroupBox",
+          "Name": "GroupBox1",
+          "Position": { "X": 30, "Y": 500 },
+          "Width": 300,
+          "Height": 100,
+          "Caption": "Group Section"
+        }
+      ]
     },
     {
-      "Type": "TComboBox",
-      "Name": "ComboBox2",
-      "Position": { "X": 30, "Y": 70 },
-      "Width": 150,
-      "Items": ["A", "B", "C"]
-    },
-    {
-      "Type": "TEdit",
-      "Name": "Edit1",
-      "Position": { "X": 30, "Y": 110 },
-      "Width": 200,
-      "Text": "Type here"
-    },
-    {
-      "Type": "TDateTimePicker",
-      "Name": "DateTimePicker1",
-      "Position": { "X": 30, "Y": 150 }
-    },
-    {
-      "Type": "TCheckBox",
-      "Name": "CheckBox1",
-      "Position": { "X": 250, "Y": 30 },
-      "Caption": "Check me"
-    },
-    {
-      "Type": "TCheckBox",
-      "Name": "CheckBox2",
-      "Position": { "X": 250, "Y": 60 },
-      "Caption": "Another checkbox"
-    },
-    {
-      "Type": "TCheckBox",
-      "Name": "CheckBox3",
-      "Position": { "X": 250, "Y": 90 },
-      "Caption": "Extra checkbox"
-    },
-    {
-      "Type": "TRadioButton",
-      "Name": "RadioButton1",
-      "Position": { "X": 250, "Y": 130 },
-      "Caption": "Radio option"
-    },
-    {
-      "Type": "TRadioGroup",
-      "Name": "RadioGroup1",
-      "Position": { "X": 250, "Y": 180 },
-      "Caption": "Choose one",
-      "Items": ["Option A", "Option B"]
-    },
-    {
-      "Type": "TPanel",
-      "Name": "Panel1",
-      "Position": { "X": 500, "Y": 30 },
-      "Width": 200,
-      "Height": 100,
-      "Caption": "Panel"
-    },
-    {
-      "Type": "TPanel",
-      "Name": "Panel2",
-      "Position": { "X": 500, "Y": 140 },
-      "Width": 200,
-      "Height": 100,
-      "Color": "#0000FF",
-      "Caption": "Second Panel"
-    },
-    {
-      "Type": "TShape",
-      "Name": "Shape1",
-      "Position": { "X": 500, "Y": 250 },
-      "Shape": "stRectangle",
-      "Width": 50,
-      "Height": 50
-    },
-    {
-      "Type": "TButton",
-      "Name": "Button1",
-      "Position": { "X": 30, "Y": 200 },
-      "Caption": "Click Me"
-    },
-    {
-      "Type": "TBitBtn",
-      "Name": "BitBtn1",
-      "Position": { "X": 120, "Y": 200 },
-      "Caption": "Bit Button",
-      "Kind": "bkOK"
-    },
-    {
-      "Type": "TSpeedButton",
-      "Name": "SpeedButton1",
-      "Position": { "X": 220, "Y": 200 },
-      "Caption": "Speed"
-    },
-    {
-      "Type": "TStringGrid",
-      "Name": "StringGrid1",
-      "Position": { "X": 30, "Y": 250 },
-      "ColCount": 3,
-      "RowCount": 5,
-      "Width": 300,
-      "Height": 100
-    },
-    {
-      "Type": "TDBGrid",
-      "Name": "DBGrid1",
-      "Position": { "X": 30, "Y": 360 },
-      "Width": 470,
-      "Height": 120
-    },
-    {
-      "Type": "TMemo",
-      "Name": "TMemo1",
-      "Position": { "X": 520, "Y": 310 },
-      "Width": 180,
-      "Height": 60,
-      "Lines": ["Line 1", "Line 2"]
-    },
-    {
-      "Type": "TListBox",
-      "Name": "ListBox1",
-      "Position": { "X": 520, "Y": 380 },
-      "Items": ["Option 1", "Option 2"]
-    },
-    {
-      "Type": "TGroupBox",
-      "Name": "GroupBox1",
-      "Position": { "X": 30, "Y": 500 },
-      "Width": 300,
-      "Height": 100,
-      "Caption": "Group Section"
+      "Type": "TForm",
+      "Name": "FrmAddressCustomer",
+      "Caption": "Customer Address",
+      "Align": "Client",
+      "Width": 800,
+      "Height": 600,
+      "Children": [
+        {
+          "Type": "TLabel",
+          "Name": "Label1",
+          "Position": { "X": 30, "Y": 30 },
+          "Caption": "Street:"
+        },
+        {
+          "Type": "TEdit",
+          "Name": "EditStreet",
+          "Position": { "X": 100, "Y": 30 },
+          "Width": 200
+        },
+        {
+          "Type": "TLabel",
+          "Name": "Label2",
+          "Position": { "X": 30, "Y": 70 },
+          "Caption": "City:"
+        },
+        {
+          "Type": "TEdit",
+          "Name": "EditCity",
+          "Position": { "X": 100, "Y": 70 },
+          "Width": 200
+        },
+        {
+          "Type": "TLabel",
+          "Name": "Label3",
+          "Position": { "X": 30, "Y": 110 },
+          "Caption": "State:"
+        },
+        {
+          "Type": "TComboBox",
+          "Name": "ComboBoxState",
+          "Position": { "X": 100, "Y": 110 },
+          "Width": 200,
+          "Items": ["Select State", "State 1", "State 2"]
+        },
+        {
+          "Type": "TLabel",
+          "Name": "Label4",
+          "Position": { "X": 30, "Y": 150 },
+          "Caption": "ZIP Code:"
+        },
+        {
+          "Type": "TEdit",
+          "Name": "EditZIP",
+          "Position": { "X": 100, "Y": 150 },
+          "Width": 200
+        },
+        {
+          "Type": "TButton",
+          "Name": "ButtonSave",
+          "Position": { "X": 30, "Y": 200 },
+          "Caption": "Save Address"
+        },
+        {
+          "Type": "TButton",
+          "Name": "ButtonCancel",
+          "Position": { "X": 150, "Y": 200 },
+          "Caption": "Cancel"
+        }
+      ]
     }
   ]
 }

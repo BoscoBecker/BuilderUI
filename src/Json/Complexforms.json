@@ -5,6 +5,8 @@
       "Caption": "System Login",
       "Type": "TForm",
       "Align": "Client",
+      "Width": 800,
+      "Height": 600,      
       "Children": [
         {
           "Name": "LblTituloLogin",
@@ -72,6 +74,8 @@
       "Caption": "Main System",
       "Type": "TForm",
       "Align": "Client",
+      "Width": 800,
+      "Height": 600,
       "Children": [
         {
           "Name": "LblBemVindo",
@@ -130,6 +134,8 @@
       "Caption": "Report Generator",
       "Type": "TForm",
       "Align": "Client",
+      "Width": 800,
+      "Height": 600,      
       "Children": [
         {
           "Name": "LblTituloRelatorio",
@@ -241,6 +247,8 @@
       "Caption": "People Registration",
       "Type": "TForm",
       "Align": "Client",
+      "Width": 800,
+      "Height": 600,      
       "Children": [
         {
           "Name": "LblTituloPessoa",
@@ -499,6 +507,8 @@
       "Caption": "Supplier Registration",
       "Type": "TForm",
       "Align": "Client",
+      "Width": 800,
+      "Height": 600,      
       "Children": [
         {
           "Name": "LblTituloFornecedor",
@@ -741,6 +751,8 @@
       "Caption": "Customer Registration",
       "Type": "TForm",
       "Align": "Client",
+      "Width": 800,
+      "Height": 600,      
       "Children": [
         {
           "Name": "LblTituloCliente",

@@ -1,13 +1,191 @@
 {
   "Forms": [
     {
+      "Name": "FrmCustomerRegistration",
+      "Caption": "Customer Registration",
+      "Type": "TForm",
+      "Align": "Client",
+      "Width": 800,
+      "Height": 600,
+      "Children": [
+        {
+          "Name": "LblTituloCliente",
+          "Type": "TLabel",
+          "Text": "Customer Registration",
+          "Position": { "X": 5, "Y": 10 },
+          "Width": 300,
+          "Height": 30,
+          "FontSize": 16,
+          "FontStyle": ["Bold"]
+        },
+        {
+          "Name": "LblNomeCompleto",
+          "Type": "TLabel",
+          "Text": "Full Name:",
+          "Position": { "X": 5, "Y": 50 },
+          "Width": 300,
+          "Height": 20
+        },
+        {
+          "Name": "EdtNomeCompleto",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 5, "Y": 70 },
+          "Width": 300,
+          "Height": 30
+        },
+        {
+          "Name": "LblTelefone",
+          "Type": "TLabel",
+          "Text": "Phone:",
+          "Position": { "X": 5, "Y": 110 },
+          "Width": 300,
+          "Height": 20
+        },
+        {
+          "Name": "EdtTelefone",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 5, "Y": 130 },
+          "Width": 300,
+          "Height": 30
+        },
+        {
+          "Name": "BtnSalvarCliente",
+          "Type": "TButton",
+          "Caption": "Save",
+          "Position": { "X": 5, "Y": 180 },
+          "Width": 140,
+          "Height": 40
+        },
+        {
+          "Name": "BtnCancelarCliente",
+          "Type": "TButton",
+          "Caption": "Cancel",
+          "Position": { "X": 165, "Y": 180 },
+          "Width": 140,
+          "Height": 40
+        }
+      ]
+    },
+    {
+      "Name": "FrmAddressCustomer",
+      "Caption": "Customer Address",
+      "Type": "TForm",
+      "Align": "Client",
+      "Width": 800,
+      "Height": 600,
+      "Children": [
+        {
+          "Name": "LblTituloEndereco",
+          "Type": "TLabel",
+          "Text": "Customer Address",
+          "Position": { "X": 5, "Y": 10 },
+          "Width": 300,
+          "Height": 30,
+          "FontSize": 16,
+          "FontStyle": ["Bold"]
+        },
+        {
+          "Name": "LblLogradouro",
+          "Type": "TLabel",
+          "Text": "Street:",
+          "Position": { "X": 5, "Y": 50 },
+          "Width": 300,
+          "Height": 20
+        },
+        {
+          "Name": "EdtLogradouro",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 5, "Y": 70 },
+          "Width": 300,
+          "Height": 30
+        },
+        {
+          "Name": "LblNumero",
+          "Type": "TLabel",
+          "Text": "Number:",
+          "Position": { "X": 5, "Y": 110 },
+          "Width": 150,
+          "Height": 20
+        },
+        {
+          "Name": "EdtNumero",
+          "Type": "TEdit",
+          "Text": "",
+          "Position": { "X": 5, "Y": 130 },
+          "Width": 150,
+          "Height": 30
+        },
+        {
+          "Name": "LblCidade",
+          "Type": "TLabel",
+          "Text": "City:",
+          "Position": { "X": 5, "Y": 170 },
+          "Width": 150,
+          "Height": 20
+        },
+        {
+          "Name": "EdtCidade",
+          "Type": "TEdit",
+          "Caption": "",
+          "Position": { "X": 5, "Y": 190 },
+          "Width": 150,
+          "Height": 30
+        },
+        {
+          "Name": "BtnSalvarEndereco",
+          "Type": "TButton",
+          "Caption": "Save Address",
+          "Position": { "X": 5, "Y": 240 },
+          "Width": 150,
+          "Height": 40
+        }
+      ]
+    },
+    {
+      "Type": "TForm",
+      "Name": "FrmButtons",
+      "Caption": "Button List",
+      "Align": "Client",
+      "Width": 800,
+      "Height": 600,
+      "Children": [
+        {
+          "Type": "TButton",
+          "Name": "BtnLimparCampos",
+          "Caption": "Clear Fields",
+          "Position": { "X": 5, "Y": 100 },
+          "Width": 150,
+          "Height": 40
+        },
+        {
+          "Type": "TButton",
+          "Name": "BtnGerarPDF",
+          "Caption": "Export PDF",
+          "Position": { "X": 165, "Y": 150 },
+          "Width": 140,
+          "Height": 40
+        },
+        {
+          "Type": "TButton",
+          "Name": "BtnEnviarEmail",
+          "Caption": "Send by Email",
+          "Position": { "X": 5, "Y": 200 },
+          "Width": 120,
+          "Height": 120
+        }
+      ]
+    },
+    {
       "Name": "FrmLogin",
       "Caption": "Login",
       "Type": "TForm",
       "Align": "Client",
       "Width": 800,
       "Height": 600,
-    "Children": [
+      "Children": [
         {
           "Name": "PnlLogin",
           "Type": "TPanel",
@@ -79,7 +257,7 @@
       "Type": "TForm",
       "Align": "Client",
       "Width": 800,
-      "Height": 600,      
+      "Height": 600,
       "Children": [
         {
           "Name": "PnlTopo",
@@ -190,7 +368,7 @@
         {
           "Name": "LblDescricao",
           "Type": "TLabel",
-          "Text": "O BuilderUI é uma solução desenvolvida em Delphi para criar interfaces dinâmicas a partir de arquivos JSON. Com ele, é possível montar telas de cadastro, consulta e navegação sem alterar o código-fonte, tornando o desenvolvimento mais ágil, flexível e moderno.",
+          "Text": "O BuilderUI é uma solução desenvolvida em Delphi para criar interfaces dinâmicas a partir de arquivos JSON. Com ele, � poss�vel montar telas de cadastro, consulta e navega��o sem alterar o c�digo-fonte, tornando o desenvolvimento mais �gil, flex�vel e moderno.",
           "Position": { "X": 170, "Y": 80 },
           "Width": 400,
           "Height": 100,

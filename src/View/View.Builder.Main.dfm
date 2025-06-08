@@ -1157,7 +1157,7 @@ object FormBuilderMain: TFormBuilderMain
         ExplicitHeight = 23
       end
     end
-    object TreeView1: TTreeView
+    object TreeViewExplorer: TTreeView
       Left = 0
       Top = 92
       Width = 223
@@ -1171,10 +1171,11 @@ object FormBuilderMain: TFormBuilderMain
       MultiSelectStyle = [msControlSelect, msShiftSelect]
       ParentCtl3D = False
       ParentShowHint = False
+      ReadOnly = True
       ShowHint = True
       TabOrder = 3
       ToolTips = False
-      OnClick = TreeView1Click
+      OnClick = TreeViewExplorerClick
     end
   end
 end

@@ -51,7 +51,7 @@ procedure TUIBuilderEngine.ControlDblClickImage(Sender: TObject);
 begin
   var Open := TOpenDialog.Create(nil);
   try
-    Open.Filter:= 'Images (*.PNG)|*.JPG|*.JPEG';
+    Open.Filter:= 'Images .PNG|.PNG';
     if Open.Execute(Application.Handle) then
       if not String(open.FileName).trim.Equals('') then
         TImage(Sender).Picture.LoadFromFile(open.FileName);
@@ -102,6 +102,9 @@ begin
      TPanel(Ctrl).BorderStyle:= SetControlBorderStyle(Json.GetValue<string>('BorderStyle', 'bsNone'));
      TPanel(Ctrl).Color:= SetControlColor(Json.GetValue<string>('Color', ColorStr));
    end;
+
+   if Ctrl is TImage then
+     TImage(Ctrl).Center:= True;
 
    var items:= Json.GetValue('Items');
    if (items <> nil) and (items is TJSONArray) then

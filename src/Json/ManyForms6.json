@@ -293,7 +293,7 @@
             {
               "Name": "BtnClientes",
               "Type": "TButton",
-              "Caption": "Clientes",
+              "Caption": "Customers",
               "Position": { "X": 20, "Y": 30 },
               "Width": 140,
               "Height": 40
@@ -301,7 +301,7 @@
             {
               "Name": "BtnProdutos",
               "Type": "TButton",
-              "Caption": "Produtos",
+              "Caption": "Products",
               "Position": { "X": 20, "Y": 80 },
               "Width": 140,
               "Height": 40
@@ -309,7 +309,7 @@
             {
               "Name": "BtnSair",
               "Type": "TButton",
-              "Caption": "Sair",
+              "Caption": "Exit",
               "Position": { "X": 20, "Y": 500 },
               "Width": 140,
               "Height": 40
@@ -328,7 +328,7 @@
             {
               "Name": "LblBemVindo",
               "Type": "TLabel",
-              "Text": "Bem-vindo ao BuilderUI!",
+              "Text": "Welcome to BuilderUI!",
               "Position": { "X": 40, "Y": 40 },
               "Width": 400,
               "Height": 40,
@@ -341,7 +341,7 @@
     },
     {
       "Name": "FrmSobre",
-      "Caption": "Sobre o BuilderUI",
+      "Caption": "About BuilderUI",
       "Type": "TForm",
       "Align": "Client",
       "Width": 800,
@@ -350,7 +350,7 @@
         {
           "Name": "LblTituloSobre",
           "Type": "TLabel",
-          "Text": "Sobre o BuilderUI em Delphi",
+          "Text": "About BuilderUI in Delphi",
           "Position": { "X": 30, "Y": 20 },
           "Width": 400,
           "Height": 32,
@@ -368,7 +368,7 @@
         {
           "Name": "LblDescricao",
           "Type": "TLabel",
-          "Text": "O BuilderUI é uma solução desenvolvida em Delphi para criar interfaces dinâmicas a partir de arquivos JSON. Com ele, � poss�vel montar telas de cadastro, consulta e navega��o sem alterar o c�digo-fonte, tornando o desenvolvimento mais �gil, flex�vel e moderno.",
+          "Text": "BuilderUI is a solution developed in Delphi to create dynamic interfaces from JSON files. With it, you can build registration, query, and navigation screens without changing the source code, making development faster, more flexible, and modern.",
           "Position": { "X": 170, "Y": 80 },
           "Width": 400,
           "Height": 100,

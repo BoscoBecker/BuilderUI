@@ -1,4 +1,4 @@
-unit View.Builder.Main;
+﻿unit View.Builder.Main;
 
 interface
 
@@ -18,6 +18,10 @@ uses
 type  TBuilderBackground = ( bClear, bGrid);
 
 type
+  TOrigRect = record
+    Left, Top, Width, Height: Integer;
+  end;
+
   TFormBuilderMain = class(TForm)
     StatusBarBottom: TStatusBar;
     PanelRenderJson: TPanel;
@@ -83,7 +87,8 @@ type
     SkLabel2: TSkLabel;
     SkPaintBox3: TSkPaintBox;
     Image4: TImage;
-    Image18: TImage;
+    Image19: TImage;
+    Image20: TImage;
     procedure FormCreate(Sender: TObject);
     procedure ImgSettingsClick(Sender: TObject);
     procedure Image9Click(Sender: TObject);
@@ -124,6 +129,9 @@ type
     procedure Image11Click(Sender: TObject);
     procedure Image15Click(Sender: TObject);
     procedure Image8Click(Sender: TObject);
+    procedure FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+    procedure Image19Click(Sender: TObject);
+    procedure Image20Click(Sender: TObject);
   private
     FBuilderBackground: TBuilderBackground;
     FCreatedForms: TObjectList<TForm>;
@@ -135,13 +143,17 @@ type
     FDragging: Boolean;
     FDragOffset: TPoint;
     FPaint: ISkPaint;
+    FZoom: Single;
+    OrigRectsForms: array of TOrigRect;
     procedure RenderJson(const Atext : string);
     procedure CloseFormsCreated;
     procedure ValidateAndProcessJSON(const AJSON: string);
     procedure BuildStatusBar;
     procedure SetSelectedComponent(const Value: String);
     procedure SetBuilderBackground(const Value: TBuilderBackground);
-
+    procedure ZoomIn;
+    procedure ZoomOut;
+    procedure ApplyZoomToCreatedForms;
   public
     destructor Destroy; override;
     property SelectedComponent: String read FSelectedComponent write SetSelectedComponent;
@@ -220,11 +232,21 @@ procedure TFormBuilderMain.FormCreate(Sender: TObject);
 begin
   FCreatedForms := TObjectList<TForm>.Create(False);
   SetBuilderBackground(bClear);
+  FZoom := 1.0; // 100%
 end;
 
 procedure TFormBuilderMain.FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
 begin
   StatusBarBottom.Panels[0].Text := Format('X: %d Y: %d', [X, Y]);
+end;
+
+procedure TFormBuilderMain.FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
+begin
+  if WheelDelta > 0 then
+    ZoomIn
+  else
+    ZoomOut;
+  Handled := True;
 end;
 
 procedure TFormBuilderMain.FormShow(Sender: TObject);
@@ -278,9 +300,21 @@ begin
   end;
 end;
 
+procedure TFormBuilderMain.Image19Click(Sender: TObject);
+begin
+  ZoomIn;
+  SkPaintBackground.Width:= SkPaintBackground.Width + 1;
+end;
+
 procedure TFormBuilderMain.Image1Click(Sender: TObject);
 begin
   PanelTree.Visible:= not PanelTree.Visible;
+end;
+
+procedure TFormBuilderMain.Image20Click(Sender: TObject);
+begin
+  ZoomOut;
+  SkPaintBackground.Width:= SkPaintBackground.Width - 1;
 end;
 
 procedure TFormBuilderMain.Image2Click(Sender: TObject);
@@ -363,6 +397,7 @@ begin
     PanelSettings.Visible:= True
   else
     PanelSettings.Visible:= False;
+
   SplitView1.Opened := not SplitView1.Opened;
   SplitterLeft.Visible:= True;
 end;
@@ -411,8 +446,7 @@ begin
   RenderJson(memo.text);
 end;
 
-procedure TFormBuilderMain.PanelToolPaletteMouseDown(Sender: TObject; Button: TMouseButton;
-  Shift: TShiftState; X, Y: Integer);
+procedure TFormBuilderMain.PanelToolPaletteMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   if Button = mbLeft then
   begin
@@ -422,8 +456,7 @@ begin
   end;
 end;
 
-procedure TFormBuilderMain.PanelToolPaletteMouseMove(Sender: TObject; Shift: TShiftState; X,
-  Y: Integer);
+procedure TFormBuilderMain.PanelToolPaletteMouseMove(Sender: TObject; Shift: TShiftState; X,  Y: Integer);
 begin
   if FDragging then
   begin
@@ -432,8 +465,7 @@ begin
   end;
 end;
 
-procedure TFormBuilderMain.PanelToolPaletteMouseUp(Sender: TObject; Button: TMouseButton;
-  Shift: TShiftState; X, Y: Integer);
+procedure TFormBuilderMain.PanelToolPaletteMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   if Button = mbLeft then
   begin
@@ -450,11 +482,11 @@ begin
   var FormsArray: TJSONArray;
   var FormJson: TJSONObject;
   var Node: TTreeNode;
+
   CloseFormsCreated;
   TreeViewExplorer.Items.Clear;
 
-  if Assigned(FJsonStructure) then
-    FreeAndNil(FJsonStructure);
+  if Assigned(FJsonStructure) then FreeAndNil(FJsonStructure);
   FJsonStructure := TJSONObject.ParseJSONValue(Atext) as TJSONObject;
   FTreeViewAdapter.FTreeView := TreeViewExplorer;
   FTreeViewAdapter.FCreatedForm := FCreatedForms;
@@ -473,6 +505,12 @@ begin
           MyForm.OnClose := FTreeViewAdapter.CloseFormsTreeview;
           FCreatedForms.Add(MyForm);
           MyForm.Show;
+
+          SetLength(OrigRectsForms, FCreatedForms.Count);
+          OrigRectsForms[FCreatedForms.Count-1].Left   := MyForm.Left;
+          OrigRectsForms[FCreatedForms.Count-1].Top    := MyForm.Top;
+          OrigRectsForms[FCreatedForms.Count-1].Width  := MyForm.Width;
+          OrigRectsForms[FCreatedForms.Count-1].Height := MyForm.Height;
         end;
       end else
       begin
@@ -523,32 +561,33 @@ procedure TFormBuilderMain.SkPaintBackgroundDraw(ASender: TObject; const ACanvas
 const
   GridSize = 20;
 begin
+  ACanvas.Save;
+  ACanvas.Scale(FZoom, FZoom); // Aplica o zoom
   case FBuilderBackground of
     bClear: ACanvas.Clear(TAlphaColors.White);
     bGrid:
     begin
-      ACanvas.DrawRect(RectF(100, 100, 300, 200), TSkPaint.Create(TSkPaintStyle.Stroke));
       ACanvas.Clear($FFF5F5F5);
       FPaint := TSkPaint.Create;
       FPaint.Style := TSkPaintStyle.Stroke;
       FPaint.Color := $FFDDDDDD;
       FPaint.StrokeWidth := 1;
       var X := ADest.Left;
-      while X <= ADest.Right do
+      while X <= ADest.Right / FZoom do
       begin
-        ACanvas.DrawLine(X, ADest.Top, X, ADest.Bottom, FPaint);
+        ACanvas.DrawLine(X, ADest.Top, X, ADest.Bottom / FZoom, FPaint);
         X := X + GridSize;
       end;
       var Y := ADest.Top;
-      while Y <= ADest.Bottom do
+      while Y <= ADest.Bottom / FZoom do
       begin
-        ACanvas.DrawLine(ADest.Left, Y, ADest.Right, Y, FPaint);
+        ACanvas.DrawLine(ADest.Left, Y, ADest.Right / FZoom, Y, FPaint);
         Y := Y + GridSize;
       end;
     end;
   end;
+  ACanvas.Restore;
 end;
-
 
 procedure TFormBuilderMain.SkPaintBackgroundMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
 begin
@@ -786,6 +825,33 @@ begin
   PanelExecuteJson.Enabled:= True;
 end;
 
+procedure TFormBuilderMain.ZoomIn;
+begin
+  FZoom := FZoom * 1.1;
+  StatusBarBottom.Panels[4].Text := Format('Zoom: %d%%', [Round(FZoom * 100)]);
+  ApplyZoomToCreatedForms;
+  SkPaintBackground.Invalidate;
+end;
+
+procedure TFormBuilderMain.ZoomOut;
+begin
+  FZoom := FZoom / 1.1;
+  StatusBarBottom.Panels[4].Text := Format('Zoom: %d%%', [Round(FZoom * 100)]);
+  ApplyZoomToCreatedForms;
+  SkPaintBackground.Invalidate;
+end;
+
+procedure TFormBuilderMain.ApplyZoomToCreatedForms;
+begin
+  if Length(OrigRectsForms) <> FCreatedForms.Count then Exit;
+  for var I := 0 to FCreatedForms.Count - 1 do
+  begin
+    FCreatedForms[I].Left   := Round(OrigRectsForms[I].Left * FZoom);
+    FCreatedForms[I].Top    := Round(OrigRectsForms[I].Top * FZoom);
+    FCreatedForms[I].Width  := Round(OrigRectsForms[I].Width * FZoom);
+    FCreatedForms[I].Height := Round(OrigRectsForms[I].Height * FZoom);
+  end;
+end;
 
 end.
 

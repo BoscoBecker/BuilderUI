@@ -3,7 +3,7 @@ object FormBuilderMain: TFormBuilderMain
   Top = 0
   Caption = 'Forms Builder UI'
   ClientHeight = 794
-  ClientWidth = 1014
+  ClientWidth = 1109
   Color = clWhite
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
@@ -29,7 +29,7 @@ object FormBuilderMain: TFormBuilderMain
     ExplicitTop = 65
   end
   object SplitterRight: TSplitter
-    Left = 769
+    Left = 864
     Top = 57
     Height = 689
     Align = alRight
@@ -41,7 +41,7 @@ object FormBuilderMain: TFormBuilderMain
     AlignWithMargins = True
     Left = 279
     Top = 60
-    Width = 487
+    Width = 582
     Height = 683
     Align = alClient
     OnMouseMove = SkPaintBackgroundMouseMove
@@ -52,7 +52,7 @@ object FormBuilderMain: TFormBuilderMain
   object StatusBarBottom: TStatusBar
     Left = 0
     Top = 775
-    Width = 1014
+    Width = 1109
     Height = 19
     Panels = <
       item
@@ -79,9 +79,10 @@ object FormBuilderMain: TFormBuilderMain
       item
         Width = 150
       end>
+    ExplicitWidth = 1014
   end
   object PanelRenderJson: TPanel
-    Left = 772
+    Left = 867
     Top = 57
     Width = 242
     Height = 689
@@ -90,6 +91,7 @@ object FormBuilderMain: TFormBuilderMain
     Caption = 'PanelRenderJson'
     TabOrder = 1
     Visible = False
+    ExplicitLeft = 772
     object Splitter3: TSplitter
       Left = 0
       Top = 649
@@ -753,11 +755,12 @@ object FormBuilderMain: TFormBuilderMain
   object Panel2: TPanel
     Left = 0
     Top = 746
-    Width = 1014
+    Width = 1109
     Height = 29
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 3
+    ExplicitWidth = 1014
   end
   object PanelToolPalette: TPanel
     Left = 341
@@ -969,7 +972,7 @@ object FormBuilderMain: TFormBuilderMain
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 1014
+    Width = 1109
     Height = 57
     Margins.Bottom = 5
     Align = alTop
@@ -985,11 +988,12 @@ object FormBuilderMain: TFormBuilderMain
     ParentBackground = False
     ParentFont = False
     TabOrder = 5
+    ExplicitWidth = 1014
     object SkLabel1: TSkLabel
       AlignWithMargins = True
       Left = 3
       Top = 3
-      Width = 1008
+      Width = 1103
       Height = 36
       Align = alClient
       BiDiMode = bdRightToLeft
@@ -1004,6 +1008,7 @@ object FormBuilderMain: TFormBuilderMain
         item
           Caption = 'Forms Builder UI'
         end>
+      ExplicitWidth = 1008
       ExplicitHeight = 35
     end
   end

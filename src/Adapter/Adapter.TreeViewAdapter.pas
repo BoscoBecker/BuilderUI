@@ -13,19 +13,20 @@ type
   TTreeViewAdapterHelper = class helper for TTreeView
     procedure Expand;
     procedure Colapse;
+    function GetSelectedFormNames: TArray<string>;
  end;
 
 type
   TTreeViewAdapter = class
     public class var FTreeView: TTreeView;
     public class var FCreatedForm: TObjectList<TForm>;
+    public procedure CopyRootNodes(SourceTree, TargetTree: TTreeView);
     public procedure CloseFormsTreeview(Sender: TObject; var Action: TCloseAction);
     public class procedure AddJSONToTreeView(JSONValue: TJSONValue; ParentNode: TTreeNode; NodeName: string; FTreeView: TTreeView ); static;
     public class procedure ExpandFathers(Node: TTreeNode); static;
     public class procedure FindComponentInTreeView(const Aterm : string); static;
     public class function FindNodeByComponent(TreeView: TTreeView;const ComponentName: string): TTreeNode; static;
     public class procedure AddFormsToTreeView(Forms: TObjectList<TForm>; TreeView: TTreeView); static;
-    public procedure CopyRootNodes(SourceTree, TargetTree: TTreeView);
   end;
 
 implementation
@@ -204,6 +205,23 @@ begin
       self.Items[i].Expand(True);
   finally
     self.Items.EndUpdate;
+  end;
+end;
+
+function TTreeViewAdapterHelper.GetSelectedFormNames: TArray<string>;
+begin
+  var List := TList<string>.Create;
+  try
+    var Node := self.Items.GetFirstNode;
+    while Assigned(Node) do
+    begin
+      if Node.Checked then
+        List.Add(Node.Text);
+      Node := Node.getNextSibling;
+    end;
+    Result := List.ToArray;
+  finally
+    List.Free;
   end;
 end;
 

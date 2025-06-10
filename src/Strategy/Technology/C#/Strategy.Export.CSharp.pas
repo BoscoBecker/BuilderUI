@@ -1,18 +1,18 @@
-unit Strategy.Export.Delphi;
+unit Strategy.Export.CSharp;
 
 interface
 
 uses Strategy.IExport, System.Classes, System.SysUtils, System.Json;
 
 type
-  TDelphiExport = class(TInterfacedObject, IExportData)
+  TCSharpExport = class(TInterfacedObject,IExportData)
   public
     procedure ExportData(const APath, ATextAJson: string);
-  end;
+end;
 
 implementation
 
-procedure TDelphiExport.ExportData(const APath, ATextAJson: string);
+procedure TCSharpExport.ExportData(const APath, ATextAJson: string);
 begin
   var FileStream := TStringList.Create;
   try
@@ -21,6 +21,7 @@ begin
   finally
     FileStream.Free;
   end;
+
 end;
 
 end.

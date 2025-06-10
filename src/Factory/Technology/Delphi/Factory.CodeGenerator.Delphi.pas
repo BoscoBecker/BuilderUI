@@ -15,26 +15,25 @@ type
   TDelphiGenerator = class(TInterfacedObject,ICodeGenerator)
   private
     ComponentFields: TArray<TComponentField>;
-    FDfmText: string;
-    FPasText: string;
-    procedure CollectComponentFields(const CompJson: TJSONObject);
+    FGUIText: string;
+    FCOdeText: string;
     function GenerateComponent(const CompJson: TJSONObject; const Indent: string = '  '): string;
     function GenerateDfmText(const Json: TJSONObject ): string;
     function GeneratePasText(const Json: TJSONObject ): string;
-    procedure SetDfmText(const Value: string);
-    procedure SetPasText(const Value: string);
+    procedure CollectComponentFields(const CompJson: TJSONObject);
+    procedure SetGUIText(const Value: string);
+    procedure SetCodeText(const Value: string);
   public
-    function GetDfmText: string;
-    function GetPasText: string;
+    function GetGUIText: string;
+    function GetCodeText: string;
     function GenerateCode(const Json: TJSONObject; const Indent: string = '  '): string;
     function FindFormByName(Json: TJSONObject; const AName: string): TJSONObject;
-    property DfmText: string read FDfmText write SetDfmText;
-    property PasText: string read FPasText write SetPasText;
+    property GUIText: string read FGUIText write SetGUIText;
+    property CodeText: string read FCOdeText write SetCodeText;
   end;
 
 implementation
 
-{ TDelphiGenerator }
 
 function TDelphiGenerator.GenerateComponent(const CompJson: TJSONObject; const Indent: string = '  '): string;
 var
@@ -116,7 +115,8 @@ begin
   var Width := Json.GetValue<integer>('Width');
   var Height:= Json.GetValue<integer>('Height');
 
-  var DfmText := 'object ' + 'U'+FormName + ': ' + 'T'+FormName+ sLineBreak +
+  /// Unit.dfm
+  var GUIText := 'object ' + 'U'+FormName + ': ' + 'T'+FormName+ sLineBreak +
                  '  Left = 0'  +sLineBreak +
                  '  Top =  0'   +sLineBreak +
                  '  Width = ' + Width.ToString + sLineBreak +
@@ -127,19 +127,16 @@ begin
 
   if Json.TryGetValue('Children', Children) and (Children is TJSONArray) then
     for var I := 0 to Children.Count - 1 do
-      DfmText := DfmText + GenerateComponent(Children.Items[I] as TJSONObject);
+      GUIText := GUIText + GenerateComponent(Children.Items[I] as TJSONObject);
 
-  DfmText := DfmText + 'end' + sLineBreak;
-  result:= DfmText;
+  GUIText := GUIText + 'end' + sLineBreak;
+  result:= GUIText;
 end;
 
 function TDelphiGenerator.GeneratePasText(const Json: TJSONObject): string;
 begin
   var Children: TJSONArray;
   var FormName := Json.GetValue<string>('Name');
-  var Caption := Json.GetValue<string>('Caption');
-//  var Width := Json.GetValue<integer>('Width');
-//  var Height:= Json.GetValue<integer>('Height');
 
   SetLength(ComponentFields, 0);
   if Json.TryGetValue('Children', Children) and (Children is TJSONArray) then
@@ -150,7 +147,8 @@ begin
   for var F in ComponentFields do
     FieldsBlock := FieldsBlock + '    ' + F.Name + ': ' + F.CompType + ';' + sLineBreak;
 
-  PasText := 'unit ' + 'U'+FormName + ';' + sLineBreak + #13#10+
+  /// Unit.pas
+  CodeText := 'unit ' + 'U'+FormName + ';' + sLineBreak + #13#10+
 
              'interface' + sLineBreak + #13#10+
 
@@ -169,7 +167,7 @@ begin
              '{$R *.dfm} '  + sLineBreak +   #13#10+
 
              'end.';
-  result:= PasText;
+  result:= CodeText;
 end;
 
 procedure TDelphiGenerator.CollectComponentFields(const CompJson: TJSONObject);
@@ -180,7 +178,6 @@ begin
   CompType := CompJson.GetValue<string>('Type', '');
   CompName := CompJson.GetValue<string>('Name', '');
 
-  // Só adiciona se for um componente visual conhecido (ignora propriedades)
   if (CompType <> '') and (CompName <> '') and
      (CompType <> 'TForm') and
      (not CompType.StartsWith('TJSON')) and
@@ -192,7 +189,6 @@ begin
     ComponentFields[High(ComponentFields)].CompType := CompType;
   end;
 
-  // Recursão para filhos
   if CompJson.TryGetValue('Children', Children) then
     for var I := 0 to Children.Count - 1 do
       CollectComponentFields(Children.Items[I] as TJSONObject);
@@ -218,29 +214,29 @@ end;
 
 function TDelphiGenerator.GenerateCode(const Json: TJSONObject; const Indent: string = '  '): string;
 begin
-  SetDfmText(GenerateDfmText(Json));
-  SetPasText(GeneratePasText(Json));
-  Result := FDfmText + sLineBreak + ' ; ' + sLineBreak + FPasText;
+  SetGUIText(GenerateDfmText(Json));
+  SetCodeText(GeneratePasText(Json));
+  Result := FGUIText + sLineBreak + ' ; ' + sLineBreak + FCOdeText;
 end;
 
-function TDelphiGenerator.GetDfmText: string;
+function TDelphiGenerator.GetGUIText: string;
 begin
-  result:= FDfmText;
+  result:= FGUIText;
 end;
 
-function TDelphiGenerator.GetPasText: string;
+function TDelphiGenerator.GetCodeText: string;
 begin
-  result:= FPasText;
+  result:= FCOdeText;
 end;
 
-procedure TDelphiGenerator.SetDfmText(const Value: string);
+procedure TDelphiGenerator.SetGUIText(const Value: string);
 begin
-  FDfmText := Value;
+  FGUIText := Value;
 end;
 
-procedure TDelphiGenerator.SetPasText(const Value: string);
+procedure TDelphiGenerator.SetCodeText(const Value: string);
 begin
-  FPasText := Value;
+  FCOdeText := Value;
 end;
 
 

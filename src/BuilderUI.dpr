@@ -18,7 +18,10 @@ uses
   Factory.CodeGenerator.Delphi in 'Factory\Technology\Delphi\Factory.CodeGenerator.Delphi.pas',
   Factory.CodeGeneratorFactory in 'Factory\Base\Factory.CodeGeneratorFactory.pas',
   Strategy.Export.Delphi in 'Strategy\Technology\Delphi\Strategy.Export.Delphi.pas',
-  Strategy.IExport in 'Strategy\Interface\Strategy.IExport.pas';
+  Strategy.IExport in 'Strategy\Interface\Strategy.IExport.pas',
+  Factory.CodeGenerator.CSharp in 'Factory\Technology\C#\Factory.CodeGenerator.CSharp.pas',
+  Strategy.Export.CSharp in 'Strategy\Technology\C#\Strategy.Export.CSharp.pas',
+  Service.Export in 'Service\Service.Export.pas';
 
 {$R *.res}
 

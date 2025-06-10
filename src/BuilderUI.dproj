@@ -150,6 +150,9 @@
         <DCCReference Include="Factory\Base\Factory.CodeGeneratorFactory.pas"/>
         <DCCReference Include="Strategy\Technology\Delphi\Strategy.Export.Delphi.pas"/>
         <DCCReference Include="Strategy\Interface\Strategy.IExport.pas"/>
+        <DCCReference Include="Factory\Technology\C#\Factory.CodeGenerator.CSharp.pas"/>
+        <DCCReference Include="Strategy\Technology\C#\Strategy.Export.CSharp.pas"/>
+        <DCCReference Include="Service\Service.Export.pas"/>
         <None Include=".gitignore"/>
         <None Include="BuilderUI.dpr"/>
         <BuildConfiguration Include="Base">

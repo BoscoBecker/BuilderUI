@@ -21,7 +21,8 @@ uses
   Strategy.IExport in 'Strategy\Interface\Strategy.IExport.pas',
   Factory.CodeGenerator.CSharp in 'Factory\Technology\C#\Factory.CodeGenerator.CSharp.pas',
   Strategy.Export.CSharp in 'Strategy\Technology\C#\Strategy.Export.CSharp.pas',
-  Service.Export in 'Service\Service.Export.pas';
+  Service.Export in 'Service\Service.Export.pas',
+  View.Window.Json in 'View\View.Window.Json.pas' {FormJson};
 
 {$R *.res}
 
@@ -30,5 +31,6 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TFormBuilderMain, FormBuilderMain);
+  Application.CreateForm(TFormJson, FormJson);
   Application.Run;
 end.

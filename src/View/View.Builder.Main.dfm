@@ -79,7 +79,6 @@ object FormBuilderMain: TFormBuilderMain
       item
         Width = 150
       end>
-    ExplicitWidth = 1014
   end
   object PanelRenderJson: TPanel
     Left = 867
@@ -88,31 +87,17 @@ object FormBuilderMain: TFormBuilderMain
     Height = 689
     Align = alRight
     BevelOuter = bvNone
-    Caption = 'PanelRenderJson'
     TabOrder = 1
     Visible = False
-    ExplicitLeft = 772
     object Splitter3: TSplitter
       Left = 0
-      Top = 649
+      Top = 610
       Width = 242
       Height = 3
       Cursor = crVSplit
       Align = alBottom
       ExplicitLeft = -8
       ExplicitTop = 658
-    end
-    object Memo: TMemo
-      Left = 0
-      Top = 35
-      Width = 242
-      Height = 548
-      Align = alClient
-      BorderStyle = bsNone
-      ScrollBars = ssVertical
-      TabOrder = 0
-      WantTabs = True
-      OnChange = MemoChange
     end
     object Panel13: TPanel
       Left = 0
@@ -121,7 +106,7 @@ object FormBuilderMain: TFormBuilderMain
       Height = 35
       Align = alTop
       BevelOuter = bvNone
-      TabOrder = 1
+      TabOrder = 0
       object SkPaintBox3: TSkPaintBox
         Left = 0
         Top = 0
@@ -171,17 +156,17 @@ object FormBuilderMain: TFormBuilderMain
     end
     object Panel4: TPanel
       Left = 0
-      Top = 652
+      Top = 613
       Width = 242
-      Height = 37
+      Height = 76
       Align = alBottom
       BevelOuter = bvNone
-      TabOrder = 2
+      TabOrder = 1
       object LabelInfoJson: TLabel
         Left = 0
-        Top = 0
+        Top = 30
         Width = 242
-        Height = 37
+        Height = 46
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowFrame
@@ -191,98 +176,85 @@ object FormBuilderMain: TFormBuilderMain
         ParentFont = False
         WordWrap = True
         StyleElements = [seFont, seClient]
-        ExplicitWidth = 3
-        ExplicitHeight = 15
-      end
-    end
-    object Panel5: TPanel
-      Left = 0
-      Top = 613
-      Width = 242
-      Height = 36
-      Align = alBottom
-      BevelOuter = bvNone
-      TabOrder = 3
-      object ImageErro: TImage
-        Left = 158
-        Top = 0
-        Width = 42
-        Height = 36
-        Align = alRight
-        Center = True
-        Picture.Data = {
-          0954506E67496D61676589504E470D0A1A0A0000000D49484452000000180000
-          00180806000000E0773DF8000000017352474200AECE1CE90000000473424954
-          080808087C0864880000014E4944415478DACD95AD52C34014856F050A03A618
-          0A3C40F14580C150CF43F00E40053FEFC043D4178301010A530C0E6811D41483
-          AAE19C99BB33DB9BDD6D362D4CCFCC37996C9273927B37BB35F963D596216013
-          AC810DB0AE6363F0A5C7CFAA01346D79A63131E4097CE704EC82666635FAE0A5
-          4C401573A767F09A0A6059DA15CD9D7AE295CB06B435C469151C815BF063EE8D
-          5D1BEB582180B365DF981C8013F006AE3D239A9F821D7003EECD730F60680342
-          B5A7D119D8F642C4337F075781AF63B3FB36E010D40335F5433E746C2B614E8D
-          C09D0D38062B1216433AA0A1E703701131A726A09B1B70AE6F2EFA2597B901A9
-          12B99A0F74AC21C5C6CF2C51ACC9B6A122C5C6976A726A9ADA86FA8D2F3D4DA9
-          45FC68FC8B7BEEE4DF978A582FCA6AE662374F48C13C1540B15C7B32DD939058
-          8E47C9DC707C71767157ABCBF49639D2E330F5F0526CFA73E9178C2558191137
-          54600000000049454E44AE426082}
-        Visible = False
-        ExplicitLeft = 164
-        ExplicitTop = -35
+        ExplicitLeft = 58
+        ExplicitWidth = 168
         ExplicitHeight = 76
       end
-      object ImageOk: TImage
-        Left = 200
-        Top = 0
-        Width = 42
-        Height = 36
-        Align = alRight
-        Center = True
-        Picture.Data = {
-          0954506E67496D61676589504E470D0A1A0A0000000D49484452000000180000
-          00180806000000E0773DF8000000017352474200AECE1CE90000000473424954
-          080808087C086488000000D64944415478DA6364A031601CB5809E162800F17C
-          207600E203401C08C41FA865810110EF07620124B18D401C400D0BB0190E0F21
-          4A2DC06738C53EC067F847A8FC03722D2064B803105F00871154901588ED8058
-          0C885F01F10920FE4AA9E1C81638430D8781DF40BC07883F506238B205915834
-          A05B42B2E1F87C806E89023986235BC00DC49ED0B8C0664901105B936A38B205
-          0C50D7B9E0B0840D884B80588714C3D12D20C512A20CC766013196A402710E31
-          86E3B2009F25B8922FC91630400D376640A42E50063C0BB5846830A42A9C616A
-          010001CA37195F5D4E680000000049454E44AE426082}
-        Visible = False
-        ExplicitHeight = 76
-      end
-      object PanelExecuteJson: TPanel
+      object Panel5: TPanel
         Left = 0
         Top = 0
-        Width = 161
-        Height = 36
-        Cursor = crHandPoint
-        Align = alLeft
+        Width = 242
+        Height = 30
+        Align = alTop
         BevelOuter = bvNone
-        Caption = 'Render Form(s)'
-        Enabled = False
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Segoe UI'
-        Font.Style = []
-        Padding.Left = 5
-        Padding.Top = 5
-        Padding.Right = 5
-        Padding.Bottom = 5
-        ParentFont = False
         TabOrder = 0
-        OnClick = PanelExecuteJsonClick
+        object ImageErro: TImage
+          Left = 158
+          Top = 0
+          Width = 42
+          Height = 30
+          Align = alRight
+          Center = True
+          ParentShowHint = False
+          Picture.Data = {
+            0954506E67496D61676589504E470D0A1A0A0000000D49484452000000180000
+            00180806000000E0773DF8000000017352474200AECE1CE90000000473424954
+            080808087C0864880000014E4944415478DACD95AD52C34014856F050A03A618
+            0A3C40F14580C150CF43F00E40053FEFC043D4178301010A530C0E6811D41483
+            AAE19C99BB33DB9BDD6D362D4CCFCC37996C9273927B37BB35F963D596216013
+            AC810DB0AE6363F0A5C7CFAA01346D79A63131E4097CE704EC82666635FAE0A5
+            4C401573A767F09A0A6059DA15CD9D7AE295CB06B435C469151C815BF063EE8D
+            5D1BEB582180B365DF981C8013F006AE3D239A9F821D7003EECD730F60680342
+            B5A7D119D8F642C4337F075781AF63B3FB36E010D40335F5433E746C2B614E8D
+            C09D0D38062B1216433AA0A1E703701131A726A09B1B70AE6F2EFA2597B901A9
+            12B99A0F74AC21C5C6CF2C51ACC9B6A122C5C6976A726A9ADA86FA8D2F3D4DA9
+            45FC68FC8B7BEEE4DF978A582FCA6AE662374F48C13C1540B15C7B32DD939058
+            8E47C9DC707C71767157ABCBF49639D2E330F5F0526CFA73E9178C2558191137
+            54600000000049454E44AE426082}
+          ShowHint = True
+          Visible = False
+          ExplicitLeft = 142
+          ExplicitTop = 6
+          ExplicitHeight = 36
+        end
+        object ImageOk: TImage
+          Left = 200
+          Top = 0
+          Width = 42
+          Height = 30
+          Hint = 'Render Json'
+          Align = alRight
+          Center = True
+          ParentShowHint = False
+          Picture.Data = {
+            0954506E67496D61676589504E470D0A1A0A0000000D49484452000000180000
+            00180806000000E0773DF8000000017352474200AECE1CE90000000473424954
+            080808087C086488000000D64944415478DA6364A031601CB5809E162800F17C
+            207600E203401C08C41FA865810110EF07620124B18D401C400D0BB0190E0F21
+            4A2DC06738C53EC067F847A8FC03722D2064B803105F00871154901588ED8058
+            0C885F01F10920FE4AA9E1C81638430D8781DF40BC07883F506238B205915834
+            A05B42B2E1F87C806E89023986235BC00DC49ED0B8C0664901105B936A38B205
+            0C50D7B9E0B0840D884B80588714C3D12D20C512A20CC766013196A402710E31
+            86E3B2009F25B8922FC91630400D376640A42E50063C0BB5846830A42A9C616A
+            010001CA37195F5D4E680000000049454E44AE426082}
+          ShowHint = True
+          Visible = False
+          OnClick = ImageOkClick
+          ExplicitLeft = 54
+          ExplicitTop = 6
+          ExplicitHeight = 36
+        end
       end
     end
     object Panel8: TPanel
       Left = 0
-      Top = 583
+      Top = 580
       Width = 242
       Height = 30
       Align = alBottom
       BevelOuter = bvNone
-      TabOrder = 4
+      TabOrder = 2
+      ExplicitTop = 583
       object Image3: TImage
         Left = 208
         Top = 0
@@ -425,6 +397,7 @@ object FormBuilderMain: TFormBuilderMain
           E1DBBFEAF85AC0EFF8B2C2C7880C2D04C657124B0E7C026D4E3815DC6B6C2700
           00000049454E44AE426082}
         ShowHint = True
+        OnClick = Image17Click
         ExplicitLeft = 201
         ExplicitTop = 5
         ExplicitHeight = 34
@@ -457,6 +430,17 @@ object FormBuilderMain: TFormBuilderMain
         ExplicitLeft = 134
         ExplicitTop = 6
       end
+    end
+    object Memo: TMemo
+      Left = 0
+      Top = 35
+      Width = 242
+      Height = 545
+      Align = alClient
+      BorderStyle = bsNone
+      TabOrder = 3
+      OnChange = MemoChange
+      ExplicitHeight = 548
     end
   end
   object SplitView1: TSplitView
@@ -760,10 +744,9 @@ object FormBuilderMain: TFormBuilderMain
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 3
-    ExplicitWidth = 1014
   end
   object PanelToolPalette: TPanel
-    Left = 341
+    Left = 365
     Top = 675
     Width = 386
     Height = 48
@@ -925,7 +908,7 @@ object FormBuilderMain: TFormBuilderMain
       Top = 6
       Width = 41
       Height = 36
-      Hint = 'Share'
+      Hint = 'Zoom In'
       Center = True
       ParentShowHint = False
       Picture.Data = {
@@ -949,7 +932,7 @@ object FormBuilderMain: TFormBuilderMain
       Top = 6
       Width = 41
       Height = 36
-      Hint = 'Share'
+      Hint = 'Zoom Out'
       Center = True
       ParentShowHint = False
       Picture.Data = {
@@ -988,7 +971,6 @@ object FormBuilderMain: TFormBuilderMain
     ParentBackground = False
     ParentFont = False
     TabOrder = 5
-    ExplicitWidth = 1014
     object SkLabel1: TSkLabel
       AlignWithMargins = True
       Left = 3

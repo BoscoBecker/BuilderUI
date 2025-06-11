@@ -40,6 +40,8 @@ type
     procedure ButtonStartProcessClick(Sender: TObject);
     procedure ButtonSelectFolderClick(Sender: TObject);
     procedure EditPathChange(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
   private
     FJsonData: TJSONObject;
     FForms: TObjectList<TForm>;
@@ -71,7 +73,12 @@ end;
 
 procedure TFormExports.ButtonStartProcessClick(Sender: TObject);
 begin
-  ExportForms;
+  ButtonSelectFolder.Enabled:= false;
+  try
+    ExportForms;
+  finally
+    ButtonSelectFolder.Enabled:= true;
+  end;
 end;
 
 procedure TFormExports.EditPathChange(Sender: TObject);
@@ -132,7 +139,7 @@ begin
   else if RadioButtonLazarus.Checked then
     Result := 'Lazarus'
   else if RadioButtonCSharp.Checked then
-    Result := 'C#'
+    Result := 'CSharp'
   else if RadioButtonJava.Checked then
     Result := 'Java'
   else if RadioButtonVisualBasic.Checked then
@@ -155,6 +162,19 @@ begin
   end;
 end;
 
+
+procedure TFormExports.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if key = VK_ESCAPE then
+    close;
+
+end;
+
+procedure TFormExports.FormShow(Sender: TObject);
+begin
+  if RadioButtonDelphi.CanFocus then
+    RadioButtonDelphi.SetFocus;
+end;
 
 end.
 

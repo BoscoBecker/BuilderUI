@@ -7,7 +7,8 @@ uses System.Generics.Collections, System.JSON, Strategy.Export.Delphi,  Vcl.ComC
 
 type
   TExportService = class
-   public class procedure ExportForm(const Json: TJSONObject; const FormName, Path, Technology: string; OnlyGUI: Boolean); static;
+   public
+    class procedure ExportForm(const Json: TJSONObject; const FormName, Path, Technology: string; OnlyGUI: Boolean); static;
   end;
 
 implementation

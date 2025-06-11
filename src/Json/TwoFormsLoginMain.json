@@ -1,165 +1,220 @@
 {
-"Forms": [
-{
-"Type": "TForm",
-"Name": "FrmLogin",
-"Caption": "Login Screen",
-"Align": "Client",
-"Children": [
-{
-"Type": "TLabel",
-"Name": "LblTitle",
-"Text": "Welcome to the System",
-"Position": { "X": 150, "Y": 20 },
-"Width": 300,
-"Height": 30,
-"FontSize": 16,
-"FontStyle": ["Bold"]
-},
-{
-"Type": "TLabel",
-"Name": "LblUser",
-"Text": "User:",
-"Position": { "X": 80, "Y": 80 },
-"Width": 100,
-"Height": 20
-},
-{
-"Type": "TEdit",
-"Name": "EditUser",
-"Text": "",
-"Position": { "X": 180, "Y": 75 },
-"Width": 200,
-"Height": 25
-},
-{
-"Type": "TLabel",
-"Name": "LblPassword",
-"Text": "Password:",
-"Position": { "X": 80, "Y": 120 },
-"Width": 100,
-"Height": 20
-},
-{
-"Type": "TEdit",
-"Name": "EditPassword",
-"Text": "",
-"PasswordChar": "*",
-"Position": { "X": 180, "Y": 115 },
-"Width": 200,
-"Height": 25
-},
-{
-"Type": "TCheckBox",
-"Name": "ChkRemember",
-"Caption": "Remember login",
-"Position": { "X": 180, "Y": 150 },
-"Width": 150,
-"Height": 20
-},
-{
-"Type": "TButton",
-"Name": "BtnEnter",
-"Caption": "Enter",
-"Position": { "X": 180, "Y": 190 },
-"Width": 200,
-"Height": 30
-}
-]
-},
-{
-"Type": "TForm",
-"Name": "FrmMain",
-"Caption": "Main System",
-"Align": "Client",
-"Children": [
-{
-"Type": "TLabel",
-"Name": "LblWelcome",
-"Text": "Welcome to the System!",
-"Position": { "X": 20, "Y": 20 },
-"Width": 300,
-"Height": 30,
-"FontSize": 14,
-"FontStyle": ["Bold"]
-},
-{
-"Type": "TPanel",
-"Name": "PanelMenu",
-"Caption": "Menu",
-"Position": { "X": 20, "Y": 70 },
-"Width": 180,
-"Height": 300,
-"Children": [
-{
-"Type": "TSpeedButton",
-"Name": "BtnPersonRegistration",
-"Caption": "Person Registration",
-"Position": { "X": 10, "Y": 10 },
-"Width": 160,
-"Height": 30
-},
-{
-"Type": "TSpeedButton",
-"Name": "BtnProductRegistration",
-"Caption": "Product Registration",
-"Position": { "X": 10, "Y": 50 },
-"Width": 160,
-"Height": 30
-},
-{
-"Type": "TSpeedButton",
-"Name": "BtnReports",
-"Caption": "Reports",
-"Position": { "X": 10, "Y": 90 },
-"Width": 160,
-"Height": 30
-},
-{
-"Type": "TSpeedButton",
-"Name": "BtnExit",
-"Caption": "Exit",
-"Position": { "X": 10, "Y": 130 },
-"Width": 160,
-"Height": 30
-}
-]
-},
-{
-"Type": "TPanel",
-"Name": "PanelContent",
-"Caption": "Content",
-"Position": { "X": 220, "Y": 70 },
-"Width": 500,
-"Height": 400,
-"Children": [
-{
-"Type": "TLabel",
-"Name": "LblInfo",
-"Text": "Select an option from the menu.",
-"Position": { "X": 20, "Y": 20 },
-"Width": 300,
-"Height": 20
-},
-{
-"Type": "TButton",
-"Name": "BtnUpdateData",
-"Caption": "Update Data",
-"Position": { "X": 20, "Y": 60 },
-"Width": 140,
-"Height": 30
-},
-{
-"Type": "TButton",
-"Name": "BtnViewLogs",
-"Caption": "View Logs",
-"Position": { "X": 180, "Y": 60 },
-"Width": 140,
-"Height": 30
-}
-]
-}
-]
-}
-]
+    "Forms": [
+        {
+            "Type": "TForm",
+            "Name": "FrmLogin",
+            "Caption": "Login Screen",
+            "Align": "Client",
+            "Children": [
+                {
+                    "Type": "TLabel",
+                    "Name": "LblTitle",
+                    "Text": "Welcome to the System",
+                    "Position": {
+                        "X": 150,
+                        "Y": 20
+                    },
+                    "Width": 300,
+                    "Height": 30,
+                    "FontSize": 16,
+                    "FontStyle": [
+                        "Bold"
+                    ]
+                },
+                {
+                    "Type": "TLabel",
+                    "Name": "LblUser",
+                    "Text": "User:",
+                    "Position": {
+                        "X": 80,
+                        "Y": 80
+                    },
+                    "Width": 100,
+                    "Height": 20
+                },
+                {
+                    "Type": "TEdit",
+                    "Name": "EditUser",
+                    "Text": "",
+                    "Position": {
+                        "X": 180,
+                        "Y": 75
+                    },
+                    "Width": 200,
+                    "Height": 25
+                },
+                {
+                    "Type": "TLabel",
+                    "Name": "LblPassword",
+                    "Text": "Password:",
+                    "Position": {
+                        "X": 80,
+                        "Y": 120
+                    },
+                    "Width": 100,
+                    "Height": 20
+                },
+                {
+                    "Type": "TEdit",
+                    "Name": "EditPassword",
+                    "Text": "",
+                    "PasswordChar": "*",
+                    "Position": {
+                        "X": 180,
+                        "Y": 115
+                    },
+                    "Width": 200,
+                    "Height": 25
+                },
+                {
+                    "Type": "TCheckBox",
+                    "Name": "ChkRemember",
+                    "Caption": "Remember login",
+                    "Position": {
+                        "X": 180,
+                        "Y": 150
+                    },
+                    "Width": 150,
+                    "Height": 20
+                },
+                {
+                    "Type": "TButton",
+                    "Name": "BtnEnter",
+                    "Caption": "Enter",
+                    "Position": {
+                        "X": 180,
+                        "Y": 190
+                    },
+                    "Width": 200,
+                    "Height": 30
+                }
+            ]
+        },
+        {
+            "Type": "TForm",
+            "Name": "FrmMain",
+            "Caption": "Main System",
+            "Align": "Client",
+            "Children": [
+                {
+                    "Type": "TLabel",
+                    "Name": "LblWelcome",
+                    "Text": "Welcome to the System!",
+                    "Position": {
+                        "X": 20,
+                        "Y": 20
+                    },
+                    "Width": 300,
+                    "Height": 30,
+                    "FontSize": 14,
+                    "FontStyle": [
+                        "Bold"
+                    ]
+                },
+                {
+                    "Type": "TPanel",
+                    "Name": "PanelMenu",
+                    "Caption": "Menu",
+                    "Position": {
+                        "X": 20,
+                        "Y": 70
+                    },
+                    "Width": 180,
+                    "Height": 300,
+                    "Children": [
+                        {
+                            "Type": "TSpeedButton",
+                            "Name": "BtnPersonRegistration",
+                            "Caption": "Person Registration",
+                            "Position": {
+                                "X": 10,
+                                "Y": 10
+                            },
+                            "Width": 160,
+                            "Height": 30
+                        },
+                        {
+                            "Type": "TSpeedButton",
+                            "Name": "BtnProductRegistration",
+                            "Caption": "Product Registration",
+                            "Position": {
+                                "X": 10,
+                                "Y": 50
+                            },
+                            "Width": 160,
+                            "Height": 30
+                        },
+                        {
+                            "Type": "TSpeedButton",
+                            "Name": "BtnReports",
+                            "Caption": "Reports",
+                            "Position": {
+                                "X": 10,
+                                "Y": 90
+                            },
+                            "Width": 160,
+                            "Height": 30
+                        },
+                        {
+                            "Type": "TSpeedButton",
+                            "Name": "BtnExit",
+                            "Caption": "Exit",
+                            "Position": {
+                                "X": 10,
+                                "Y": 130
+                            },
+                            "Width": 160,
+                            "Height": 30
+                        }
+                    ]
+                },
+                {
+                    "Type": "TPanel",
+                    "Name": "PanelContent",
+                    "Caption": "Content",
+                    "Position": {
+                        "X": 220,
+                        "Y": 70
+                    },
+                    "Width": 500,
+                    "Height": 400,
+                    "Children": [
+                        {
+                            "Type": "TLabel",
+                            "Name": "LblInfo",
+                            "Text": "Select an option from the menu.",
+                            "Position": {
+                                "X": 20,
+                                "Y": 20
+                            },
+                            "Width": 300,
+                            "Height": 20
+                        },
+                        {
+                            "Type": "TButton",
+                            "Name": "BtnUpdateData",
+                            "Caption": "Update Data",
+                            "Position": {
+                                "X": 20,
+                                "Y": 60
+                            },
+                            "Width": 140,
+                            "Height": 30
+                        },
+                        {
+                            "Type": "TButton",
+                            "Name": "BtnViewLogs",
+                            "Caption": "View Logs",
+                            "Position": {
+                                "X": 180,
+                                "Y": 60
+                            },
+                            "Width": 140,
+                            "Height": 30
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
 }

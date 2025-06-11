@@ -13,7 +13,10 @@ object FormExports: TFormExports
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
+  KeyPreview = True
   Position = poScreenCenter
+  OnKeyDown = FormKeyDown
+  OnShow = FormShow
   TextHeight = 15
   object SkLabelTitle: TSkLabel
     Left = 91
@@ -168,7 +171,7 @@ object FormExports: TFormExports
     ShowHint = True
   end
   object LabelDelphi: TLabel
-    Left = 70
+    Left = 74
     Top = 86
     Width = 45
     Height = 21
@@ -186,7 +189,7 @@ object FormExports: TFormExports
     OnMouseLeave = LabelDelphiMouseLeave
   end
   object LabelLazarus: TLabel
-    Left = 70
+    Left = 74
     Top = 122
     Width = 53
     Height = 21
@@ -204,7 +207,7 @@ object FormExports: TFormExports
     OnMouseLeave = LabelDelphiMouseLeave
   end
   object LabelCSharp: TLabel
-    Left = 70
+    Left = 74
     Top = 163
     Width = 95
     Height = 21
@@ -222,7 +225,7 @@ object FormExports: TFormExports
     OnMouseLeave = LabelDelphiMouseLeave
   end
   object LabelJava: TLabel
-    Left = 70
+    Left = 74
     Top = 201
     Width = 30
     Height = 21
@@ -240,7 +243,7 @@ object FormExports: TFormExports
     OnMouseLeave = LabelDelphiMouseLeave
   end
   object LabelVB: TLabel
-    Left = 70
+    Left = 74
     Top = 237
     Width = 81
     Height = 21
@@ -273,9 +276,9 @@ object FormExports: TFormExports
     Visible = False
   end
   object GroupBoxOptionsForms: TGroupBox
-    Left = 172
+    Left = 184
     Top = 49
-    Width = 373
+    Width = 361
     Height = 259
     Caption = 'Options Forms'
     TabOrder = 0
@@ -340,9 +343,9 @@ object FormExports: TFormExports
     end
     object TreeViewForms: TTreeView
       Left = 11
-      Top = 20
-      Width = 355
-      Height = 124
+      Top = 19
+      Width = 342
+      Height = 129
       BorderStyle = bsNone
       CheckBoxes = True
       Indent = 19
@@ -353,7 +356,7 @@ object FormExports: TFormExports
   object RadioButtonDelphi: TRadioButton
     Left = 49
     Top = 89
-    Width = 23
+    Width = 21
     Height = 17
     Checked = True
     TabOrder = 1
@@ -362,28 +365,28 @@ object FormExports: TFormExports
   object RadioButtonVisualBasic: TRadioButton
     Left = 49
     Top = 239
-    Width = 23
+    Width = 21
     Height = 17
     TabOrder = 2
   end
   object RadioButtonLazarus: TRadioButton
     Left = 49
     Top = 125
-    Width = 23
+    Width = 21
     Height = 17
     TabOrder = 3
   end
   object RadioButtonCSharp: TRadioButton
     Left = 49
     Top = 165
-    Width = 23
+    Width = 21
     Height = 17
     TabOrder = 4
   end
   object RadioButtonJava: TRadioButton
     Left = 49
     Top = 203
-    Width = 23
+    Width = 21
     Height = 17
     TabOrder = 5
   end

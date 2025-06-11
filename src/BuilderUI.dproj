@@ -153,6 +153,10 @@
         <DCCReference Include="Factory\Technology\C#\Factory.CodeGenerator.CSharp.pas"/>
         <DCCReference Include="Strategy\Technology\C#\Strategy.Export.CSharp.pas"/>
         <DCCReference Include="Service\Service.Export.pas"/>
+        <DCCReference Include="View\View.Window.Json.pas">
+            <Form>FormJson</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <None Include=".gitignore"/>
         <None Include="BuilderUI.dpr"/>
         <BuildConfiguration Include="Base">

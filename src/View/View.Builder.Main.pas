@@ -13,7 +13,8 @@ uses
   Vcl.Imaging.pngimage, Vcl.WinXCtrls,
 
   Util.Json, System.Math, System.ImageList, Vcl.ImgList,
-  View.Export.Forms, View.Menu.Context.Windows;
+  View.Export.Forms, View.Menu.Context.Windows, View.Window.Json, SynEdit,
+  SynEditHighlighter, SynHighlighterJSON;
 
 type  TBuilderBackground = ( bClear, bGrid);
 
@@ -25,7 +26,6 @@ type
   TFormBuilderMain = class(TForm)
     StatusBarBottom: TStatusBar;
     PanelRenderJson: TPanel;
-    Memo: TMemo;
     SplitterRight: TSplitter;
     SplitView1: TSplitView;
     Panel6: TPanel;
@@ -57,10 +57,6 @@ type
     SkLabel1: TSkLabel;
     Panel4: TPanel;
     LabelInfoJson: TLabel;
-    ImageOk: TImage;
-    ImageErro: TImage;
-    Panel5: TPanel;
-    PanelExecuteJson: TPanel;
     Panel8: TPanel;
     Image3: TImage;
     Image5: TImage;
@@ -89,6 +85,10 @@ type
     Image4: TImage;
     Image19: TImage;
     Image20: TImage;
+    Memo: TMemo;
+    Panel5: TPanel;
+    ImageErro: TImage;
+    ImageOk: TImage;
     procedure FormCreate(Sender: TObject);
     procedure ImgSettingsClick(Sender: TObject);
     procedure Image9Click(Sender: TObject);
@@ -114,7 +114,6 @@ type
     procedure FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure ImageRenderClick(Sender: TObject);
     procedure ButtonRunJsonClick(Sender: TObject);
-    procedure PanelExecuteJsonClick(Sender: TObject);
     procedure Image6Click(Sender: TObject);
     procedure Image13Click(Sender: TObject);
     procedure Image4Click(Sender: TObject);
@@ -132,6 +131,9 @@ type
     procedure FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
     procedure Image19Click(Sender: TObject);
     procedure Image20Click(Sender: TObject);
+    procedure Image17Click(Sender: TObject);
+    procedure ButtonRunClick(Sender: TObject);
+    procedure ImageOkClick(Sender: TObject);
   private
     FBuilderBackground: TBuilderBackground;
     FCreatedForms: TObjectList<TForm>;
@@ -204,11 +206,16 @@ end;
 
 destructor TFormBuilderMain.Destroy;
 begin
-  FSelecionadoShape.Free;
-  FTreeViewAdapter.Free;
-  FJsonStructure.Free;
-  FCreatedForms.Free;
-  FBuilder.Free;
+  if FSelecionadoShape <> nil then
+    FSelecionadoShape.Free;
+  if FTreeViewAdapter <> nil then
+    FTreeViewAdapter.Free;
+  if FJsonStructure <> nil then
+    FJsonStructure.Free;
+  if FCreatedForms <> nil then
+    FCreatedForms.Free;
+  if FBuilder <> nil then
+    FBuilder.Free;
   FPaint:= nil;
   inherited;
 end;
@@ -232,7 +239,7 @@ procedure TFormBuilderMain.FormCreate(Sender: TObject);
 begin
   FCreatedForms := TObjectList<TForm>.Create(False);
   SetBuilderBackground(bClear);
-  FZoom := 1.0; // 100%
+  FZoom := 1.0;
 end;
 
 procedure TFormBuilderMain.FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -256,7 +263,7 @@ end;
 
 procedure TFormBuilderMain.Image11Click(Sender: TObject);
 begin
-  var FormContext:= TFormContextWindows.Create(NIl,FCreatedForms);
+  var FormContext:= TFormContextWindows.Create(nil,FCreatedForms);
   try
     FormContext.ShowModal;
   finally
@@ -297,6 +304,19 @@ begin
     ExportForm.ShowModal;
   finally
     ExportForm.Free;
+  end;
+end;
+
+procedure TFormBuilderMain.Image17Click(Sender: TObject);
+begin
+  FormJson := TFormJson.Create(Self);
+  try
+    FormJson.SetJson(Memo.Lines.Text);
+    FormJson.ShowModal;
+  finally
+    Memo.Lines.Clear;
+    Memo.Lines.Text:=  FormJson.Json;
+    FormJson.Free;
   end;
 end;
 
@@ -387,7 +407,12 @@ end;
 
 procedure TFormBuilderMain.ImageRenderJsonClick(Sender: TObject);
 begin
-  PanelRenderJson.Visible:= True;
+  if not SplitView1.Opened then
+    PanelRenderJson.Visible:= True
+  else
+    PanelRenderJson.Visible:= False;
+
+  SplitView1.Opened := not SplitView1.Opened;
   SplitterRight.Visible:= True;
 end;
 
@@ -435,15 +460,15 @@ begin
   End;
 end;
 
-procedure TFormBuilderMain.MemoChange(Sender: TObject);
-begin
-  PanelExecuteJson.Enabled:= false;
-  ValidateAndProcessJSON(Memo.Lines.Text);
-end;
-
-procedure TFormBuilderMain.PanelExecuteJsonClick(Sender: TObject);
+procedure TFormBuilderMain.ImageOkClick(Sender: TObject);
 begin
   RenderJson(memo.text);
+end;
+
+procedure TFormBuilderMain.MemoChange(Sender: TObject);
+begin
+  //ButtonRun.Enabled:= false;
+  ValidateAndProcessJSON(Memo.Lines.Text);
 end;
 
 procedure TFormBuilderMain.PanelToolPaletteMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -530,6 +555,11 @@ begin
     end;
   finally
   end;
+end;
+
+procedure TFormBuilderMain.ButtonRunClick(Sender: TObject);
+begin
+    RenderJson(memo.text);
 end;
 
 procedure TFormBuilderMain.SearchBoxComponentsChange(Sender: TObject);
@@ -795,8 +825,8 @@ begin
     LabelInfoJson.Caption:='Invalid json :'+ErrorMsg ;
     ImageOk.Visible:= False;
     ImageErro.Visible:= True;
-    PanelExecuteJson.Enabled:= False;
-    PanelExecuteJson.Font.Color:= clgray;
+    //ButtonRun.Enabled:= False;
+    //ButtonRun.Font.Color:= clgray;
     CloseFormsCreated;
     TreeViewExplorer.Items.Clear;
     Exit;
@@ -811,8 +841,8 @@ begin
     LabelInfoJson.Caption:='Invalid json, Duplicate Names : ' +duplicatenames;
     ImageOk.Visible:= False;
     ImageErro.Visible:= True;
-    PanelExecuteJson.Enabled:= False;
-    PanelExecuteJson.Font.Color:= clgray;
+    //ButtonRun.Enabled:= False;
+    //ButtonRun.Font.Color:= clgray;
     CloseFormsCreated;
     TreeViewExplorer.Items.Clear;
     Exit;
@@ -821,8 +851,8 @@ begin
   LabelInfoJson.Caption:= '      Valid json';
   ImageOk.Visible:= True;
   ImageErro.Visible:= False;
-  PanelExecuteJson.Font.Color:= clblack;
-  PanelExecuteJson.Enabled:= True;
+  //ButtonRun.Font.Color:= clblack;
+  //ButtonRun.Enabled:= True;
 end;
 
 procedure TFormBuilderMain.ZoomIn;

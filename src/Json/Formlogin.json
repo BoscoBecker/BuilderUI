@@ -11,7 +11,9 @@
           "Type": "TPageControl",
           "Name": "PgCtrlPrincipal",
           "Align": "Client",
-          "Children": [
+          "Width": 800,
+          "Height": 600,
+          "Pages": [
             {
               "Type": "TTabSheet",
               "Name": "TabCliente",
@@ -21,13 +23,62 @@
                   "Type": "TLabel",
                   "Name": "LblNome",
                   "Caption": "Name:",
-                  "Position": {"X": 10, "Y": 10}
+                  "Position": { "X": 30, "Y": 30 },
+                  "Width": 60,
+                  "Height": 20
                 },
                 {
                   "Type": "TEdit",
                   "Name": "EdtNome",
-                  "Position": {"X": 100, "Y": 10},
-                  "Width": 200
+                  "Position": { "X": 100, "Y": 28 },
+                  "Width": 250,
+                  "Height": 24
+                },
+                {
+                  "Type": "TLabel",
+                  "Name": "LblEmail",
+                  "Caption": "Email:",
+                  "Position": { "X": 30, "Y": 70 },
+                  "Width": 60,
+                  "Height": 20
+                },
+                {
+                  "Type": "TEdit",
+                  "Name": "EdtEmail",
+                  "Position": { "X": 100, "Y": 68 },
+                  "Width": 250,
+                  "Height": 24
+                },
+                {
+                  "Type": "TLabel",
+                  "Name": "LblTelefone",
+                  "Caption": "Phone:",
+                  "Position": { "X": 30, "Y": 110 },
+                  "Width": 60,
+                  "Height": 20
+                },
+                {
+                  "Type": "TEdit",
+                  "Name": "EdtTelefone",
+                  "Position": { "X": 100, "Y": 108 },
+                  "Width": 150,
+                  "Height": 24
+                },
+                {
+                  "Type": "TButton",
+                  "Name": "BtnSalvar",
+                  "Caption": "Save",
+                  "Position": { "X": 100, "Y": 160 },
+                  "Width": 100,
+                  "Height": 32
+                },
+                {
+                  "Type": "TButton",
+                  "Name": "BtnCancelar",
+                  "Caption": "Cancel",
+                  "Position": { "X": 210, "Y": 160 },
+                  "Width": 100,
+                  "Height": 32
                 }
               ]
             },
@@ -35,7 +86,53 @@
               "Type": "TTabSheet",
               "Name": "TabEndereco",
               "Caption": "Address",
-              "Children": []
+              "Children": [
+                {
+                  "Type": "TLabel",
+                  "Name": "LblRua",
+                  "Caption": "Street:",
+                  "Position": { "X": 30, "Y": 30 },
+                  "Width": 60,
+                  "Height": 20
+                },
+                {
+                  "Type": "TEdit",
+                  "Name": "EdtRua",
+                  "Position": { "X": 100, "Y": 28 },
+                  "Width": 250,
+                  "Height": 24
+                },
+                {
+                  "Type": "TLabel",
+                  "Name": "LblNumero",
+                  "Caption": "Number:",
+                  "Position": { "X": 30, "Y": 70 },
+                  "Width": 60,
+                  "Height": 20
+                },
+                {
+                  "Type": "TEdit",
+                  "Name": "EdtNumero",
+                  "Position": { "X": 100, "Y": 68 },
+                  "Width": 80,
+                  "Height": 24
+                },
+                {
+                  "Type": "TLabel",
+                  "Name": "LblCidade",
+                  "Caption": "City:",
+                  "Position": { "X": 30, "Y": 110 },
+                  "Width": 60,
+                  "Height": 20
+                },
+                {
+                  "Type": "TEdit",
+                  "Name": "EdtCidade",
+                  "Position": { "X": 100, "Y": 108 },
+                  "Width": 150,
+                  "Height": 24
+                }
+              ]
             }
           ]
         }
@@ -47,17 +144,55 @@
       "Caption": "Login",
       "BorderStyle": "bsDialog",
       "Position": "poScreenCenter",
+      "Width": 350,
+      "Height": 200,
       "Children": [
+        {
+          "Type": "TLabel",
+          "Name": "LblUsuario",
+          "Caption": "Username:",
+          "Position": { "X": 30, "Y": 40 },
+          "Width": 70,
+          "Height": 20
+        },
         {
           "Type": "TEdit",
           "Name": "EdtUsuario",
-          "Position": {"X": 10, "Y": 10}
+          "Position": { "X": 110, "Y": 38 },
+          "Width": 180,
+          "Height": 24
+        },
+        {
+          "Type": "TLabel",
+          "Name": "LblSenha",
+          "Caption": "Password:",
+          "Position": { "X": 30, "Y": 80 },
+          "Width": 70,
+          "Height": 20
         },
         {
           "Type": "TEdit",
           "Name": "EdtSenha",
           "PasswordChar": "*",
-          "Position": {"X": 10, "Y": 40}
+          "Position": { "X": 110, "Y": 78 },
+          "Width": 180,
+          "Height": 24
+        },
+        {
+          "Type": "TButton",
+          "Name": "BtnEntrar",
+          "Caption": "Login",
+          "Position": { "X": 110, "Y": 120 },
+          "Width": 80,
+          "Height": 28
+        },
+        {
+          "Type": "TButton",
+          "Name": "BtnCancelar",
+          "Caption": "Cancel",
+          "Position": { "X": 210, "Y": 120 },
+          "Width": 80,
+          "Height": 28
         }
       ]
     }

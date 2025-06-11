@@ -37,14 +37,14 @@ implementation
 procedure TUIBuilderEngine.ControlClick(Sender: TObject);
 
 begin
-//  if Length(TControl(Sender).Name) <=0 then Exit;
-//  try
+  if Length(TControl(Sender).Name) <=0 then Exit;
+  try
 //    if TTreeViewAdapter.FTreeView.CanFocus then
 //      TTreeViewAdapter.FTreeView.SetFocus;
 //    TTreeViewAdapter.FindComponentInTreeView(TControl(Sender).Name);
 //    TTreeViewAdapter.FTreeView.OnClick(Sender);
-//  except
-//  end;
+  except
+  end;
 end;
 
 procedure TUIBuilderEngine.ControlDblClickImage(Sender: TObject);
@@ -69,15 +69,14 @@ var
   ChildJson: TJSONObject;
   FontStyles: TJSONArray;
   Style: TFontStyles;
-  ColorStr,CaptionStr: string;
+  ColorStr: string;
 begin
   Result := nil;
   Ctrl:= nil;
   if Trim(Json.GetValue<string>('Type', '')).Equals('') then Exit;
-
   CtrlType := Json.GetValue<string>('Type');
   Ctrl:= SetControlType(AOwner, Ctrl, Json.GetValue<string>('Type', ''));
-  Ctrl.Name := Json.GetValue<string>('Name', '');
+  Ctrl.Name := Json.GetValue<string>('Name','');
   Ctrl.Visible:= False;
 
   Ctrl.Parent := AParent;
@@ -171,7 +170,7 @@ begin
       var Tab := TTabSheet.Create(AOwner);
       Tab.PageControl := TPageControl(Ctrl);
       Tab.Caption := ChildJson.GetValue<string>('Caption', ' No Title ');
-      Tab.Name := Ctrl.Name;
+      Tab.Name := Format('%s%s', [Ctrl.Name, Random(9999999).ToString]);
       Tab.Parent := TPageControl(Ctrl);
 
       var TabChildren: TJSONArray;

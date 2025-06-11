@@ -12,7 +12,7 @@ uses
   System.Skia, Vcl.Skia, System.Types, System.UITypes,
   Vcl.Imaging.pngimage, Vcl.WinXCtrls,
 
-  Util.Json, System.Math, System.ImageList, Vcl.ImgList,
+  Util.Json, Util.JSONValidator, System.Math, System.ImageList, Vcl.ImgList,
   View.Export.Forms, View.Menu.Context.Windows, View.Window.Json, SynEdit,
   SynEditHighlighter, SynHighlighterJSON;
 
@@ -55,8 +55,6 @@ type
     SkPaintBox1: TSkPaintBox;
     Panel1: TPanel;
     SkLabel1: TSkLabel;
-    Panel4: TPanel;
-    LabelInfoJson: TLabel;
     Panel8: TPanel;
     Image3: TImage;
     Image5: TImage;
@@ -86,9 +84,11 @@ type
     Image19: TImage;
     Image20: TImage;
     Memo: TMemo;
+    Panel4: TPanel;
     Panel5: TPanel;
     ImageErro: TImage;
     ImageOk: TImage;
+    LabelInfoJson: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure ImgSettingsClick(Sender: TObject);
     procedure Image9Click(Sender: TObject);
@@ -282,7 +282,7 @@ begin
   if FBuilderBackground = bClear then
   begin
     FBuilderBackground := bGrid;
-    SkPaintBackground.Width:= SkPaintBackground.Width +1;
+    SkPaintBackground.Width:= SkPaintBackground.Width + 1;
   end  else
   begin
     FBuilderBackground := bCLear;
@@ -392,7 +392,7 @@ begin
   var erromessage:='';
   if not Memo.lines.Text.Trim.Equals('') then
     if TJSONHelper.ValidateJSON(Memo.lines.Text, erromessage ) then
-      Memo.lines.Text:= TJSONHelper.BeautifyJSON(Memo.lines.Text);
+      Memo.lines.Text:= Util.Json.TJSONHelper.BeautifyJSON(Memo.lines.Text);
 end;
 
 procedure TFormBuilderMain.Image4Click(Sender: TObject);
@@ -467,7 +467,6 @@ end;
 
 procedure TFormBuilderMain.MemoChange(Sender: TObject);
 begin
-  //ButtonRun.Enabled:= false;
   ValidateAndProcessJSON(Memo.Lines.Text);
 end;
 
@@ -816,43 +815,66 @@ procedure TFormBuilderMain.ValidateAndProcessJSON(const AJSON: string);
 begin
   var ErrorMsg: string;
   var DupForms: TArray<TDuplicateInfo>;
+  try
+    var Invalids: TArray<string>;
+    var IsValid := TTask.Future<Boolean>(function: Boolean
+                                         begin
+                                           Result := Util.JSONValidator
+                                                           .TJSONHelper
+                                                             .ValidateBuilderUIPattern(AJSON, Invalids);
+                                         end).Value;
+                    if not IsValid then
+    begin
+      LabelInfoJson.Caption := 'Invalid properties: ' + string.Join(sLineBreak, Invalids);
+      ImageOk.Visible := False;
+      ImageErro.Visible := True;
+      CloseFormsCreated;
+      TreeViewExplorer.Items.Clear;
+      Exit;
+    end;
 
-  LabelInfoJson.Caption:= 'Analizing json ... ';
+    LabelInfoJson.Caption:= 'Analizing Json ';
+    var ValidJson:= TTask.Future<Boolean>(function: Boolean
+                                          begin
+                                            Result := Util.JSONValidator
+                                                            .TJSONHelper
+                                                              .ValidateJSON(AJSON, ErrorMsg);
+                                          end).Value;
+    if not (ValidJson) or (AJSON.Trim.Equals('')) then
+    begin
+      LabelInfoJson.Caption:='Invalid json :'+ErrorMsg ;
+      ImageOk.Visible:= False;
+      ImageErro.Visible:= True;
+      CloseFormsCreated;
+      TreeViewExplorer.Items.Clear;
+      Exit;
+    end;
 
-  var ValidJson:= TJSONHelper.ValidateJSON(AJSON, ErrorMsg);
-  if not (ValidJson) or (AJSON.Trim.Equals('')) then
-  begin
-    LabelInfoJson.Caption:='Invalid json :'+ErrorMsg ;
-    ImageOk.Visible:= False;
-    ImageErro.Visible:= True;
-    //ButtonRun.Enabled:= False;
-    //ButtonRun.Font.Color:= clgray;
-    CloseFormsCreated;
-    TreeViewExplorer.Items.Clear;
-    Exit;
+    var ValidNamesComponents:= TTask.Future<Boolean>(function: Boolean
+                                                     begin
+                                                       Result:= Util.Json
+                                                                      .TJSONHelper
+                                                                        .HasDuplicateNamesPerForm(AJSON, DupForms);
+                                                     end).Value;
+    if ValidNamesComponents then
+    begin
+      var duplicatenames: string;
+      for var Info in DupForms do
+        duplicatenames:= duplicatenames + string.Join(', ',  Info.DuplicatedNames);
+      LabelInfoJson.Caption:='Invalid json, Duplicate Names : ' +duplicatenames;
+      ImageOk.Visible:= False;
+      ImageErro.Visible:= True;
+      CloseFormsCreated;
+      TreeViewExplorer.Items.Clear;
+      Exit;
+    end;
+
+    LabelInfoJson.Caption:= 'Valid json';
+    ImageOk.Visible:= True;
+    ImageErro.Visible:= False;
+  finally
+    LabelInfoJson.Repaint;
   end;
-
-  var ValidNamesComponents:= TJSONHelper.HasDuplicateNamesPerForm(AJSON, DupForms);
-  if ValidNamesComponents then
-  begin
-    var duplicatenames: string;
-    for var Info in DupForms do
-      duplicatenames:= duplicatenames + string.Join(', ',  Info.DuplicatedNames);
-    LabelInfoJson.Caption:='Invalid json, Duplicate Names : ' +duplicatenames;
-    ImageOk.Visible:= False;
-    ImageErro.Visible:= True;
-    //ButtonRun.Enabled:= False;
-    //ButtonRun.Font.Color:= clgray;
-    CloseFormsCreated;
-    TreeViewExplorer.Items.Clear;
-    Exit;
-  end;
-
-  LabelInfoJson.Caption:= '      Valid json';
-  ImageOk.Visible:= True;
-  ImageErro.Visible:= False;
-  //ButtonRun.Font.Color:= clblack;
-  //ButtonRun.Enabled:= True;
 end;
 
 procedure TFormBuilderMain.ZoomIn;

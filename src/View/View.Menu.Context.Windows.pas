@@ -23,6 +23,7 @@ type
     procedure ImageCascadeClick(Sender: TObject);
     procedure ImageStackedClick(Sender: TObject);
     procedure ImageSidebySideClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     private
       FForm :TObjectList<TForm>;
     public
@@ -46,6 +47,11 @@ end;
 destructor TFormContextWindows.Destroy;
 begin
   inherited;
+end;
+
+procedure TFormContextWindows.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if key = VK_ESCAPE then Close;
 end;
 
 procedure TFormContextWindows.ImageSidebySideClick(Sender: TObject);

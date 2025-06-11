@@ -29,7 +29,6 @@ type
     public class function IsValidJSON(const AJSON: string): Boolean; static;
     public class function BeautifyJSON(const AJSON: string): string; static;
     public class function MinifyJSON(const AJSON: string): string; static;
-    public class function ValidateJSON(const AJSON: string; out ErrorMessage: string): Boolean; static;
     public class function HasNamedComponent(const AJSON, ATargetName: string): Boolean; static;
     public class function HasDuplicateNames(const AJSON: string; out Duplicates: TArray<string>): Boolean; static;
     public class function HasDuplicateNamesPerForm(const AJSON: string; out DuplicateForms: TArray<TDuplicateInfo>): Boolean; static;
@@ -329,38 +328,6 @@ begin
     JSONArray := JSONValue as TJSONArray;
     for Item in JSONArray do
       TraverseJSON(Item, ATargetName, Found, NameList);
-  end;
-end;
-
-class function TJSONHelper.ValidateJSON(const AJSON: string; out ErrorMessage: string): Boolean;
-var
-  JSONValue: TJSONValue;
-begin
-  ErrorMessage := '';
-  Result := False;
-
-  if AJSON.Trim.IsEmpty then
-  begin
-    ErrorMessage := 'Empty JSON string';
-    Exit;
-  end;
-
-  try
-    JSONValue := TJSONObject.ParseJSONValue(AJSON);
-    if Assigned(JSONValue) then
-    begin
-      JSONValue.Free;
-      Result := True;
-    end
-    else
-    begin
-      ErrorMessage := 'Invalid JSON format';
-    end;
-  except
-    on E: Exception do
-    begin
-      ErrorMessage := E.Message;
-    end;
   end;
 end;
 

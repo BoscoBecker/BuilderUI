@@ -157,6 +157,7 @@
             <Form>FormJson</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="Utils\Util.JSONValidator.pas"/>
         <None Include=".gitignore"/>
         <None Include="BuilderUI.dpr"/>
         <BuildConfiguration Include="Base">

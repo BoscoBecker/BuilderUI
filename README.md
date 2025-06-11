@@ -2,7 +2,7 @@
   <img src="https://github.com/user-attachments/assets/ec398da9-c462-40e8-b578-c3c264965042" alt="BuilderUI">
 </p>
 
-# BuilderUI - Forms Builder UI for Windows 
+# BuilderUI - Forms Builder UI for Windows
 
 ## Overview
 BuilderUI is a powerful tool for creating JSON-based graphical user interfaces for Windows. The project allows dynamic creation of forms through JSON definitions, with support for export to multiple platforms.
@@ -34,10 +34,11 @@ BuilderUI is a powerful tool for creating JSON-based graphical user interfaces f
   - Real-time preview
   - Grid alignment system
   - Component search functionality
+  - **Syntax Highlighting with SynEdit** (new!)
 
 ## Architecture
 
-The project follows a clean architecture pattern with the following main components:
+The project follows a clean architecture pattern with the following main components and now adopts additional modern design patterns:
 
 - **Core Layer**
   - `Core.IUIBuilder`: Core interface for form building operations
@@ -45,19 +46,29 @@ The project follows a clean architecture pattern with the following main compone
 
 - **Adapters**
   - `Adapter.TreeViewAdapter`: Handles component tree visualization
+  - `Adapter.SynEditAdapter`: Integrates SynEdit for advanced code editing and syntax highlighting (new!)
 
 - **Services**
   - `Services.AIService`: AI integration for form generation
+  - `Services.ExportService`: Handles export logic, decoupled from UI (new!)
 
 - **Utils**
   - `Util.JSON`: JSON handling and validation utilities
+  - `Utils.TreeViewHelper`: Helper for TreeView operations (new!)
+
+- **Patterns**
+  - **Factory Pattern**: For code generator instantiation
+  - **Strategy Pattern**: For export logic per technology
+  - **Class Helpers**: For extending VCL/FMX components
+  - **Service Layer**: For business logic separation
+  - **SRP (Single Responsibility Principle)**: Enforced in recent refactors
 
 ## JSON Structure Example
 
 ```json
 {
   "Type": "TForm",
-  "Name": "FrmainForm",
+  "Name": "FrmMainForm",
   "Caption": "Sample Form",
   "Width": 800,
   "Height": 600,
@@ -76,14 +87,31 @@ The project follows a clean architecture pattern with the following main compone
 }
 ```
 
-# ✨ IA ✨- Is recomended use IA to create rich UI 
+# ✨ AI Integration & Copilot Usage to create rich UI ✨
 
-## <img src="https://github.com/user-attachments/assets/90bb6587-0a4d-49fb-a261-8d2f6a422dc7" alt="Descrição" width="30" href="#"/> **GPT Json** Chat from **ChatGPT**
+## Using GitHub Copilot in VS Code for JSON Editing
 
-Por Widenex
-Advanced JSON converter and formatter. Transforms data into a structured, precise JSON format. Also exports JSON in a CSV file.
+You can leverage GitHub Copilot in Visual Studio Code to quickly generate and edit JSON files for BuilderUI:
 
-Chat: https://chatgpt.com/share/683a0f55-77a4-800d-a505-5b1a76501b6d enjoy
+1. **Open your project folder in VS Code.**
+2. **Open or create a `.json` file** inside the `/src/Json` directory (e.g., `MyForm.json`).
+3. **Use Copilot Chat or inline suggestions** to request or modify JSON structures.
+   - For example, type a comment like:
+     ```json
+     // Generate a JSON for a login form with user, password fields and a login button based in BuilderUI pattern.
+     ```
+   - Or ask in Copilot Chat:
+     ```
+     Generate a product registration form with name, price, category (combobox), and save/cancel buttons based in BuilderUI pattern.
+     ```
+4. **Accept Copilot's suggestion** or edit as needed.
+5. **Save the file.** Having your forms as `.json` files makes it much easier to edit, refactor, and reuse them with Copilot's help.
+
+### Tips
+
+- Saving your JSON files allows Copilot to provide better context and more accurate suggestions.
+- You can easily modify, extend, or refactor your forms by editing the JSON and letting Copilot assist with repetitive or boilerplate structures.
+- Use the provided JSON examples as templates for your own screens.
 
 ## Getting Started
 
@@ -99,6 +127,7 @@ Chat: https://chatgpt.com/share/683a0f55-77a4-800d-a505-5b1a76501b6d enjoy
 - Delphi IDE (Recent versions)
 - Windows Operating System
 - Skia4Delphi components
+- Synedit
 
 ## Contributing
 
@@ -112,4 +141,4 @@ This project is open source and available under the MIT License.
 
 *Note: This README provides an overview of the BuilderUI project. For detailed documentation and examples, please refer to the project documentation.*
 
-        
+

@@ -23,7 +23,9 @@ uses
   Strategy.Export.CSharp in 'Strategy\Technology\C#\Strategy.Export.CSharp.pas',
   Service.Export in 'Service\Service.Export.pas',
   View.Window.Json in 'View\View.Window.Json.pas' {FormJson},
-  Util.JSONValidator in 'Utils\Util.JSONValidator.pas';
+  Util.JSONValidator in 'Utils\Util.JSONValidator.pas',
+  Service.Zoom in 'Service\Service.Zoom.pas',
+  Service.Forms.Create in 'Service\Service.Forms.Create.pas';
 
 {$R *.res}
 

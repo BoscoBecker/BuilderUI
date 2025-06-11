@@ -24,9 +24,8 @@ type
     procedure ImageStackedClick(Sender: TObject);
     procedure ImageSidebySideClick(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-    private
-      FForm :TObjectList<TForm>;
     public
+      FForm :TObjectList<TForm>;
       constructor Create(AOwner: TComponent;const Form :TObjectList<TForm>); reintroduce;
       destructor Destroy; override;
   end;

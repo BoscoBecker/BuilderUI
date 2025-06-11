@@ -14,7 +14,9 @@ uses
 
   Util.Json, Util.JSONValidator, System.Math, System.ImageList, Vcl.ImgList,
   View.Export.Forms, View.Menu.Context.Windows, View.Window.Json, SynEdit,
-  SynEditHighlighter, SynHighlighterJSON;
+  SynEditHighlighter, SynHighlighterJSON,
+
+  Service.Zoom, Service.Forms.Manager;
 
 type  TBuilderBackground = ( bClear, bGrid);
 
@@ -136,7 +138,6 @@ type
     procedure ImageOkClick(Sender: TObject);
   private
     FBuilderBackground: TBuilderBackground;
-    FCreatedForms: TObjectList<TForm>;
     FTreeViewAdapter: TTreeViewAdapter;
     FJsonStructure : TJSONObject;
     FBuilder: TUIBuilderEngine;
@@ -145,10 +146,10 @@ type
     FDragging: Boolean;
     FDragOffset: TPoint;
     FPaint: ISkPaint;
-    FZoom: Single;
+    FZoomService: TZoomService;
+    FFormManager: TFormCreatedManager;
     OrigRectsForms: array of TOrigRect;
     procedure RenderJson(const Atext : string);
-    procedure CloseFormsCreated;
     procedure ValidateAndProcessJSON(const AJSON: string);
     procedure BuildStatusBar;
     procedure SetSelectedComponent(const Value: String);
@@ -186,24 +187,6 @@ begin
   RenderJson(Memo.Text);
 end;
 
-procedure TFormBuilderMain.CloseFormsCreated;
-begin
-  for var I := FCreatedForms.Count - 1 downto 0 do
-  begin
-    if Assigned(FCreatedForms[I]) then
-    begin
-      try
-        FCreatedForms[I].Close;
-        FCreatedForms[I].Free;
-        FCreatedForms.Remove(FCreatedForms[I]);
-      except
-        FCreatedForms.Remove(FCreatedForms[I]);
-      end;
-    end;
-  end;
-  FCreatedForms.Clear;
-end;
-
 destructor TFormBuilderMain.Destroy;
 begin
   if FSelecionadoShape <> nil then
@@ -212,8 +195,10 @@ begin
     FTreeViewAdapter.Free;
   if FJsonStructure <> nil then
     FJsonStructure.Free;
-  if FCreatedForms <> nil then
-    FCreatedForms.Free;
+  if FFormManager <> nil then
+    FFormManager.Free;
+  if FZoomService <> nil then
+    FZoomService.Free;
   if FBuilder <> nil then
     FBuilder.Free;
   FPaint:= nil;
@@ -237,9 +222,9 @@ end;
 
 procedure TFormBuilderMain.FormCreate(Sender: TObject);
 begin
-  FCreatedForms := TObjectList<TForm>.Create(False);
+  FFormManager := TFormCreatedManager.Create;
+  FZoomService := TZoomService.Create;
   SetBuilderBackground(bClear);
-  FZoom := 1.0;
 end;
 
 procedure TFormBuilderMain.FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -263,7 +248,7 @@ end;
 
 procedure TFormBuilderMain.Image11Click(Sender: TObject);
 begin
-  var FormContext:= TFormContextWindows.Create(nil,FCreatedForms);
+  var FormContext:= TFormContextWindows.Create(nil,FFormManager.Forms);
   try
     FormContext.ShowModal;
   finally
@@ -507,13 +492,13 @@ begin
   var FormJson: TJSONObject;
   var Node: TTreeNode;
 
-  CloseFormsCreated;
+  FFormManager.CloseAll;
   TreeViewExplorer.Items.Clear;
 
   if Assigned(FJsonStructure) then FreeAndNil(FJsonStructure);
   FJsonStructure := TJSONObject.ParseJSONValue(Atext) as TJSONObject;
   FTreeViewAdapter.FTreeView := TreeViewExplorer;
-  FTreeViewAdapter.FCreatedForm := FCreatedForms;
+  FTreeViewAdapter.FCreatedForm := FFormManager.Forms;
   try
     try
       if FJsonStructure.TryGetValue<TJSONArray>('Forms', FormsArray) then
@@ -527,14 +512,14 @@ begin
           FTreeViewAdapter.AddJSONToTreeView(FormJson,Node,'root',TreeViewExplorer);
 
           MyForm.OnClose := FTreeViewAdapter.CloseFormsTreeview;
-          FCreatedForms.Add(MyForm);
+          FFormManager.AddForm(MyForm);
           MyForm.Show;
 
-          SetLength(OrigRectsForms, FCreatedForms.Count);
-          OrigRectsForms[FCreatedForms.Count-1].Left   := MyForm.Left;
-          OrigRectsForms[FCreatedForms.Count-1].Top    := MyForm.Top;
-          OrigRectsForms[FCreatedForms.Count-1].Width  := MyForm.Width;
-          OrigRectsForms[FCreatedForms.Count-1].Height := MyForm.Height;
+          SetLength(OrigRectsForms, FFormManager.Forms.Count);
+          OrigRectsForms[FFormManager.Forms.Count-1].Left   := MyForm.Left;
+          OrigRectsForms[FFormManager.Forms.Count-1].Top    := MyForm.Top;
+          OrigRectsForms[FFormManager.Forms.Count-1].Width  := MyForm.Width;
+          OrigRectsForms[FFormManager.Forms.Count-1].Height := MyForm.Height;
         end;
       end else
       begin
@@ -544,12 +529,12 @@ begin
         FTreeViewAdapter.AddJSONToTreeView(FJsonStructure,Node,'root',TreeViewExplorer);
 
         MyForm.OnClose := FTreeViewAdapter.CloseFormsTreeview;
-        FCreatedForms.Add(MyForm);
+        FFormManager.AddForm(MyForm);
         MyForm.Show;
       end;
     except on E: Exception do
       begin
-        CloseFormsCreated;
+        FFormManager.CloseAll;
       end;
     end;
   finally
@@ -590,6 +575,7 @@ procedure TFormBuilderMain.SkPaintBackgroundDraw(ASender: TObject; const ACanvas
 const
   GridSize = 20;
 begin
+  var FZoom := FZoomService.GetZoom;
   ACanvas.Save;
   ACanvas.Scale(FZoom, FZoom); // Aplica o zoom
   case FBuilderBackground of
@@ -828,7 +814,7 @@ begin
       LabelInfoJson.Caption := 'Invalid properties: ' + string.Join(sLineBreak, Invalids);
       ImageOk.Visible := False;
       ImageErro.Visible := True;
-      CloseFormsCreated;
+      FFormManager.CloseAll;
       TreeViewExplorer.Items.Clear;
       Exit;
     end;
@@ -845,7 +831,7 @@ begin
       LabelInfoJson.Caption:='Invalid json :'+ErrorMsg ;
       ImageOk.Visible:= False;
       ImageErro.Visible:= True;
-      CloseFormsCreated;
+      FFormManager.CloseAll;
       TreeViewExplorer.Items.Clear;
       Exit;
     end;
@@ -864,7 +850,7 @@ begin
       LabelInfoJson.Caption:='Invalid json, Duplicate Names : ' +duplicatenames;
       ImageOk.Visible:= False;
       ImageErro.Visible:= True;
-      CloseFormsCreated;
+      FFormManager.CloseAll;
       TreeViewExplorer.Items.Clear;
       Exit;
     end;
@@ -879,29 +865,29 @@ end;
 
 procedure TFormBuilderMain.ZoomIn;
 begin
-  FZoom := FZoom * 1.1;
-  StatusBarBottom.Panels[4].Text := Format('Zoom: %d%%', [Round(FZoom * 100)]);
+  FZoomService.ZoomIn;
+  StatusBarBottom.Panels[4].Text := Format('Zoom: %d%%', [Round(FZoomService.GetZoom * 100)]);
   ApplyZoomToCreatedForms;
   SkPaintBackground.Invalidate;
 end;
 
 procedure TFormBuilderMain.ZoomOut;
 begin
-  FZoom := FZoom / 1.1;
-  StatusBarBottom.Panels[4].Text := Format('Zoom: %d%%', [Round(FZoom * 100)]);
+  FZoomService.ZoomOut;
+  StatusBarBottom.Panels[4].Text := Format('Zoom: %d%%', [Round(FZoomService.GetZoom * 100)]);
   ApplyZoomToCreatedForms;
   SkPaintBackground.Invalidate;
 end;
 
 procedure TFormBuilderMain.ApplyZoomToCreatedForms;
 begin
-  if Length(OrigRectsForms) <> FCreatedForms.Count then Exit;
-  for var I := 0 to FCreatedForms.Count - 1 do
+  if Length(OrigRectsForms) <> FFormManager.Forms.Count then Exit;
+  for var I := 0 to FFormManager.Forms.Count - 1 do
   begin
-    FCreatedForms[I].Left   := Round(OrigRectsForms[I].Left * FZoom);
-    FCreatedForms[I].Top    := Round(OrigRectsForms[I].Top * FZoom);
-    FCreatedForms[I].Width  := Round(OrigRectsForms[I].Width * FZoom);
-    FCreatedForms[I].Height := Round(OrigRectsForms[I].Height * FZoom);
+    FFormManager.Forms[I].Left   := Round(OrigRectsForms[I].Left * FZoomService.GetZoom);
+    FFormManager.Forms[I].Top    := Round(OrigRectsForms[I].Top * FZoomService.GetZoom);
+    FFormManager.Forms[I].Width  := Round(OrigRectsForms[I].Width * FZoomService.GetZoom);
+    FFormManager.Forms[I].Height := Round(OrigRectsForms[I].Height * FZoomService.GetZoom);
   end;
 end;
 

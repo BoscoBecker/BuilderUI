@@ -25,8 +25,7 @@
               "Width": 300,
               "Height": 30,
               "FontSize": 18,
-              "FontStyle": ["Bold"],
-              "Alignment": "Center"
+              "FontStyle": ["Bold"]
             },
             {
               "Name": "LblUsuario",

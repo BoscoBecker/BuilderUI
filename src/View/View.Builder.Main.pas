@@ -29,7 +29,7 @@ type
     StatusBarBottom: TStatusBar;
     PanelRenderJson: TPanel;
     SplitterRight: TSplitter;
-    SplitView1: TSplitView;
+    SplitViewMain: TSplitView;
     Panel6: TPanel;
     ImgSettings: TImage;
     Panel9: TPanel;
@@ -40,11 +40,11 @@ type
     ImageRenderJson: TImage;
     Panel12: TPanel;
     ImageOpenTemplate: TImage;
-    Panel13: TPanel;
+    PanelTopRender: TPanel;
     Image12: TImage;
     SkLabel3: TSkLabel;
     SplitterLeft: TSplitter;
-    Panel2: TPanel;
+    PanelBottomInfo: TPanel;
     PanelToolPalette: TPanel;
     Image6: TImage;
     Image11: TImage;
@@ -55,39 +55,39 @@ type
     PanelSettings: TPanel;
     SkLabelSettings: TSkLabel;
     SkPaintBox1: TSkPaintBox;
-    Panel1: TPanel;
+    PanelTop: TPanel;
     SkLabel1: TSkLabel;
-    Panel8: TPanel;
+    PanelToolJsonRender: TPanel;
     Image3: TImage;
     Image5: TImage;
     Image7: TImage;
     Image8: TImage;
     Image17: TImage;
-    Splitter3: TSplitter;
+    SplitterBottomTool: TSplitter;
     SkLabel4: TSkLabel;
     SkLabel5: TSkLabel;
     SkLabel6: TSkLabel;
     SkPaintBackground: TSkPaintBox;
     PanelTree: TPanel;
-    Panel11: TPanel;
+    PanelExpandTree: TPanel;
     ImageExpand: TImage;
     ImageColapse: TImage;
     ActivityIndicatorExplorer: TActivityIndicator;
-    Panel3: TPanel;
+    PanelTopExplorer: TPanel;
     PanelSearchComponents: TPanel;
     SearchBoxComponents: TSearchBox;
     TreeViewExplorer: TTreeView;
-    SkPaintBox2: TSkPaintBox;
-    Image1: TImage;
-    Image2: TImage;
-    SkLabel2: TSkLabel;
+    SkPaintBoxExplorer: TSkPaintBox;
+    ImageCloseExplorer: TImage;
+    ImageFilterExplorer: TImage;
+    SkLabelExplorer: TSkLabel;
     SkPaintBox3: TSkPaintBox;
     Image4: TImage;
     Image19: TImage;
     Image20: TImage;
     Memo: TMemo;
-    Panel4: TPanel;
-    Panel5: TPanel;
+    PanelInfoValidation: TPanel;
+    PanelInfoRenderToForms: TPanel;
     ImageErro: TImage;
     ImageOk: TImage;
     LabelInfoJson: TLabel;
@@ -106,7 +106,7 @@ type
     procedure TreeViewExplorerClick(Sender: TObject);
     procedure ImageExpandClick(Sender: TObject);
     procedure ImageColapseClick(Sender: TObject);
-    procedure Image2Click(Sender: TObject);
+    procedure ImageFilterExplorerClick(Sender: TObject);
     procedure SkPaintBox1Draw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
     procedure SkPaintBox1MouseMove(Sender: TObject; Shift: TShiftState; X,Y: Integer);
     procedure SkPaintBox1MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -123,8 +123,8 @@ type
     procedure Image7Click(Sender: TObject);
     procedure Image3Click(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure Image1Click(Sender: TObject);
-    procedure SkPaintBox2Draw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
+    procedure ImageCloseExplorerClick(Sender: TObject);
+    procedure SkPaintBoxExplorerDraw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
     procedure SkPaintBox3Draw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
     procedure Image14Click(Sender: TObject);
     procedure Image11Click(Sender: TObject);
@@ -311,7 +311,7 @@ begin
   SkPaintBackground.Width:= SkPaintBackground.Width + 1;
 end;
 
-procedure TFormBuilderMain.Image1Click(Sender: TObject);
+procedure TFormBuilderMain.ImageCloseExplorerClick(Sender: TObject);
 begin
   PanelTree.Visible:= not PanelTree.Visible;
 end;
@@ -322,7 +322,7 @@ begin
   SkPaintBackground.Width:= SkPaintBackground.Width - 1;
 end;
 
-procedure TFormBuilderMain.Image2Click(Sender: TObject);
+procedure TFormBuilderMain.ImageFilterExplorerClick(Sender: TObject);
 begin
   PanelSearchComponents.Visible:= not PanelSearchComponents.Visible;
 end;
@@ -392,23 +392,23 @@ end;
 
 procedure TFormBuilderMain.ImageRenderJsonClick(Sender: TObject);
 begin
-  if not SplitView1.Opened then
+  if not SplitViewmain.Opened then
     PanelRenderJson.Visible:= True
   else
     PanelRenderJson.Visible:= False;
 
-  SplitView1.Opened := not SplitView1.Opened;
+  SplitViewmain.Opened := not SplitViewmain.Opened;
   SplitterRight.Visible:= True;
 end;
 
 procedure TFormBuilderMain.ImgSettingsClick(Sender: TObject);
 begin
-  if not SplitView1.Opened then
+  if not SplitViewmain.Opened then
     PanelSettings.Visible:= True
   else
     PanelSettings.Visible:= False;
 
-  SplitView1.Opened := not SplitView1.Opened;
+  SplitViewmain.Opened := not SplitViewmain.Opened;
   SplitterLeft.Visible:= True;
 end;
 
@@ -638,7 +638,7 @@ begin
   FDragging := False;
 end;
 
-procedure TFormBuilderMain.SkPaintBox2Draw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
+procedure TFormBuilderMain.SkPaintBoxExplorerDraw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
 var
   Shader: ISkShader;
   BorderRect: TRectF;

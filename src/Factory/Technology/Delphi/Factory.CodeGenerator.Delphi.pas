@@ -5,7 +5,9 @@ interface
 uses
   System.Json, System.SysUtils, System.StrUtils , System.Classes,
   System.Generics.Collections,
-  Dialogs, Forms, Factory.ICodeGenerator, Winapi.Windows;
+  Dialogs, Forms, Factory.ICodeGenerator, Winapi.Windows,
+
+  Util.JSONValidator;
 
 type
   TComponentField = record
@@ -16,7 +18,7 @@ type
   private
     ComponentFields: TArray<TComponentField>;
     FGUIText: string;
-    FCOdeText: string;
+    FCodeText: string;
     function GenerateComponent(const CompJson: TJSONObject; const Indent: string = '  '): string;
     function GenerateDfmText(const Json: TJSONObject ): string;
     function GeneratePasText(const Json: TJSONObject ): string;
@@ -29,25 +31,30 @@ type
     function GenerateCode(const Json: TJSONObject; const Indent: string = '  '): string;
     function FindFormByName(Json: TJSONObject; const AName: string): TJSONObject;
     property GUIText: string read FGUIText write SetGUIText;
-    property CodeText: string read FCOdeText write SetCodeText;
+    property CodeText: string read FCodeText write SetCodeText;
   end;
 
 implementation
 
 
 function TDelphiGenerator.GenerateComponent(const CompJson: TJSONObject; const Indent: string = '  '): string;
-var
-  CompType, CompName, PropName: string;
-  Children: TJSONArray;
-  I: Integer;
 begin
-  CompType := CompJson.GetValue<string>('Type', '');
-  CompName := CompJson.GetValue<string>('Name', '');
+  var Children: TJSONArray;
+  var Invalids: TArray<string>;
+  var CompType := CompJson.GetValue<string>('Type', '');
+  var CompName := CompJson.GetValue<string>('Name', '');
+
+  if not Util.JSONValidator.TJSONHelper.ValidateBuilderUIPattern(CompJson.ToJSON, Invalids) then
+  begin
+    Result := Indent + '// Erro: invalid propertys ' + string.Join(', ', Invalids) + sLineBreak;
+    Exit;
+  end;
+
   Result := Indent + 'object ' + CompName + ': ' + CompType + sLineBreak;
 
   for var Pair in CompJson do
   begin
-    PropName := Pair.JsonString.Value;
+    var PropName := Pair.JsonString.Value;
 
     if (PropName = 'Type') or (PropName = 'Name') or (PropName = 'Children') then
       Continue;
@@ -62,12 +69,38 @@ begin
       Continue;
     end;
 
-    if ((CompType = 'TLabel') or (CompType = 'TButton') or (CompType = 'TPanel') or (CompType = 'TTabSheet')) then
+    if ((CompType = 'TLabel') or (CompType = 'TButton') or (CompType = 'TTabSheet')) then
     begin
       if PropName = 'Text' then
         PropName := 'Caption';
+      if (CompType = 'TLabel') and (PropName = 'FontSize') then
+        PropName := 'Font.Size';
+      if (CompType = 'TLabel') and (PropName = 'FontStyle') then
+        PropName := 'Font.Style';
+      if (CompType = 'TLabel') and (PropName = 'FontColor') then
+        PropName := 'Font.Color';
     end;
 
+    if (CompType = 'TEdit') then
+    begin
+      if PropName = 'Caption' then
+        PropName := 'Text';
+    end;
+
+    if ((PropName = 'Color') or PropName.EndsWith('.Color')) and (Pair.JsonValue is TJSONString) then
+    begin
+      var ColorValue := Pair.JsonValue.Value;
+      if ColorValue.StartsWith('#') then
+      begin
+        var Hex := Copy(ColorValue, 2, 6);
+        if Length(Hex) = 6 then
+          ColorValue := '$00' + Copy(Hex,5,2) + Copy(Hex,3,2) + Copy(Hex,1,2);
+      end;
+      Result := Result + Indent + '  ' + PropName + ' = ' + ColorValue + sLineBreak;
+      Continue;
+    end;
+
+    // Geração padrão para tipos conhecidos
     if Pair.JsonValue is TJSONNumber then
       Result := Result + Indent + '  ' + PropName + ' = ' + Pair.JsonValue.Value + sLineBreak
     else if Pair.JsonValue is TJSONBool then
@@ -97,7 +130,7 @@ begin
   end;
 
   if CompJson.TryGetValue('Children', Children) then
-    for I := 0 to Children.Count - 1 do
+    for var I := 0 to Children.Count - 1 do
       Result := Result + GenerateComponent(Children.Items[I] as TJSONObject, Indent + '  ');
 
   Result := Result + Indent + 'end' + sLineBreak;
@@ -216,7 +249,7 @@ function TDelphiGenerator.GenerateCode(const Json: TJSONObject; const Indent: st
 begin
   SetGUIText(GenerateDfmText(Json));
   SetCodeText(GeneratePasText(Json));
-  Result := FGUIText + sLineBreak + ' ; ' + sLineBreak + FCOdeText;
+  Result := FGUIText + sLineBreak + ' ; ' + sLineBreak + FCodeText;
 end;
 
 function TDelphiGenerator.GetGUIText: string;
@@ -226,7 +259,7 @@ end;
 
 function TDelphiGenerator.GetCodeText: string;
 begin
-  result:= FCOdeText;
+  result:= FCodeText;
 end;
 
 procedure TDelphiGenerator.SetGUIText(const Value: string);
@@ -236,7 +269,7 @@ end;
 
 procedure TDelphiGenerator.SetCodeText(const Value: string);
 begin
-  FCOdeText := Value;
+  FCodeText := Value;
 end;
 
 

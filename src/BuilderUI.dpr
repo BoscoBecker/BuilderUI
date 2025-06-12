@@ -25,7 +25,7 @@ uses
   View.Window.Json in 'View\View.Window.Json.pas' {FormJson},
   Util.JSONValidator in 'Utils\Util.JSONValidator.pas',
   Service.Zoom in 'Service\Service.Zoom.pas',
-  Service.Forms.Create in 'Service\Service.Forms.Create.pas';
+  Service.Forms.Manager in 'Service\Service.Forms.Manager.pas';
 
 {$R *.res}
 

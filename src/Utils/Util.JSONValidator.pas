@@ -72,7 +72,7 @@ begin
     // Define allowed properties for each component type
     AddProps('TForm',    ['Type','Name','Caption','Width','Height','Align','Children','BorderStyle','Position']);
     AddProps('TPanel',   ['Type','Name','Left','Top','Width','Height','Color','BevelOuter','Caption','Align','Children','Position']);
-    AddProps('TLabel',   ['Type','Name','Caption','Text','Position','Width','Height','FontSize','FontStyle','FontColor','Alignment','WordWrap']);
+    AddProps('TLabel',   ['Type','Name','Caption','Text','Position','Width','Height','FontSize','FontStyle','FontColor','WordWrap']);
     AddProps('TEdit',    ['Type','Name','Text','Caption','Position','Width','Height','ReadOnly','PasswordChar','FontStyle']);
     AddProps('TButton',  ['Type','Name','Caption','Position','Width','Height']);
     AddProps('TSpeedButton', ['Type','Name','Caption','Position','Width','Height']);
@@ -81,7 +81,7 @@ begin
     AddProps('TDateTimePicker',['Type','Name','Position','Width','Height']);
     AddProps('TPageControl',['Type','Name','Align','Width','Height','Pages','Tabs','Position','Children']);
     AddProps('TTabSheet',['Type','Name','Caption','Children']);
-    AddProps('TImage',    ['Type','Name','Width','Height','Align','Position','Picture']);
+    AddProps('TImage',    ['Type','Name','Width','Height','Align','Position']);
     AddProps('TStringGrid',    ['Type','Name','Width','Height','Position','ColCount','RowCount']);
     AddProps('TDBGrid',    ['Type','Name','Width','Height','Position']);
     AddProps('TCheckBox',  ['Type','Name','Caption','Position','Width','Height']);
@@ -92,10 +92,9 @@ begin
     AddProps('TRadioGroup',  ['Type','Name','Caption','Position','Width','Height','Items']);
     AddProps('TMemo',  ['Type','Name','Caption','Position','Width','Height','Lines','Text']);
 
-    // Add more as needed...
+
 
     if not Assigned(Root) then Exit;
-
     if Root is TJSONObject then
     begin
       if TJSONObject(Root).TryGetValue<TJSONArray>('Forms', FormArr) then

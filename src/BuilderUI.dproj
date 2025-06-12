@@ -159,7 +159,7 @@
         </DCCReference>
         <DCCReference Include="Utils\Util.JSONValidator.pas"/>
         <DCCReference Include="Service\Service.Zoom.pas"/>
-        <DCCReference Include="Service\Service.Forms.Create.pas"/>
+        <DCCReference Include="Service\Service.Forms.Manager.pas"/>
         <None Include=".gitignore"/>
         <None Include="BuilderUI.dpr"/>
         <BuildConfiguration Include="Base">

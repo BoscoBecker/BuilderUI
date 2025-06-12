@@ -46,8 +46,8 @@ object FormBuilderMain: TFormBuilderMain
     Align = alClient
     OnMouseMove = SkPaintBackgroundMouseMove
     OnDraw = SkPaintBackgroundDraw
-    ExplicitLeft = 400
-    ExplicitWidth = 366
+    ExplicitLeft = 294
+    ExplicitTop = 57
   end
   object StatusBarBottom: TStatusBar
     Left = 0
@@ -89,7 +89,7 @@ object FormBuilderMain: TFormBuilderMain
     BevelOuter = bvNone
     TabOrder = 1
     Visible = False
-    object Splitter3: TSplitter
+    object SplitterBottomTool: TSplitter
       Left = 0
       Top = 610
       Width = 301
@@ -100,7 +100,7 @@ object FormBuilderMain: TFormBuilderMain
       ExplicitTop = 676
       ExplicitWidth = 242
     end
-    object Panel13: TPanel
+    object PanelTopRender: TPanel
       Left = 0
       Top = 0
       Width = 301
@@ -108,7 +108,6 @@ object FormBuilderMain: TFormBuilderMain
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitWidth = 242
       object SkPaintBox3: TSkPaintBox
         Left = 0
         Top = 0
@@ -158,7 +157,7 @@ object FormBuilderMain: TFormBuilderMain
         ExplicitLeft = 152
       end
     end
-    object Panel8: TPanel
+    object PanelToolJsonRender: TPanel
       Left = 0
       Top = 580
       Width = 301
@@ -166,8 +165,6 @@ object FormBuilderMain: TFormBuilderMain
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitTop = 583
-      ExplicitWidth = 242
       object Image3: TImage
         Left = 267
         Top = 0
@@ -354,10 +351,8 @@ object FormBuilderMain: TFormBuilderMain
       ScrollBars = ssBoth
       TabOrder = 2
       OnChange = MemoChange
-      ExplicitTop = 33
-      ExplicitWidth = 269
     end
-    object Panel4: TPanel
+    object PanelInfoValidation: TPanel
       Left = 0
       Top = 613
       Width = 301
@@ -365,7 +360,6 @@ object FormBuilderMain: TFormBuilderMain
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 3
-      ExplicitWidth = 242
       object LabelInfoJson: TLabel
         Left = 0
         Top = 33
@@ -380,11 +374,10 @@ object FormBuilderMain: TFormBuilderMain
         ParentFont = False
         WordWrap = True
         StyleElements = [seFont, seClient]
-        ExplicitTop = 57
         ExplicitWidth = 3
         ExplicitHeight = 15
       end
-      object Panel5: TPanel
+      object PanelInfoRenderToForms: TPanel
         Left = 0
         Top = 0
         Width = 301
@@ -399,7 +392,6 @@ object FormBuilderMain: TFormBuilderMain
         Font.Style = []
         ParentFont = False
         TabOrder = 0
-        ExplicitWidth = 242
         object ImageErro: TImage
           Left = 242
           Top = 0
@@ -455,7 +447,7 @@ object FormBuilderMain: TFormBuilderMain
       end
     end
   end
-  object SplitView1: TSplitView
+  object SplitViewMain: TSplitView
     Left = 0
     Top = 57
     Width = 50
@@ -748,7 +740,7 @@ object FormBuilderMain: TFormBuilderMain
       end
     end
   end
-  object Panel2: TPanel
+  object PanelBottomInfo: TPanel
     Left = 0
     Top = 746
     Width = 1109
@@ -964,7 +956,7 @@ object FormBuilderMain: TFormBuilderMain
       OnClick = Image20Click
     end
   end
-  object Panel1: TPanel
+  object PanelTop: TPanel
     Left = 0
     Top = 0
     Width = 1109
@@ -1016,7 +1008,7 @@ object FormBuilderMain: TFormBuilderMain
     Caption = 'PanelTree'
     TabOrder = 6
     Visible = False
-    object Panel11: TPanel
+    object PanelExpandTree: TPanel
       Left = 0
       Top = 60
       Width = 239
@@ -1026,7 +1018,6 @@ object FormBuilderMain: TFormBuilderMain
       DoubleBuffered = True
       ParentDoubleBuffered = False
       TabOrder = 0
-      ExplicitWidth = 223
       object ImageExpand: TImage
         Left = 64
         Top = 0
@@ -1076,7 +1067,7 @@ object FormBuilderMain: TFormBuilderMain
         Align = alLeft
       end
     end
-    object Panel3: TPanel
+    object PanelTopExplorer: TPanel
       Left = 0
       Top = 0
       Width = 239
@@ -1086,20 +1077,19 @@ object FormBuilderMain: TFormBuilderMain
       DoubleBuffered = True
       ParentDoubleBuffered = False
       TabOrder = 1
-      ExplicitWidth = 223
-      object SkPaintBox2: TSkPaintBox
+      object SkPaintBoxExplorer: TSkPaintBox
         Left = 0
         Top = 0
         Width = 239
         Height = 35
         Align = alClient
-        OnDraw = SkPaintBox2Draw
+        OnDraw = SkPaintBoxExplorerDraw
         ExplicitLeft = 72
         ExplicitTop = 16
         ExplicitWidth = 50
         ExplicitHeight = 50
       end
-      object Image1: TImage
+      object ImageCloseExplorer: TImage
         Left = 198
         Top = 0
         Width = 40
@@ -1122,11 +1112,11 @@ object FormBuilderMain: TFormBuilderMain
           00323401CA5E80CFCB1483C16F2000C0903915693203080000000049454E44AE
           426082}
         ShowHint = True
-        OnClick = Image1Click
+        OnClick = ImageCloseExplorerClick
         ExplicitLeft = 182
         ExplicitTop = 1
       end
-      object Image2: TImage
+      object ImageFilterExplorer: TImage
         Left = 157
         Top = 0
         Width = 40
@@ -1148,10 +1138,10 @@ object FormBuilderMain: TFormBuilderMain
           C540640033F4153E45542FB1014D812215545E7E4C0000000049454E44AE4260
           82}
         ShowHint = True
-        OnClick = Image2Click
+        OnClick = ImageFilterExplorerClick
         ExplicitLeft = 141
       end
-      object SkLabel2: TSkLabel
+      object SkLabelExplorer: TSkLabel
         Left = 6
         Top = 8
         Width = 51
@@ -1174,7 +1164,6 @@ object FormBuilderMain: TFormBuilderMain
       ParentDoubleBuffered = False
       TabOrder = 2
       Visible = False
-      ExplicitWidth = 223
       object SearchBoxComponents: TSearchBox
         Left = 0
         Top = 0
@@ -1184,7 +1173,6 @@ object FormBuilderMain: TFormBuilderMain
         TabOrder = 0
         TextHint = 'Type: label1'
         OnChange = SearchBoxComponentsChange
-        ExplicitWidth = 223
         ExplicitHeight = 23
       end
     end
@@ -1207,7 +1195,6 @@ object FormBuilderMain: TFormBuilderMain
       TabOrder = 3
       ToolTips = False
       OnClick = TreeViewExplorerClick
-      ExplicitWidth = 223
     end
   end
 end

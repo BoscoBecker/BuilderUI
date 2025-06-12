@@ -2,7 +2,7 @@
   <img src="https://github.com/user-attachments/assets/ec398da9-c462-40e8-b578-c3c264965042" alt="BuilderUI">
 </p>
 
-# BuilderUI - Forms Builder UI for Windows
+# BuilderUI - Forms Builder UI for Windows (Design Patterns Applied)
 
 ## Overview
 BuilderUI is a powerful tool for creating JSON-based graphical user interfaces for Windows. The project allows dynamic creation of forms through JSON definitions, with support for export to multiple platforms.
@@ -115,6 +115,10 @@ You can leverage GitHub Copilot in Visual Studio Code to quickly generate and ed
 - Saving your JSON files allows Copilot to provide better context and more accurate suggestions.
 - You can easily modify, extend, or refactor your forms by editing the JSON and letting Copilot assist with repetitive or boilerplate structures.
 - Use the provided JSON examples as templates for your own screens.
+
+### Integrated AI Chat
+
+> The idea is to use an integrated chat to assist users in generating, editing, and refactoring JSON UI definitions. This chat-based AI can help automate repetitive tasks, provide instant suggestions, and accelerate the UI design process directly within your development environment. Coming soon, need help.
 
 ## Getting Started
 

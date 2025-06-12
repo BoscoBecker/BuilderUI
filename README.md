@@ -19,8 +19,8 @@ BuilderUI is a powerful tool for creating JSON-based graphical user interfaces f
   - Nested control support
 
 - **Multi-Platform Export**
-  - Delphi Forms
-  - C# Windows Forms
+  - Delphi Forms 100% need refactor
+  - C# Windows Forms 90% 
   - Java Swing/AWT
   - Lazarus Forms
 

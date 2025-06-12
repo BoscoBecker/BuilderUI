@@ -160,6 +160,8 @@
         <DCCReference Include="Utils\Util.JSONValidator.pas"/>
         <DCCReference Include="Service\Service.Zoom.pas"/>
         <DCCReference Include="Service\Service.Forms.Manager.pas"/>
+        <DCCReference Include="Service\Service.Skia.Draw.pas"/>
+        <DCCReference Include="Service\Service.JsonFile.pas"/>
         <None Include=".gitignore"/>
         <None Include="BuilderUI.dpr"/>
         <BuildConfiguration Include="Base">

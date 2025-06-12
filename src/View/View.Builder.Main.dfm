@@ -108,13 +108,13 @@ object FormBuilderMain: TFormBuilderMain
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 0
-      object SkPaintBox3: TSkPaintBox
+      object SkPaintBoxRenderJson: TSkPaintBox
         Left = 0
         Top = 0
         Width = 301
         Height = 35
         Align = alClient
-        OnDraw = SkPaintBox3Draw
+        OnDraw = SkPaintBoxRenderJsonDraw
         ExplicitWidth = 242
         ExplicitHeight = 34
       end

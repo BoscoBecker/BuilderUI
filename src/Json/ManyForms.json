@@ -5,6 +5,8 @@
       "Caption": "Customer Registration",
       "Type": "TForm",
       "Align": "Client",
+      "Width": 300,      
+      "Height": 300,
       "Children": [
         {
           "Name": "LblTituloCliente",
@@ -70,6 +72,8 @@
       "Name": "FrmAddressCustomer",
       "Caption": "Customer Address",
       "Type": "TForm",
+      "Width": 300,      
+      "Height": 300,
       "Align": "Client",
       "Children": [
         {
@@ -144,6 +148,9 @@
       "Type": "TForm",
       "Name": "FrmButtons",
       "Caption": "Button List",
+      "Width": 300,      
+      "Height": 300,
+
       "Align": "Client",
       "Children": [
         {

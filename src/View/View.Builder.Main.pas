@@ -16,9 +16,7 @@ uses
   View.Export.Forms, View.Menu.Context.Windows, View.Window.Json, SynEdit,
   SynEditHighlighter, SynHighlighterJSON,
 
-  Service.Zoom, Service.Forms.Manager;
-
-type  TBuilderBackground = ( bClear, bGrid);
+  Service.Zoom, Service.Forms.Manager, Service.Skia.Draw, Service.JsonFile;
 
 type
   TOrigRect = record
@@ -81,7 +79,7 @@ type
     ImageCloseExplorer: TImage;
     ImageFilterExplorer: TImage;
     SkLabelExplorer: TSkLabel;
-    SkPaintBox3: TSkPaintBox;
+    SkPaintBoxRenderJson: TSkPaintBox;
     Image4: TImage;
     Image19: TImage;
     Image20: TImage;
@@ -125,7 +123,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ImageCloseExplorerClick(Sender: TObject);
     procedure SkPaintBoxExplorerDraw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
-    procedure SkPaintBox3Draw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
+    procedure SkPaintBoxRenderJsonDraw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
     procedure Image14Click(Sender: TObject);
     procedure Image11Click(Sender: TObject);
     procedure Image15Click(Sender: TObject);
@@ -329,22 +327,14 @@ end;
 
 procedure TFormBuilderMain.Image3Click(Sender: TObject);
 begin
-  Clipboard.AsText:= Memo.Lines.Text;
+  TJsonFileService.CopyJsonToClipboard(Memo.Lines.Text);
 end;
 
 procedure TFormBuilderMain.Image5Click(Sender: TObject);
 begin
-  var OpenJson := TOpenDialog.Create(nil);
-  OpenJson.Filter:= 'JSON Files (*.json)|*.json';
-  try
-    if OpenJson.Execute(Application.Handle) then
-    begin
-      if not String(OpenJson.FileName).Trim.Equals('') then
-        Memo.Lines.LoadFromFile(OpenJson.FileName);
-    end;
-  finally
-    OpenJson.Free;
-  end;
+  var Json: string;
+  if TJsonFileService.OpenJsonFromFile(Json) then
+    Memo.Lines.Text := Json;
 end;
 
 procedure TFormBuilderMain.Image6Click(Sender: TObject);
@@ -357,19 +347,7 @@ end;
 
 procedure TFormBuilderMain.Image7Click(Sender: TObject);
 begin
-  var SaveJSON:= TSaveDialog.Create(nil);
-  SaveJSON.Filter:= 'JSON Files (*.json)|*.json';
-  try
-    if SaveJSON.Execute(Application.Handle) then
-    begin
-      if not String(SaveJSON.FileName).Trim.Equals('') then
-      begin
-        Memo.Lines.SaveToFile(SaveJSON.FileName);
-      end;
-    end;
-  finally
-    SaveJSON.Free;
-  end;
+  TJsonFileService.SaveJsonToFile(Memo.Lines.Text);
 end;
 
 procedure TFormBuilderMain.Image8Click(Sender: TObject);
@@ -382,7 +360,7 @@ end;
 
 procedure TFormBuilderMain.Image4Click(Sender: TObject);
 begin
-  Memo.Lines.Clear;
+  TJsonFileService.ClearMemoJson(Memo);
 end;
 
 procedure TFormBuilderMain.ImageRenderClick(Sender: TObject);
@@ -572,36 +550,8 @@ begin
 end;
 
 procedure TFormBuilderMain.SkPaintBackgroundDraw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
-const
-  GridSize = 20;
 begin
-  var FZoom := FZoomService.GetZoom;
-  ACanvas.Save;
-  ACanvas.Scale(FZoom, FZoom); // Aplica o zoom
-  case FBuilderBackground of
-    bClear: ACanvas.Clear(TAlphaColors.White);
-    bGrid:
-    begin
-      ACanvas.Clear($FFF5F5F5);
-      FPaint := TSkPaint.Create;
-      FPaint.Style := TSkPaintStyle.Stroke;
-      FPaint.Color := $FFDDDDDD;
-      FPaint.StrokeWidth := 1;
-      var X := ADest.Left;
-      while X <= ADest.Right / FZoom do
-      begin
-        ACanvas.DrawLine(X, ADest.Top, X, ADest.Bottom / FZoom, FPaint);
-        X := X + GridSize;
-      end;
-      var Y := ADest.Top;
-      while Y <= ADest.Bottom / FZoom do
-      begin
-        ACanvas.DrawLine(ADest.Left, Y, ADest.Right / FZoom, Y, FPaint);
-        Y := Y + GridSize;
-      end;
-    end;
-  end;
-  ACanvas.Restore;
+  TSkiaDrawService.DrawBackground(ACanvas, ADest, AOpacity, FBuilderBackground, FPaint);
 end;
 
 procedure TFormBuilderMain.SkPaintBackgroundMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -611,10 +561,7 @@ end;
 
 procedure TFormBuilderMain.SkPaintBox1Draw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
 begin
-   FPaint:= TSkPaint.Create;
-   FPaint.Shader := TSkShader.MakeGradientSweep(ADest.CenterPoint,
-   [$FFF2F2F2, $FFCCCCCC, $FF999999, $FFCCCCCC, $FFF2F2F2]);
-   ACanvas.DrawPaint(FPaint);
+  TSkiaDrawService.DrawGradientBox(ACanvas, ADest, AOpacity, FPaint);
 end;
 
 procedure TFormBuilderMain.SkPaintBox1MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -639,41 +586,13 @@ begin
 end;
 
 procedure TFormBuilderMain.SkPaintBoxExplorerDraw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
-var
-  Shader: ISkShader;
-  BorderRect: TRectF;
-  Center: TPointF;
 begin
-  FPaint := TSkPaint.Create;
-  FPaint.Style := TSkPaintStyle.Stroke;
-  FPaint.StrokeWidth := 1;
-
-  Center := PointF(ADest.Left + ADest.Width / 2, ADest.Top + ADest.Height / 2);
-  Shader := TSkShader.MakeGradientSweep(Center,[$FFB0B0B0, $FFD0D0D0, $FFFFFFFF, $FFD0D0D0, $FFB0B0B0]);
-  FPaint.Shader := Shader;
-  BorderRect := ADest;
-
-  InflateRect(BorderRect, -FPaint.StrokeWidth / 2, -FPaint.StrokeWidth / 2);
-  ACanvas.DrawRect(BorderRect, FPaint);
+  TSkiaDrawService.DrawExplorerBorder(ACanvas, ADest, AOpacity, FPaint);
 end;
 
-procedure TFormBuilderMain.SkPaintBox3Draw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
-var
-  Shader: ISkShader;
-  BorderRect: TRectF;
-  Center: TPointF;
+procedure TFormBuilderMain.SkPaintBoxRenderJsonDraw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
 begin
-  FPaint := TSkPaint.Create;
-  FPaint.Style := TSkPaintStyle.Stroke;
-  FPaint.StrokeWidth := 1;
-
-  Center := PointF(ADest.Left + ADest.Width / 2, ADest.Top + ADest.Height / 2);
-  Shader := TSkShader.MakeGradientSweep(Center,[$FFFFFFFF, $FFD0D0D0, $FFB0B0B0, $FFD0D0D0, $FFFFFFFF]);
-  FPaint.Shader := Shader;
-  BorderRect := ADest;
-
-  InflateRect(BorderRect, -FPaint.StrokeWidth / 2, -FPaint.StrokeWidth / 2);
-  ACanvas.DrawRect(BorderRect, FPaint);
+  TSkiaDrawService.DrawBoxRenderJsonBorder(ACanvas, ADest, AOpacity, FPaint);
 end;
 
 procedure TFormBuilderMain.TreeViewExplorerClick(Sender: TObject);

@@ -3,12 +3,12 @@ unit Service.Export;
 interface
 
 uses System.Generics.Collections, System.JSON, Strategy.Export.Delphi,  Vcl.ComCtrls,
-     Strategy.Export.CSharp, Factory.ICodeGenerator, Factory.CodeGeneratorFactory;
+     Strategy.Export.CSharp, Factory.ICodeGenerator, Factory.CodeGeneratorFactory,
+     Factory.CodeGenerator.CSharp;
 
 type
   TExportService = class
-   public
-    class procedure ExportForm(const Json: TJSONObject; const FormName, Path, Technology: string; OnlyGUI: Boolean); static;
+    public class procedure ExportForm(const Json: TJSONObject; const FormName, Path, Technology: string; OnlyGUI: Boolean); static;
   end;
 
 implementation
@@ -37,10 +37,13 @@ begin
   begin
     var Generator := TCodeGeneratorFactory.CreateGenerator(Technology);
     var CSharpFile := TCSharpExport.Create;
+    var CSharpFileGUI:= TCSharp.Create;
     var Components := Generator.FindFormByName(Json, FormName);
     try
       Generator.GenerateCode(Components);
+      CSharpFileGUI.GenerateDesignerCode(Components);
       CSharpFile.ExportData(Path + '\' + FormName + '.cs', Generator.CodeText);
+      CSharpFile.ExportData(Path + '\' + FormName + '.Designer.cs', CSharpFileGUI.GUIText);
     finally
       CSharpFile.Free;
     end;

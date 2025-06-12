@@ -12,8 +12,10 @@ type
     function GenerateComponent(const CompJson: TJSONObject; const Indent: string = '    '): string;
     procedure SetGUIText(const Value: string);
     procedure SetCodeText(const Value: string);
+    function DelphiToWinFormsType(const DelphiType: string): string;
   public
     function GenerateCode(const Json: TJSONObject; const Indent: string = '    '): string;
+    function GenerateDesignerCode(const Json: TJSONObject; const Indent: string = '    '): string;
     function FindFormByName(Json: TJSONObject; const AName: string): TJSONObject;
     function GetGUIText: string;
     function GetCodeText: string;
@@ -55,11 +57,9 @@ begin
   CompName := CompJson.GetValue<string>('Name', '');
   Line := '';
 
-  if (CompType = '') or (CompName = '') then
-    Exit('');
+  if (CompType = '') or (CompName = '') then Exit('');
 
-  // Exemplo: this.LblTituloCliente = new Label();
-  Line := Indent + 'this.' + CompName + ' = new ' + Copy(CompType, 2, MaxInt) + '();' + sLineBreak;
+  Line := Indent + '' + CompName + ' = new ' + DelphiToWinFormsType(CompType)+ '();' + sLineBreak;
 
   for var Pair in CompJson do
   begin
@@ -89,13 +89,8 @@ begin
       Continue;
     end;
 
-    // Adicione outros mapeamentos de propriedades conforme necessário
   end;
-
-  // Adiciona o componente aos controles do parent (assume que é o form)
-  Line := Line + Indent + 'this.Controls.Add(this.' + CompName + ');' + sLineBreak;
-
-  // Recursão para filhos
+  Line := Line + Indent + 'Controls.Add(this.' + CompName + ');' + sLineBreak;
   if CompJson.TryGetValue('Children', Children) then
     for I := 0 to Children.Count - 1 do
       Line := Line + GenerateComponent(Children.Items[I] as TJSONObject, Indent);
@@ -104,40 +99,100 @@ begin
 end;
 
 function TCsharp.GenerateCode(const Json: TJSONObject; const Indent: string): string;
-var
-  FormName, Caption: string;
-  Width, Height: Integer;
-  Children: TJSONArray;
-  GUIText: string;
 begin
-  FormName := Json.GetValue<string>('Name', 'MyForm');
-  Caption := Json.GetValue<string>('Caption', FormName);
-  Width := Json.GetValue<Integer>('Width', 800);
-  Height := Json.GetValue<Integer>('Height', 600);
+  var FormName := Json.GetValue<string>('Name', 'MyForm');
+  var Caption := Json.GetValue<string>('Caption', FormName);
+  var Width := Json.GetValue<Integer>('Width', 800);
+  var Height := Json.GetValue<Integer>('Height', 600);
 
-  // Geração do código C# WinForms
-  GUIText :=
-    'using System;' + sLineBreak +
-    'using System.Windows.Forms;' + sLineBreak +
-    'using System.Drawing;' + sLineBreak + sLineBreak +
-    'public class ' + FormName + ' : Form' + sLineBreak +
+  // C# WinForms  .cs
+  var CodeText :=
+    'public partial class ' + FormName + ' : Form' + sLineBreak +
     '{' + sLineBreak +
     Indent + 'public ' + FormName + '()' + sLineBreak +
     Indent + '{' + sLineBreak +
+    Indent + '    InitializeComponent();' + sLineBreak +
     Indent + '    this.Text = "' + Caption + '";' + sLineBreak +
     Indent + '    this.Width = ' + Width.ToString + ';' + sLineBreak +
-    Indent + '    this.Height = ' + Height.ToString + ';' + sLineBreak;
-
-  if Json.TryGetValue('Children', Children) and (Children is TJSONArray) then
-    for var I := 0 to Children.Count - 1 do
-      GUIText := GUIText + GenerateComponent(Children.Items[I] as TJSONObject, Indent + '    ');
-
-  GUIText := GUIText + Indent + '}' + sLineBreak + '}';
-
-  SetGUIText(GUIText);
-  SetCodeText(GUIText); // Para WinForms, GUI e code são praticamente o mesmo
+    Indent + '    this.Height = ' + Height.ToString + ';' + sLineBreak +
+    Indent + '}' + sLineBreak +
+    '}';
+  SetCodeText(CodeText);
 
   Result := FGUIText;
+end;
+
+function TCsharp.GenerateDesignerCode(const Json: TJSONObject; const Indent: string): string;
+var
+  FormName: string;
+  Children: TJSONArray;
+  Fields, InitCode: string;
+
+  procedure ProcessComponent(const CompJson: TJSONObject; const Indent: string);
+  begin
+    var Children: TJSONArray;
+    var CompType := CompJson.GetValue<string>('Type', '');
+    var CompName := CompJson.GetValue<string>('Name', '');
+    if (CompType = '') or (CompName = '') then Exit;
+
+    Fields := Fields + Indent + 'private ' + DelphiToWinFormsType(CompType) + ' ' + CompName + ';' + sLineBreak;
+    InitCode := InitCode + Indent + CompName + ' = new ' + DelphiToWinFormsType(CompType)+ '();' + sLineBreak;
+
+    for var Pair in CompJson do
+    begin
+      var PropName := Pair.JsonString.Value;
+      if (PropName = 'Type') or (PropName = 'Name') or (PropName = 'Children') then Continue;
+
+      if (PropName = 'Position') and (Pair.JsonValue is TJSONObject) then
+      begin
+        var PosObj := Pair.JsonValue as TJSONObject;
+        var X := PosObj.GetValue<Integer>('X', 0);
+        var Y := PosObj.GetValue<Integer>('Y', 0);
+        InitCode := InitCode + Indent + 'this.' + CompName + '.Location = new System.Drawing.Point(' + X.ToString + ', ' + Y.ToString + ');' + sLineBreak;
+        Continue;
+      end;
+
+      if (PropName = 'Width') or (PropName = 'Height') then
+      begin
+        InitCode := InitCode + Indent + 'this.' + CompName + '.' + PropName + ' = ' + Pair.JsonValue.Value + ';' + sLineBreak;
+        Continue;
+      end;
+
+      if (PropName = 'Caption') or (PropName = 'Text') then
+      begin
+        InitCode := InitCode + Indent + 'this.' + CompName + '.Text = "' + Pair.JsonValue.Value + '";' + sLineBreak;
+        Continue;
+      end;
+    end;
+
+    InitCode := InitCode + Indent + 'Controls.Add(this.' + CompName + ');' + sLineBreak;
+
+    if CompJson.TryGetValue('Children', Children) then
+      for var I := 0 to Children.Count - 1 do
+        ProcessComponent(Children.Items[I] as TJSONObject, Indent);
+  end;
+
+begin
+  FormName := Json.GetValue<string>('Name', 'MyForm');
+  Fields := '';
+  InitCode := '';
+  if Json.TryGetValue('Children', Children) and (Children is TJSONArray) then
+    for var I := 0 to Children.Count - 1 do
+      ProcessComponent(Children.Items[I] as TJSONObject, Indent + '    ');
+
+  // C# WinForms  Designer.cs
+  Result := 'partial class ' + FormName + sLineBreak +
+  Indent + '{' + sLineBreak +
+  Indent + ' ///  Required designer variable.' + sLineBreak + #13#10+
+  Indent + 'private System.ComponentModel.IContainer components = null; '+ sLineBreak  + #13#10+
+  Fields + sLineBreak +
+  Indent + '    private void InitializeComponent()' + sLineBreak +
+  Indent + '    {' + sLineBreak +
+  InitCode +
+  Indent + '    }' + sLineBreak +
+  '}' ;
+
+  SetGUIText(Result);
 end;
 
 function TCsharp.GetCodeText: string;
@@ -158,6 +213,24 @@ end;
 procedure TCsharp.SetGUIText(const Value: string);
 begin
   FGUIText := Value;
+end;
+
+function TCsharp.DelphiToWinFormsType(const DelphiType: string): string;
+begin
+  if SameText(DelphiType, 'TEdit') then Exit('TextBox');
+  if SameText(DelphiType, 'TLabel') then Exit('Label');
+  if SameText(DelphiType, 'TButton') then Exit('Button');
+  if SameText(DelphiType, 'TPanel') then Exit('Panel');
+  if SameText(DelphiType, 'TComboBox') then Exit('ComboBox');
+  if SameText(DelphiType, 'TCheckBox') then Exit('CheckBox');
+  if SameText(DelphiType, 'TListBox') then Exit('ListBox');
+  if SameText(DelphiType, 'TDateTimePicker') then Exit('DateTimePicker');
+  if SameText(DelphiType, 'TBitBtn') then Exit('Button');
+  if SameText(DelphiType, 'TSpeedButton') then Exit('Button');
+  if SameText(DelphiType, 'TMemo') then Exit('TextBox');
+  if SameText(DelphiType, 'TDBGrid') then Exit('DataGridView');
+  if SameText(DelphiType, 'TGroupBox') then Exit('GroupBox');
+  Result := DelphiType;
 end;
 
 end.

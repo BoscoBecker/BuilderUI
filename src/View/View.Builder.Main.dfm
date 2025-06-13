@@ -1,7 +1,8 @@
 object FormBuilderMain: TFormBuilderMain
   Left = 0
   Top = 0
-  Caption = 'Forms Builder UI'
+  AlphaBlend = True
+  Caption = 'Forms Builder UI - Create and Export Layout Forms Easily'
   ClientHeight = 794
   ClientWidth = 1109
   Color = clWhite
@@ -118,7 +119,7 @@ object FormBuilderMain: TFormBuilderMain
         ExplicitWidth = 242
         ExplicitHeight = 34
       end
-      object Image12: TImage
+      object ImageCloseRender: TImage
         Left = 0
         Top = 0
         Width = 40
@@ -141,7 +142,7 @@ object FormBuilderMain: TFormBuilderMain
           00323401CA5E80CFCB1483C16F2000C0903915693203080000000049454E44AE
           426082}
         ShowHint = True
-        OnClick = Image12Click
+        OnClick = ImageCloseRenderClick
       end
       object SkLabel3: TSkLabel
         Left = 211
@@ -165,7 +166,7 @@ object FormBuilderMain: TFormBuilderMain
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 1
-      object Image3: TImage
+      object ImageCopyToClipboard: TImage
         Left = 267
         Top = 0
         Width = 34
@@ -191,12 +192,12 @@ object FormBuilderMain: TFormBuilderMain
           49C4E7A993A1998F898408D78A25CB534D151CA37F970000000049454E44AE42
           6082}
         ShowHint = True
-        OnClick = Image3Click
+        OnClick = ImageCopyToClipboardClick
         ExplicitLeft = 201
         ExplicitTop = 5
         ExplicitHeight = 34
       end
-      object Image5: TImage
+      object ImageLoadJson: TImage
         Left = 0
         Top = 0
         Width = 34
@@ -219,11 +220,11 @@ object FormBuilderMain: TFormBuilderMain
           543860035780F8322E0309155FE80014EBDB81F8372E0361860A1269E07B64C3
           701948110000854B3A153A1A4DE00000000049454E44AE426082}
         ShowHint = True
-        OnClick = Image5Click
+        OnClick = ImageLoadJsonClick
         ExplicitLeft = 6
         ExplicitTop = -6
       end
-      object Image7: TImage
+      object ImageSaveJson: TImage
         Left = 34
         Top = 0
         Width = 34
@@ -248,12 +249,12 @@ object FormBuilderMain: TFormBuilderMain
           A416B0E8C01788E740D91341DE662452233EB000880DA0980100C9A339452A50
           EC060000000049454E44AE426082}
         ShowHint = True
-        OnClick = Image7Click
+        OnClick = ImageSaveJsonClick
         ExplicitLeft = 201
         ExplicitTop = 5
         ExplicitHeight = 34
       end
-      object Image8: TImage
+      object ImagePrettyJson: TImage
         Left = 68
         Top = 0
         Width = 34
@@ -279,12 +280,12 @@ object FormBuilderMain: TFormBuilderMain
           8843FFA4FC039CA14E190DE1D9B50000000049454E44AE426082}
         Proportional = True
         ShowHint = True
-        OnClick = Image8Click
+        OnClick = ImagePrettyJsonClick
         ExplicitLeft = 43
         ExplicitTop = -4
         ExplicitHeight = 28
       end
-      object Image17: TImage
+      object ImageHighSize: TImage
         Left = 233
         Top = 0
         Width = 34
@@ -307,12 +308,12 @@ object FormBuilderMain: TFormBuilderMain
           E1DBBFEAF85AC0EFF8B2C2C7880C2D04C657124B0E7C026D4E3815DC6B6C2700
           00000049454E44AE426082}
         ShowHint = True
-        OnClick = Image17Click
+        OnClick = ImageHighSizeClick
         ExplicitLeft = 201
         ExplicitTop = 5
         ExplicitHeight = 34
       end
-      object Image4: TImage
+      object ImageClearJson: TImage
         Left = 102
         Top = 0
         Width = 34
@@ -336,7 +337,7 @@ object FormBuilderMain: TFormBuilderMain
           83E23A5250EC05E257D8C2901B8A41801FC9C520177C84B2E5805816CA3E0AC4
           5FA1186BA4500C0036AD3515D9A1006D0000000049454E44AE426082}
         ShowHint = True
-        OnClick = Image4Click
+        OnClick = ImageClearJsonClick
         ExplicitLeft = 90
         ExplicitTop = 6
       end
@@ -465,7 +466,7 @@ object FormBuilderMain: TFormBuilderMain
     Placement = svpLeft
     ShowHint = True
     TabOrder = 2
-    object SkLabel4: TSkLabel
+    object SkLabelTreeJson: TSkLabel
       AlignWithMargins = True
       Left = 3
       Top = 164
@@ -482,7 +483,7 @@ object FormBuilderMain: TFormBuilderMain
       ExplicitLeft = 5
       ExplicitTop = 161
     end
-    object SkLabel5: TSkLabel
+    object SkLabelLoadTemplate: TSkLabel
       AlignWithMargins = True
       Left = 3
       Top = 104
@@ -499,7 +500,7 @@ object FormBuilderMain: TFormBuilderMain
       ExplicitLeft = 0
       ExplicitTop = 77
     end
-    object SkLabel6: TSkLabel
+    object SkLabelRender: TSkLabel
       AlignWithMargins = True
       Left = 3
       Top = 44
@@ -569,7 +570,7 @@ object FormBuilderMain: TFormBuilderMain
       Padding.Right = 2
       Padding.Bottom = 2
       TabOrder = 1
-      object Image9: TImage
+      object ImageTreeComponents: TImage
         Left = 2
         Top = 2
         Width = 46
@@ -592,7 +593,7 @@ object FormBuilderMain: TFormBuilderMain
           2A9445C402B2CB22522DC15916511B80826801944DB046A3180000F6E44915F1
           E291320000000049454E44AE426082}
         ShowHint = True
-        OnClick = Image9Click
+        OnClick = ImageTreeComponentsClick
         ExplicitLeft = 4
         ExplicitTop = -64
         ExplicitWidth = 105
@@ -777,7 +778,7 @@ object FormBuilderMain: TFormBuilderMain
       OnDraw = SkPaintBox1Draw
       ExplicitLeft = 2
     end
-    object Image6: TImage
+    object ImageSelectMode: TImage
       Left = 8
       Top = 6
       Width = 41
@@ -797,9 +798,9 @@ object FormBuilderMain: TFormBuilderMain
         7C809A1680C00420CEA73488A802686E01004E093B1963965899000000004945
         4E44AE426082}
       ShowHint = True
-      OnClick = Image6Click
+      OnClick = ImageSelectModeClick
     end
-    object Image11: TImage
+    object ImageArrangeWindows: TImage
       Left = 55
       Top = 6
       Width = 41
@@ -819,9 +820,9 @@ object FormBuilderMain: TFormBuilderMain
         C1E5F76186136301C560E85B0000C8632D19AD37BDD40000000049454E44AE42
         6082}
       ShowHint = True
-      OnClick = Image11Click
+      OnClick = ImageArrangeWindowsClick
     end
-    object Image13: TImage
+    object ImageBackground: TImage
       Left = 102
       Top = 6
       Width = 41
@@ -839,9 +840,9 @@ object FormBuilderMain: TFormBuilderMain
         6EA81E98E10F8158019F0520D000C4F564FA046F61876E490110F3136930C8E5
         0B180814D7540743DF0200FC271C19E38E4A080000000049454E44AE426082}
       ShowHint = True
-      OnClick = Image13Click
+      OnClick = ImageBackgroundClick
     end
-    object Image14: TImage
+    object ImageTreeView: TImage
       Left = 149
       Top = 6
       Width = 41
@@ -862,9 +863,9 @@ object FormBuilderMain: TFormBuilderMain
         2A9445C402B2CB22522DC15916511B80826801944DB046A3180000F6E44915F1
         E291320000000049454E44AE426082}
       ShowHint = True
-      OnClick = Image14Click
+      OnClick = ImageTreeViewClick
     end
-    object Image15: TImage
+    object ImageShare: TImage
       Left = 288
       Top = 6
       Width = 41
@@ -886,9 +887,9 @@ object FormBuilderMain: TFormBuilderMain
         2A1715E88066851D0CD0BCB8A6798503B3846655265180E6160000857D4A19C6
         F28A3B0000000049454E44AE426082}
       ShowHint = True
-      OnClick = Image15Click
+      OnClick = ImageShareClick
     end
-    object Image16: TImage
+    object ImageOptions: TImage
       Left = 334
       Top = 6
       Width = 41
@@ -907,7 +908,7 @@ object FormBuilderMain: TFormBuilderMain
         7C3A2A1929AFC9F80000000049454E44AE426082}
       ShowHint = True
     end
-    object Image19: TImage
+    object ImageZoomIn: TImage
       Left = 196
       Top = 6
       Width = 41
@@ -929,9 +930,9 @@ object FormBuilderMain: TFormBuilderMain
         221256E92400F17C347D0F805891180B8805E8968032A002352D008100209E80
         64E1016A5B8015D0DC020097853F198E18F5E80000000049454E44AE426082}
       ShowHint = True
-      OnClick = Image19Click
+      OnClick = ImageZoomInClick
     end
-    object Image20: TImage
+    object ImageZoomOut: TImage
       Left = 243
       Top = 6
       Width = 41
@@ -953,7 +954,7 @@ object FormBuilderMain: TFormBuilderMain
         B1223116100BD02D016540056A5A000201403C01C9C203D4B6002BA0B905007F
         473619DF1CB7140000000049454E44AE426082}
       ShowHint = True
-      OnClick = Image20Click
+      OnClick = ImageZoomOutClick
     end
   end
   object PanelTop: TPanel

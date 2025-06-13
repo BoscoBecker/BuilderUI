@@ -56,14 +56,13 @@ object FormJson: TFormJson
     Gutter.Font.Name = 'Courier New'
     Gutter.Font.Style = []
     Gutter.ShowLineNumbers = True
+    Gutter.ZeroStart = True
     Gutter.LineNumberStart = 0
     Highlighter = SynJSON
     RightEdge = 0
     OnChange = SynEditJsonChange
     OnStatusChange = SynEditJsonStatusChange
     FontSmoothing = fsmClearType
-    ExplicitWidth = 873
-    ExplicitHeight = 622
   end
   object Panel1: TPanel
     Left = 0
@@ -133,7 +132,6 @@ object FormJson: TFormJson
     WordWrapGlyph.Visible = False
     OnSpecialLineColors = SynEditMiniMapSpecialLineColors
     FontSmoothing = fsmNone
-    ExplicitHeight = 622
   end
   object SynJSON: TSynJSONSyn
     Options.AutoDetectEnabled = False

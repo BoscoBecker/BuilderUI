@@ -1,0 +1,43 @@
+GNU Lesser General Public License  
+Version 2.1, February 1999  
+
+Copyright (C) 1991, 1999 Free Software Foundation, Inc.  
+59 Temple Place, Suite 330, Boston, MA 02111-1307 USA  
+
+Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.  
+
+Preamble  
+
+The Free Software Foundation's licenses are intended to guarantee your freedom to share and change free software—to make sure the software is free for all its users.  
+
+This Lesser General Public License applies to certain software libraries, and is intended to allow them to be used in proprietary programs as well. When a program uses a library covered by this license, it does not by itself cause the program to become free software.  
+
+The intent of this license is to ensure that you have the freedom to distribute copies of free libraries (and charge for this service if you wish); that you receive source code or can get it if you want it; that you can change the library and use pieces of it in new free programs; and that you are informed that you can do these things.  
+
+Terms and Conditions  
+
+0. This License applies to any software library or other program which contains a notice placed by the copyright holder stating that it may be distributed under the terms of this Lesser General Public License (also called "this License"). Each licensee is addressed as "you."  
+
+1. You may copy and distribute verbatim copies of the Library’s complete source code as you receive it, in any medium, provided that you conspicuously and appropriately publish on each copy an appropriate copyright notice and disclaimer of warranty; keep intact all notices that refer to this License and to the absence of any warranty; and distribute a copy of this License along with the Library.  
+
+2. You may modify your copy or copies of the Library or any portion of it, thus forming a work based on the Library, and copy and distribute such modifications or work under the terms of Section 1 above, provided that you also meet all of these conditions:  
+
+   a) The work must itself be licensed as a whole under this License.  
+   
+   b) You must cause the modified files to carry prominent notices stating that you changed the files and the date of any change.  
+   
+   c) You must cause the whole of the work to be licensed at no charge to all third parties under the terms of this License.  
+
+3. You may apply this License to your own libraries, provided you modify the copyright notices and include a copy of this License with your library.  
+
+4. You may not copy, modify, sublicense, or distribute the Library except as expressly provided under this License.  
+
+5. This License does not grant permission to incorporate the Library into proprietary programs. To do so, you must obtain special permission or use another license (such as the GPL).  
+
+6. THERE IS NO WARRANTY FOR THE LIBRARY, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING, THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES PROVIDE THE LIBRARY “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  
+
+7. IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR REDISTRIBUTE THE LIBRARY AS PERMITTED ABOVE, BE LIABLE FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE LIBRARY.  
+
+---  
+
+For full official details, visit: https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html  

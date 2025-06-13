@@ -1,4 +1,32 @@
-﻿unit View.Builder.Main;
+﻿{}
+{ Project: BuilderUI Forms for Windows }
+{ A visual form builder for Windows based on Delphi }
+{ }
+{ Copyright (c) 2024 João Bosco Becker }
+{ }
+{ Contributors to this file: João Bosco Becker }
+{ }
+{ You can get the latest version of this file at: }
+{ https://github.com/BoscoBecker/BuilderUI }
+{ }
+{ This library is free software; you can redistribute it and/or modify it }
+{ under the terms of the GNU Lesser General Public License as published by the }
+{ Free Software Foundation; either version 2.1 of the License, or (at your option) }
+{ any later version. }
+{ }
+{ This library is distributed in the hope that it will be useful, but WITHOUT ANY }
+{ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A }
+{ PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details. }
+{ }
+{ You should have received a copy of the GNU Lesser General Public License along }
+{ with this library; if not, write to the Free Software Foundation, Inc., }
+{ 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA. }
+{ You may also obtain a copy of the license at: }
+{ https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html }
+{ }
+{ João Bosco Becker - https://github.com/BoscoBecker }
+
+unit View.Builder.Main;
 
 interface
 
@@ -31,7 +59,7 @@ type
     Panel6: TPanel;
     ImgSettings: TImage;
     Panel9: TPanel;
-    Image9: TImage;
+    ImageTreeComponents: TImage;
     Panel10: TPanel;
     Image10: TImage;
     Panel7: TPanel;
@@ -39,32 +67,32 @@ type
     Panel12: TPanel;
     ImageOpenTemplate: TImage;
     PanelTopRender: TPanel;
-    Image12: TImage;
+    ImageCloseRender: TImage;
     SkLabel3: TSkLabel;
     SplitterLeft: TSplitter;
     PanelBottomInfo: TPanel;
     PanelToolPalette: TPanel;
-    Image6: TImage;
-    Image11: TImage;
-    Image13: TImage;
-    Image14: TImage;
-    Image15: TImage;
-    Image16: TImage;
+    ImageSelectMode: TImage;
+    ImageArrangeWindows: TImage;
+    ImageBackground: TImage;
+    ImageTreeView: TImage;
+    ImageShare: TImage;
+    ImageOptions: TImage;
     PanelSettings: TPanel;
     SkLabelSettings: TSkLabel;
     SkPaintBox1: TSkPaintBox;
     PanelTop: TPanel;
     SkLabel1: TSkLabel;
     PanelToolJsonRender: TPanel;
-    Image3: TImage;
-    Image5: TImage;
-    Image7: TImage;
-    Image8: TImage;
-    Image17: TImage;
+    ImageCopyToClipboard: TImage;
+    ImageLoadJson: TImage;
+    ImageSaveJson: TImage;
+    ImagePrettyJson: TImage;
+    ImageHighSize: TImage;
     SplitterBottomTool: TSplitter;
-    SkLabel4: TSkLabel;
-    SkLabel5: TSkLabel;
-    SkLabel6: TSkLabel;
+    SkLabelTreeJson: TSkLabel;
+    SkLabelLoadTemplate: TSkLabel;
+    SkLabelRender: TSkLabel;
     SkPaintBackground: TSkPaintBox;
     PanelTree: TPanel;
     PanelExpandTree: TPanel;
@@ -80,9 +108,9 @@ type
     ImageFilterExplorer: TImage;
     SkLabelExplorer: TSkLabel;
     SkPaintBoxRenderJson: TSkPaintBox;
-    Image4: TImage;
-    Image19: TImage;
-    Image20: TImage;
+    ImageClearJson: TImage;
+    ImageZoomIn: TImage;
+    ImageZoomOut: TImage;
     Memo: TMemo;
     PanelInfoValidation: TPanel;
     PanelInfoRenderToForms: TPanel;
@@ -91,10 +119,10 @@ type
     LabelInfoJson: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure ImgSettingsClick(Sender: TObject);
-    procedure Image9Click(Sender: TObject);
+    procedure ImageTreeComponentsClick(Sender: TObject);
     procedure MemoChange(Sender: TObject);
     procedure ImageRenderJsonClick(Sender: TObject);
-    procedure Image12Click(Sender: TObject);
+    procedure ImageCloseRenderClick(Sender: TObject);
     procedure SkPaintBackgroundDraw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
     procedure SearchBoxComponentsChange(Sender: TObject);
     procedure PanelToolPaletteMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -114,24 +142,24 @@ type
     procedure FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure ImageRenderClick(Sender: TObject);
     procedure ButtonRunJsonClick(Sender: TObject);
-    procedure Image6Click(Sender: TObject);
-    procedure Image13Click(Sender: TObject);
-    procedure Image4Click(Sender: TObject);
-    procedure Image5Click(Sender: TObject);
-    procedure Image7Click(Sender: TObject);
-    procedure Image3Click(Sender: TObject);
+    procedure ImageSelectModeClick(Sender: TObject);
+    procedure ImageBackgroundClick(Sender: TObject);
+    procedure ImageClearJsonClick(Sender: TObject);
+    procedure ImageLoadJsonClick(Sender: TObject);
+    procedure ImageSaveJsonClick(Sender: TObject);
+    procedure ImageCopyToClipboardClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ImageCloseExplorerClick(Sender: TObject);
     procedure SkPaintBoxExplorerDraw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
     procedure SkPaintBoxRenderJsonDraw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
-    procedure Image14Click(Sender: TObject);
-    procedure Image11Click(Sender: TObject);
-    procedure Image15Click(Sender: TObject);
-    procedure Image8Click(Sender: TObject);
+    procedure ImageTreeViewClick(Sender: TObject);
+    procedure ImageArrangeWindowsClick(Sender: TObject);
+    procedure ImageShareClick(Sender: TObject);
+    procedure ImagePrettyJsonClick(Sender: TObject);
     procedure FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
-    procedure Image19Click(Sender: TObject);
-    procedure Image20Click(Sender: TObject);
-    procedure Image17Click(Sender: TObject);
+    procedure ImageZoomInClick(Sender: TObject);
+    procedure ImageZoomOutClick(Sender: TObject);
+    procedure ImageHighSizeClick(Sender: TObject);
     procedure ButtonRunClick(Sender: TObject);
     procedure ImageOkClick(Sender: TObject);
   private
@@ -244,7 +272,7 @@ begin
   BuildStatusBar();
 end;
 
-procedure TFormBuilderMain.Image11Click(Sender: TObject);
+procedure TFormBuilderMain.ImageArrangeWindowsClick(Sender: TObject);
 begin
   var FormContext:= TFormContextWindows.Create(nil,FFormManager.Forms);
   try
@@ -254,13 +282,13 @@ begin
   end;
 end;
 
-procedure TFormBuilderMain.Image12Click(Sender: TObject);
+procedure TFormBuilderMain.ImageCloseRenderClick(Sender: TObject);
 begin
   PanelRenderJson.Visible:= not PanelRenderJson.Visible;
   SplitterRight.Visible:= not SplitterRight.Visible;
 end;
 
-procedure TFormBuilderMain.Image13Click(Sender: TObject);
+procedure TFormBuilderMain.ImageBackgroundClick(Sender: TObject);
 begin
   if FBuilderBackground = bClear then
   begin
@@ -273,12 +301,12 @@ begin
   end;
 end;
 
-procedure TFormBuilderMain.Image14Click(Sender: TObject);
+procedure TFormBuilderMain.ImageTreeViewClick(Sender: TObject);
 begin
   PanelTree.Visible:= not PanelTree.Visible;
 end;
 
-procedure TFormBuilderMain.Image15Click(Sender: TObject);
+procedure TFormBuilderMain.ImageShareClick(Sender: TObject);
 begin
   var ExportForm:= TFormExports.Create(nil);
   try
@@ -290,7 +318,7 @@ begin
   end;
 end;
 
-procedure TFormBuilderMain.Image17Click(Sender: TObject);
+procedure TFormBuilderMain.ImageHighSizeClick(Sender: TObject);
 begin
   FormJson := TFormJson.Create(Self);
   try
@@ -303,7 +331,7 @@ begin
   end;
 end;
 
-procedure TFormBuilderMain.Image19Click(Sender: TObject);
+procedure TFormBuilderMain.ImageZoomInClick(Sender: TObject);
 begin
   ZoomIn;
   SkPaintBackground.Width:= SkPaintBackground.Width + 1;
@@ -314,7 +342,7 @@ begin
   PanelTree.Visible:= not PanelTree.Visible;
 end;
 
-procedure TFormBuilderMain.Image20Click(Sender: TObject);
+procedure TFormBuilderMain.ImageZoomOutClick(Sender: TObject);
 begin
   ZoomOut;
   SkPaintBackground.Width:= SkPaintBackground.Width - 1;
@@ -325,19 +353,19 @@ begin
   PanelSearchComponents.Visible:= not PanelSearchComponents.Visible;
 end;
 
-procedure TFormBuilderMain.Image3Click(Sender: TObject);
+procedure TFormBuilderMain.ImageCopyToClipboardClick(Sender: TObject);
 begin
   TJsonFileService.CopyJsonToClipboard(Memo.Lines.Text);
 end;
 
-procedure TFormBuilderMain.Image5Click(Sender: TObject);
+procedure TFormBuilderMain.ImageLoadJsonClick(Sender: TObject);
 begin
   var Json: string;
   if TJsonFileService.OpenJsonFromFile(Json) then
     Memo.Lines.Text := Json;
 end;
 
-procedure TFormBuilderMain.Image6Click(Sender: TObject);
+procedure TFormBuilderMain.ImageSelectModeClick(Sender: TObject);
 begin
   if Screen.Cursor = crHandPoint then
     Screen.Cursor:= crDefault
@@ -345,12 +373,12 @@ begin
     Screen.Cursor:= crHandPoint;
 end;
 
-procedure TFormBuilderMain.Image7Click(Sender: TObject);
+procedure TFormBuilderMain.ImageSaveJsonClick(Sender: TObject);
 begin
   TJsonFileService.SaveJsonToFile(Memo.Lines.Text);
 end;
 
-procedure TFormBuilderMain.Image8Click(Sender: TObject);
+procedure TFormBuilderMain.ImagePrettyJsonClick(Sender: TObject);
 begin
   var erromessage:='';
   if not Memo.lines.Text.Trim.Equals('') then
@@ -358,7 +386,7 @@ begin
       Memo.lines.Text:= Util.Json.TJSONHelper.BeautifyJSON(Memo.lines.Text);
 end;
 
-procedure TFormBuilderMain.Image4Click(Sender: TObject);
+procedure TFormBuilderMain.ImageClearJsonClick(Sender: TObject);
 begin
   TJsonFileService.ClearMemoJson(Memo);
 end;
@@ -390,7 +418,7 @@ begin
   SplitterLeft.Visible:= True;
 end;
 
-procedure TFormBuilderMain.Image9Click(Sender: TObject);
+procedure TFormBuilderMain.ImageTreeComponentsClick(Sender: TObject);
 begin
   PanelTree.Visible:= not PanelTree.Visible;
 end;

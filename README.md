@@ -85,8 +85,7 @@ The project follows a clean architecture pattern with the following main compone
       "Top": 10,
       "Width": 200,
       "Height": 100,
-      "Color": "#FFFFFF",
-      "BevelOuter": "bvNone"
+      "Color": "#FFFFFF"
     }
   ]
 }

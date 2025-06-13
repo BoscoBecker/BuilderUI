@@ -68,9 +68,16 @@ begin
     var Components := Generator.FindFormByName(Json, FormName);
     try
       Generator.GenerateCode(Components);
-      CSharpFileGUI.GenerateDesignerCode(Components);
-      CSharpFile.ExportData(Path + '\' + FormName + '.cs', Generator.CodeText);
-      CSharpFile.ExportData(Path + '\' + FormName + '.Designer.cs', CSharpFileGUI.GUIText);
+      if OnlyGUI then
+      begin
+        CSharpFileGUI.GenerateDesignerCode(Components);
+        CSharpFile.ExportData(Path + '\' + FormName + '.Designer.cs', CSharpFileGUI.GUIText);
+      end else
+      begin
+        CSharpFileGUI.GenerateDesignerCode(Components);
+        CSharpFile.ExportData(Path + '\' + FormName + '.Designer.cs', CSharpFileGUI.GUIText);
+        CSharpFile.ExportData(Path + '\' + FormName + '.cs', Generator.CodeText);
+      end;
     finally
       CSharpFile.Free;
     end;

@@ -54,23 +54,22 @@ implementation
 
 
 function TCsharp.FindFormByName(Json: TJSONObject; const AName: string): TJSONObject;
-var
-  FormsArray: TJSONArray;
-  FormObj: TJSONObject;
-  I: Integer;
 begin
   Result := nil;
+  var FormObj:= Json;
+  var FormsArray: TJSONArray;
   if Json.TryGetValue<TJSONArray>('Forms', FormsArray) then
   begin
-    for I := 0 to FormsArray.Count - 1 do
+    for var I := 0 to FormsArray.Count - 1 do
     begin
-      if (FormsArray.Items[I] is TJSONObject) then
-      begin
-        FormObj := TJSONObject(FormsArray.Items[I]);
-        if SameText(FormObj.GetValue<string>('Name', ''), AName) then
-          Exit(FormObj);
-      end;
+      FormObj := FormsArray.Items[I] as TJSONObject;
+      if SameText(FormObj.GetValue<string>('Name', ''), AName) then
+        Exit(FormObj);
     end;
+  end else
+  begin
+    if SameText(FormObj.GetValue<string>('Name', ''), AName) then
+      Exit(FormObj);
   end;
 end;
 

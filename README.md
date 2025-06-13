@@ -1,3 +1,5 @@
+> ⚠️ **Warning:** This project is under active development. Features, structure, and APIs may change at any time.
+
 <p align="center">
   <img src="https://github.com/user-attachments/assets/ec398da9-c462-40e8-b578-c3c264965042" alt="BuilderUI">
 </p>

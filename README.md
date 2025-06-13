@@ -117,7 +117,16 @@ You can leverage GitHub Copilot in Visual Studio Code to quickly generate and ed
 - You can easily modify, extend, or refactor your forms by editing the JSON and letting Copilot assist with repetitive or boilerplate structures.
 - Use the provided JSON examples as templates for your own screens.
 
-### Integrated AI Chat
+# ✨ <img src="https://github.com/user-attachments/assets/41151db6-1fd1-42f1-b38b-a96943388fa5" width="30" />  JSON Usage to create rich UI ✨
+
+- Advanced JSON converter and formatter. Transforms data into a structured, precise JSON format. Also exports JSON in a CSV file.
+
+You can Using https://chatgpt.com/g/g-bIMOi37Fy-json
+
+**Open or create a `.json` file** inside the `/src/Json` directory (e.g., `MyForm.json`), send a context and later  the question
+
+
+### Future - Integrated AI Chat
 
 > The idea is to use an integrated chat to assist users in generating, editing, and refactoring JSON UI definitions. This chat-based AI can help automate repetitive tasks, provide instant suggestions, and accelerate the UI design process directly within your development environment. Coming soon, need help.
 

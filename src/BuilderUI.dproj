@@ -164,6 +164,7 @@
         <DCCReference Include="Service\Service.JsonFile.pas"/>
         <None Include=".gitignore"/>
         <None Include="BuilderUI.dpr"/>
+        <None Include="LICENSE.txt"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -286,6 +287,12 @@
                 </DeployFile>
                 <DeployFile LocalName="BuilderUI.dpr" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="LICENSE.txt" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>

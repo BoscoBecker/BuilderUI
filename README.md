@@ -144,7 +144,7 @@ Contributions are welcome! Please feel free to submit pull requests, create issu
 
 ## License
 
-This project is open source and available under the MIT License.
+This project is open source and available under the GNU License.
 
 ---
 

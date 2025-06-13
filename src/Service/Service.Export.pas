@@ -64,7 +64,7 @@ begin
   begin
     var Generator := TCodeGeneratorFactory.CreateGenerator(Technology);
     var CSharpFile := TCSharpExport.Create;
-    var CSharpFileGUI:= TCSharp.Create;
+    var CSharpFileGUI := TCSharp.Create;
     var Components := Generator.FindFormByName(Json, FormName);
     try
       Generator.GenerateCode(Components);
@@ -80,6 +80,7 @@ begin
       end;
     finally
       CSharpFile.Free;
+      CSharpFileGUI.Free;
     end;
   end;
 end;

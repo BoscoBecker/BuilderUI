@@ -98,7 +98,7 @@ begin
   try
     // Define allowed properties for each component type
     AddProps('TForm',    ['Type','Name','Caption','Width','Height','Align','Children','BorderStyle','Position']);
-    AddProps('TPanel',   ['Type','Name','Left','Top','Width','Height','Color','BevelOuter','Caption','Align','Children','Position']);
+    AddProps('TPanel',   ['Type','Name','Left','Top','Width','Height','Color','Caption','Align','Children','Position']);
     AddProps('TLabel',   ['Type','Name','Caption','Text','Position','Width','Height','FontSize','FontStyle','FontColor','WordWrap']);
     AddProps('TEdit',    ['Type','Name','Text','Caption','Position','Width','Height','ReadOnly','PasswordChar','FontStyle']);
     AddProps('TButton',  ['Type','Name','Caption','Position','Width','Height']);
@@ -106,7 +106,7 @@ begin
     AddProps('TComboBox',['Type','Name','Items','Position','Width','Height','Lines','Text']);
     AddProps('TListBox',['Type','Name','Items','Position','Width','Height','Lines','Text']);
     AddProps('TDateTimePicker',['Type','Name','Position','Width','Height']);
-    AddProps('TPageControl',['Type','Name','Align','Width','Height','Pages','Tabs','Position','Children']);
+    AddProps('TPageControl',['Type','Name','Align','Width','Height','Pages','Tabs','Position','Children','Caption']);
     AddProps('TTabSheet',['Type','Name','Caption','Children']);
     AddProps('TImage',    ['Type','Name','Width','Height','Align','Position']);
     AddProps('TStringGrid',    ['Type','Name','Width','Height','Position','ColCount','RowCount']);

@@ -58,13 +58,13 @@ type
     SplitViewMain: TSplitView;
     Panel6: TPanel;
     ImgSettings: TImage;
-    Panel9: TPanel;
+    PanelTreeComponents: TPanel;
     ImageTreeComponents: TImage;
     Panel10: TPanel;
     Image10: TImage;
-    Panel7: TPanel;
+    PanelLoad: TPanel;
     ImageRenderJson: TImage;
-    Panel12: TPanel;
+    PanelOpenTemplate: TPanel;
     ImageOpenTemplate: TImage;
     PanelTopRender: TPanel;
     ImageCloseRender: TImage;

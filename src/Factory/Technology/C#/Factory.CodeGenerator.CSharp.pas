@@ -76,16 +76,60 @@ end;
 function TCsharp.GenerateComponent(const CompJson: TJSONObject; const Indent: string): string;
 var
   CompType, CompName, PropName, Line: string;
-  Children: TJSONArray;
-  I: Integer;
+  Children, Pages, ChildrenTabs: TJSONArray;
+  I, J: Integer;
 begin
   CompType := CompJson.GetValue<string>('Type', '');
   CompName := CompJson.GetValue<string>('Name', '');
   Line := '';
 
-  if (CompType = '') or (CompName = '') then Exit('');
+  if (CompType = '') or (CompName = '') then  Exit('');
 
-  Line := Indent + '' + CompName + ' = new ' + DelphiToWinFormsType(CompType)+ '();' + sLineBreak;
+  if SameText(CompType, 'TPageControl') then
+  begin
+
+    var PosObj := CompJson.GetValue<TJSONObject>('Position', nil);
+    if Assigned(PosObj) then
+    begin
+      var X := PosObj.GetValue<Integer>('X', 0);
+      var Y := PosObj.GetValue<Integer>('Y', 0);
+      Line := Line + Indent + 'this.' + CompName + '.Location = new Point(' + X.ToString + ', ' + Y.ToString + ');' + sLineBreak;
+    end;
+
+    var Width := CompJson.GetValue<Integer>('Width', 500);
+    var Height := CompJson.GetValue<Integer>('Height',550);
+    Line := Line + Indent + 'this.' + CompName + '.Size = new Size(' + Width.ToString + ', ' + Height.ToString + ');' + sLineBreak;
+
+    if CompJson.TryGetValue('Pages', Pages) then
+    begin
+      for I := 0 to Pages.Count - 1 do
+      begin
+        var Page := Pages.Items[I] as TJSONObject;
+        var PageName := Page.GetValue<string>('Name', CompName + '_Tab' + I.ToString);
+        var PageCaption := Page.GetValue<string>('Caption', 'Tab ' + I.ToString);
+
+        Line := Line + Indent + 'var ' + PageName + ' = new TabPage("' + PageCaption + '");' + sLineBreak;
+        Line := Line + Indent + 'this.' + CompName + '.TabPages.Add(' + PageName + ');' + sLineBreak;
+
+        if Page.TryGetValue('Children', ChildrenTabs) then
+        begin
+          for J := 0 to ChildrenTabs.Count - 1 do
+          begin
+            var ChildJson := ChildrenTabs.Items[J] as TJSONObject;
+            var ChildCode := GenerateComponent(ChildJson, Indent + '  ');
+            var ChildName := ChildJson.GetValue<string>('Name', '');
+            Line := Line + ChildCode;
+            Line := Line + Indent + '  ' + PageName + '.Controls.Add(this.' + ChildName + ');' + sLineBreak;
+          end;
+        end;
+      end;
+    end;
+
+    Line := Line + Indent + 'this.Controls.Add(this.' + CompName + ');' + sLineBreak;
+    Exit(Line);
+  end;
+
+  Line := Indent + 'this.' + CompName + ' = new ' + DelphiToWinFormsType(CompType) + '();' + sLineBreak;
 
   for var Pair in CompJson do
   begin
@@ -114,9 +158,9 @@ begin
       Line := Line + Indent + 'this.' + CompName + '.Text = "' + Pair.JsonValue.Value + '";' + sLineBreak;
       Continue;
     end;
-
   end;
-  Line := Line + Indent + 'Controls.Add(this.' + CompName + ');' + sLineBreak;
+
+  Line := Line + Indent + 'this.Controls.Add(this.' + CompName + ');' + sLineBreak;
   if CompJson.TryGetValue('Children', Children) then
     for I := 0 to Children.Count - 1 do
       Line := Line + GenerateComponent(Children.Items[I] as TJSONObject, Indent);
@@ -130,6 +174,17 @@ begin
   var Caption := Json.GetValue<string>('Caption', FormName);
   var Width := Json.GetValue<Integer>('Width', 800);
   var Height := Json.GetValue<Integer>('Height', 600);
+  var Children: TJSONArray;
+  var InitComponents: string;
+
+  if Json.TryGetValue('Children', Children) then
+  begin
+    for var I := 0 to Children.Count - 1 do
+    begin
+      var CompJson := Children.Items[I] as TJSONObject;
+      InitComponents := InitComponents + GenerateComponent(CompJson, Indent + '    ');
+    end;
+  end;
 
   // C# WinForms  .cs
   var CodeText :=
@@ -153,8 +208,9 @@ var
   FormName: string;
   Children: TJSONArray;
   Fields, InitCode: string;
+  FormWidth, FormHeight: Integer;
 
-  procedure ProcessComponent(const CompJson: TJSONObject; const Indent: string);
+  procedure ProcessComponent(const CompJson: TJSONObject; const Indent, ParentName: string);
   begin
     var Children: TJSONArray;
     var CompType := CompJson.GetValue<string>('Type', '');
@@ -162,7 +218,7 @@ var
     if (CompType = '') or (CompName = '') then Exit;
 
     Fields := Fields + Indent + 'private ' + DelphiToWinFormsType(CompType) + ' ' + CompName + ';' + sLineBreak;
-    InitCode := InitCode + Indent + CompName + ' = new ' + DelphiToWinFormsType(CompType)+ '();' + sLineBreak;
+    InitCode := InitCode + Indent + 'this.' + CompName + ' = new ' + DelphiToWinFormsType(CompType) + '();' + sLineBreak;
 
     for var Pair in CompJson do
     begin
@@ -191,32 +247,70 @@ var
       end;
     end;
 
-    InitCode := InitCode + Indent + 'Controls.Add(this.' + CompName + ');' + sLineBreak;
+    if SameText(CompType, 'TPageControl') and CompJson.TryGetValue('Pages', Children) then
+    begin
+      for var I := 0 to Children.Count - 1 do
+      begin
+        var Page := Children.Items[I] as TJSONObject;
+        var PageName := Page.GetValue<string>('Name', CompName + '_Tab' + I.ToString);
+        var PageCaption := Page.GetValue<string>('Caption', 'Tab ' + I.ToString);
+
+        Fields := Fields +  'private TabPage ' + PageName + ';' + sLineBreak;
+        InitCode := InitCode +  'this.' + PageName + ' = new TabPage("' + PageCaption + '");' + sLineBreak;
+        InitCode := InitCode +  'this.' + CompName + '.TabPages.Add(this.' + PageName + ');' + sLineBreak;
+
+        var TabChildren: TJSONArray;
+        if Page.TryGetValue('Children', TabChildren) then
+        begin
+          for var J := 0 to TabChildren.Count - 1 do
+          begin
+            var Child := TabChildren.Items[J] as TJSONObject;
+            ProcessComponent(Child, Indent + '    ', 'this.' + PageName);
+          end;
+        end;
+      end;
+    end;
+
+    if not SameText(CompType, 'TTabSheet') then
+      InitCode := InitCode + Indent + ParentName + '.Controls.Add(this.' + CompName + ');' + sLineBreak;
 
     if CompJson.TryGetValue('Children', Children) then
+    begin
       for var I := 0 to Children.Count - 1 do
-        ProcessComponent(Children.Items[I] as TJSONObject, Indent);
+      begin
+        var Child := Children.Items[I] as TJSONObject;
+        ProcessComponent(Child, Indent + '    ', 'this.' + CompName);
+      end;
+    end;
   end;
 
 begin
   FormName := Json.GetValue<string>('Name', 'MyForm');
+  FormWidth := Json.GetValue<Integer>('Width', 800);
+  FormHeight := Json.GetValue<Integer>('Height', 600);
+
   Fields := '';
   InitCode := '';
   if Json.TryGetValue('Children', Children) and (Children is TJSONArray) then
+  begin
     for var I := 0 to Children.Count - 1 do
-      ProcessComponent(Children.Items[I] as TJSONObject, Indent + '    ');
+      ProcessComponent(Children.Items[I] as TJSONObject, Indent + '    ', 'this');
+  end;
 
-  // C# WinForms  Designer.cs
-  Result := 'partial class ' + FormName + sLineBreak +
-  '{' + sLineBreak +
-  Indent + '///  Required designer variable.' + sLineBreak + #13#10+
-  Indent + 'private System.ComponentModel.IContainer components = null; '+ sLineBreak  + #13#10+
-  Fields + sLineBreak +
-  Indent + '    private void InitializeComponent()' + sLineBreak +
-  Indent + '    {' + sLineBreak +
-  InitCode +
-  Indent + '    }' + sLineBreak +
-  '}' ;
+  Result :=
+    'partial class ' + FormName + sLineBreak +
+    '{' + sLineBreak +
+    Indent + '    /// <summary>' + sLineBreak +
+    Indent + '    /// Required designer variable.' + sLineBreak +
+    Indent + '    /// </summary>' + sLineBreak +
+    Indent + '    private System.ComponentModel.IContainer components = null;' + sLineBreak + sLineBreak +
+    Fields + sLineBreak +
+    Indent + '    private void InitializeComponent()' + sLineBreak +
+    Indent + '    {' + sLineBreak +
+             'this.ClientSize = new System.Drawing.Size(' + FormWidth.ToString + ', ' + FormHeight.ToString + ');' + sLineBreak +
+    InitCode +
+    Indent + '    }' + sLineBreak +
+    '}';
 
   SetGUIText(Result);
 end;
@@ -239,6 +333,8 @@ begin
   if SameText(DelphiType, 'TStringGrid') then Exit('DataGridView');
   if SameText(DelphiType, 'TGroupBox') then Exit('GroupBox');
   if SameText(DelphiType, 'TRadioGroup') then Exit('RadioButton');
+  if SameText(DelphiType, 'TabSheet') then Exit('TabPage');
+  if SameText(DelphiType, 'TPageControl') then Exit('TabControl');
 
   Result := DelphiType;
 end;

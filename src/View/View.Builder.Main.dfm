@@ -108,6 +108,8 @@ object FormBuilderMain: TFormBuilderMain
       Height = 35
       Align = alTop
       BevelOuter = bvNone
+      Color = clWhite
+      ParentBackground = False
       TabOrder = 0
       object SkPaintBoxRenderJson: TSkPaintBox
         Left = 0
@@ -165,6 +167,8 @@ object FormBuilderMain: TFormBuilderMain
       Height = 30
       Align = alBottom
       BevelOuter = bvNone
+      Color = clWhite
+      ParentBackground = False
       TabOrder = 1
       object ImageCopyToClipboard: TImage
         Left = 267
@@ -360,6 +364,8 @@ object FormBuilderMain: TFormBuilderMain
       Height = 76
       Align = alBottom
       BevelOuter = bvNone
+      Color = clWhite
+      ParentBackground = False
       TabOrder = 3
       object LabelInfoJson: TLabel
         Left = 0
@@ -367,11 +373,13 @@ object FormBuilderMain: TFormBuilderMain
         Width = 301
         Height = 43
         Align = alClient
+        Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowFrame
         Font.Height = -12
         Font.Name = 'Segoe UI'
         Font.Style = []
+        ParentColor = False
         ParentFont = False
         WordWrap = True
         StyleElements = [seFont, seClient]
@@ -386,11 +394,13 @@ object FormBuilderMain: TFormBuilderMain
         Align = alTop
         BevelOuter = bvNone
         Caption = 'Render forms   '
+        Color = clWhite
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clGray
         Font.Height = -12
         Font.Name = 'Segoe UI'
         Font.Style = []
+        ParentBackground = False
         ParentFont = False
         TabOrder = 0
         object ImageErro: TImage
@@ -558,17 +568,19 @@ object FormBuilderMain: TFormBuilderMain
         ExplicitHeight = 105
       end
     end
-    object Panel9: TPanel
+    object PanelTreeComponents: TPanel
       Left = 0
       Top = 180
       Width = 50
       Height = 41
       Align = alTop
       BevelOuter = bvNone
+      Color = clWhite
       Padding.Left = 2
       Padding.Top = 2
       Padding.Right = 2
       Padding.Bottom = 2
+      ParentBackground = False
       TabOrder = 1
       object ImageTreeComponents: TImage
         Left = 2
@@ -607,10 +619,12 @@ object FormBuilderMain: TFormBuilderMain
       Height = 41
       Align = alTop
       BevelOuter = bvNone
+      Color = clWhite
       Padding.Left = 2
       Padding.Top = 2
       Padding.Right = 2
       Padding.Bottom = 2
+      ParentBackground = False
       TabOrder = 2
       object Image10: TImage
         Left = 2
@@ -634,17 +648,19 @@ object FormBuilderMain: TFormBuilderMain
         ExplicitHeight = 105
       end
     end
-    object Panel7: TPanel
+    object PanelLoad: TPanel
       Left = 0
       Top = 60
       Width = 50
       Height = 41
       Align = alTop
       BevelOuter = bvNone
+      Color = clWhite
       Padding.Left = 2
       Padding.Top = 2
       Padding.Right = 2
       Padding.Bottom = 2
+      ParentBackground = False
       TabOrder = 3
       object ImageRenderJson: TImage
         Left = 2
@@ -671,17 +687,19 @@ object FormBuilderMain: TFormBuilderMain
         ExplicitTop = 6
       end
     end
-    object Panel12: TPanel
+    object PanelOpenTemplate: TPanel
       Left = 0
       Top = 120
       Width = 50
       Height = 41
       Align = alTop
       BevelOuter = bvNone
+      Color = clWhite
       Padding.Left = 2
       Padding.Top = 2
       Padding.Right = 2
       Padding.Bottom = 2
+      ParentBackground = False
       TabOrder = 4
       object ImageOpenTemplate: TImage
         Left = 2
@@ -748,6 +766,8 @@ object FormBuilderMain: TFormBuilderMain
     Height = 29
     Align = alBottom
     BevelOuter = bvNone
+    Color = clWhite
+    ParentBackground = False
     TabOrder = 3
   end
   object PanelToolPalette: TPanel
@@ -1016,7 +1036,9 @@ object FormBuilderMain: TFormBuilderMain
       Height = 32
       Align = alTop
       BevelOuter = bvNone
+      Color = clWhite
       DoubleBuffered = True
+      ParentBackground = False
       ParentDoubleBuffered = False
       TabOrder = 0
       object ImageExpand: TImage
@@ -1075,7 +1097,9 @@ object FormBuilderMain: TFormBuilderMain
       Height = 35
       Align = alTop
       BevelOuter = bvNone
+      Color = clWhite
       DoubleBuffered = True
+      ParentBackground = False
       ParentDoubleBuffered = False
       TabOrder = 1
       object SkPaintBoxExplorer: TSkPaintBox

@@ -154,7 +154,41 @@ begin
         Result := Result + Indent + '  )' + sLineBreak;
       end;
     end;
+
+    if SameText(CompType, 'TPageControl') then
+    begin
+      var CompText := '  object ' + CompName + ': TPageControl' + sLineBreak;
+      var Pages: TJSONArray;
+      if CompJson.TryGetValue('Pages', Pages) then
+      begin
+        for var I := 0 to Pages.Count - 1 do
+        begin
+          var Page := Pages.Items[I] as TJSONObject;
+          var PageName := Page.GetValue<string>('Name', 'TabSheet' + I.ToString);
+          var PageCaption := Page.GetValue<string>('Caption', 'Tab ' + I.ToString);
+
+          CompText := CompText +
+            '    object ' + PageName + ': TTabSheet' + sLineBreak +
+            '      Caption = ' + QuotedStr(PageCaption) + sLineBreak;
+
+          // Renderiza os filhos da TTabSheet
+          var ChildrenTabs: TJSONArray;
+          if Page.TryGetValue('Children', ChildrenTabs) then
+            for var J := 0 to ChildrenTabs.Count - 1 do
+              CompText := CompText + GenerateComponent(ChildrenTabs.Items[J] as TJSONObject);
+
+          CompText := CompText + '    end' + sLineBreak;
+        end;
+      end;
+
+      CompText := CompText + '  end' + sLineBreak;
+      Exit(CompText);
+    end;
+
+
   end;
+
+
 
   if CompJson.TryGetValue('Children', Children) then
     for var I := 0 to Children.Count - 1 do
@@ -165,7 +199,8 @@ end;
 
 function TDelphiGenerator.GenerateDfmText(const Json: TJSONObject): string;
 begin
-  var FormType: string;
+  var CompText, CompType, pages, FormType: string;
+
   Json.TryGetValue<string>('Type',FormType);
   if FormType.Trim.Equals('') then Exit;
 
@@ -184,6 +219,7 @@ begin
                  '  Caption = ' + QuotedStr(Caption) + sLineBreak +
                  '  ClientWidth = ' + Width.ToString + sLineBreak +
                  '  ClientHeight = ' + Height.ToString + sLineBreak;
+
 
   if Json.TryGetValue('Children', Children) and (Children is TJSONArray) then
     for var I := 0 to Children.Count - 1 do
@@ -206,6 +242,11 @@ begin
   if Json.TryGetValue('Children', Children) and (Children is TJSONArray) then
     for var I := 0 to Children.Count - 1 do
       CollectComponentFields(Children.Items[I] as TJSONObject);
+
+  var ChildrenPages: TJSONArray;
+  if Json.TryGetValue('Pages', ChildrenPages) and (ChildrenPages is TJSONArray) then
+    for var I := 0 to ChildrenPages.Count - 1 do
+      CollectComponentFields(ChildrenPages.Items[I] as TJSONObject);
 
   var FieldsBlock := '';
   for var F in ComponentFields do
@@ -239,6 +280,7 @@ var
   Children: TJSONArray;
   CompType, CompName: string;
 begin
+
   CompType := CompJson.GetValue<string>('Type', '');
   CompName := CompJson.GetValue<string>('Name', '');
 
@@ -256,6 +298,23 @@ begin
   if CompJson.TryGetValue('Children', Children) then
     for var I := 0 to Children.Count - 1 do
       CollectComponentFields(Children.Items[I] as TJSONObject);
+
+  var Pages: TJSONArray;
+  var PageObj: TJSONObject;
+  if CompJson.TryGetValue('Pages', Pages) and (Pages is TJSONArray) then
+  for var I := 0 to Pages.Count - 1 do
+  begin
+    PageObj := Pages.Items[I] as TJSONObject;
+
+    if not PageObj.TryGetValue<string>('Type',CompType) then
+      PageObj.AddPair('Type', 'TTabSheet');
+
+    CollectComponentFields(PageObj);
+
+    if PageObj.TryGetValue('Children', Children) and (Children is TJSONArray) then
+      for var J := 0 to Children.Count - 1 do
+        CollectComponentFields(Children.Items[J] as TJSONObject);
+  end;
 end;
 
 function TDelphiGenerator.FindFormByName(Json: TJSONObject; const AName: string): TJSONObject;

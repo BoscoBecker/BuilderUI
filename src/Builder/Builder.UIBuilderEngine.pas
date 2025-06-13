@@ -98,6 +98,7 @@ var
   Style: TFontStyles;
   ColorStr: string;
 begin
+
   Result := nil;
   Ctrl:= nil;
   if Trim(Json.GetValue<string>('Type', '')).Equals('') then Exit;
@@ -115,65 +116,80 @@ begin
   SetControlWidth(Ctrl,Json.GetValue<string>('Width','100'));
   SetControlHeight(Ctrl,Json.GetValue<string>('Height', '50'));
 
-   if Json.TryGetValue<TJSONObject>('Position', PositionObj) then
-   begin
-     Ctrl.Left := Round(PositionObj.GetValue<Single>('X', -100));
-     Ctrl.Top := Round(PositionObj.GetValue<Single>('Y', -100));
-   end;
+  if Json.TryGetValue<TJSONObject>('Position', PositionObj) then
+  begin
+    Ctrl.Left := Round(PositionObj.GetValue<Single>('X', -100));
+    Ctrl.Top := Round(PositionObj.GetValue<Single>('Y', -100));
+  end;
 
-   if Ctrl is TPanel then
-   begin
-     TPanel(Ctrl).Align:= SetControlAling(Json.GetValue<string>('Align', 'alNone'));
-     TPanel(Ctrl).BevelOuter:= SetControlBevelCut(Json.GetValue<string>('BevelOuter', 'bvRaised'));
-     TPanel(Ctrl).BorderStyle:= SetControlBorderStyle(Json.GetValue<string>('BorderStyle', 'bsNone'));
-     TPanel(Ctrl).Color:= SetControlColor(Json.GetValue<string>('Color', ColorStr));
-   end;
+  if Ctrl is TPanel then
+  begin
+    TPanel(Ctrl).Align:= SetControlAling(Json.GetValue<string>('Align', 'alNone'));
+    TPanel(Ctrl).BevelOuter:= SetControlBevelCut(Json.GetValue<string>('BevelOuter', 'bvRaised'));
+    TPanel(Ctrl).BorderStyle:= SetControlBorderStyle(Json.GetValue<string>('BorderStyle', 'bsNone'));
+    TPanel(Ctrl).Color:= SetControlColor(Json.GetValue<string>('Color', ColorStr));
+    TPanel(Ctrl).ParentColor := False;
+    TPanel(Ctrl).ParentBackground := False;
+  end;
 
-   if Ctrl is TImage then
-     TImage(Ctrl).Center:= True;
+  if Ctrl is TImage then
+    TImage(Ctrl).Center:= True;
 
-   var items:= Json.GetValue('Items');
-   if (items <> nil) and (items is TJSONArray) then
-   begin
-     if Ctrl is TComboBox then
-     begin
-       var ItemsArray := TJSONArray(items);
-       try
-         for var ItemValue in ItemsArray do
-           TComboBox(Ctrl).Items.Add(ItemValue.Value);
-       finally
-         ItemsArray:= Nil;
-       end;
-     end;
+  var items:= Json.GetValue('Items');
+  if (items <> nil) and (items is TJSONArray) then
+  begin
+    if Ctrl is TComboBox then
+    begin
+      var ItemsArray := TJSONArray(items);
+      try
+        for var ItemValue in ItemsArray do
+          TComboBox(Ctrl).Items.Add(ItemValue.Value);
+      finally
+        ItemsArray:= Nil;
+      end;
+    end;
 
-     if Ctrl is TListBox then
-     begin
-       var itemsArray := TJSONArray(items);
-       try
-         TListBox(Ctrl).items.Clear;
-         for var ItemValue in ItemsArray do
-           TListBox(Ctrl).Items.Add(ItemValue.Value);
-       finally
-         itemsArray := Nil;
-       end;
-     end;
-   end;
+    if Ctrl is TListBox then
+    begin
+      var itemsArray := TJSONArray(items);
+      try
+        TListBox(Ctrl).items.Clear;
+        for var ItemValue in ItemsArray do
+          TListBox(Ctrl).Items.Add(ItemValue.Value);
+      finally
+        itemsArray := Nil;
+      end;
+    end;
+  end;
 
-   var lines:= Json.GetValue('Lines');
-   if (lines <> nil) and (lines is TJSONArray) then
-   begin
-     if Ctrl is TMemo then
-     begin
-       var linesArray := TJSONArray(lines);
-       TMemo(Ctrl).lines.Clear;
-       try
-         for var ItemValue in linesArray do
-           TMemo(Ctrl).Lines.Add(ItemValue.Value);
-       finally
-         linesArray:= nil;
-       end;
-     end;
-   end;
+  var lines:= Json.GetValue('Lines');
+  if (lines <> nil) and (lines is TJSONArray) then
+  begin
+    if Ctrl is TMemo then
+    begin
+      var linesArray := TJSONArray(lines);
+      TMemo(Ctrl).lines.Clear;
+      try
+        for var ItemValue in linesArray do
+          TMemo(Ctrl).Lines.Add(ItemValue.Value);
+      finally
+        linesArray:= nil;
+      end;
+    end;
+  end;
+
+  var FontColor: String;
+  if (Ctrl is TLabel) and Json.TryGetValue<string>('FontColor', FontColor) then
+  begin
+    TLabel(Ctrl).Font.Color:= SetControlColor(Json.GetValue<string>('FontColor', FontColor));
+  end;
+
+  var ColorLabel: String;
+  if (Ctrl is TLabel) and Json.TryGetValue<string>('Color', ColorLabel) then
+  begin
+    TLabel(Ctrl).Font.Color:= SetControlColor(Json.GetValue<string>('Color', ColorLabel));
+  end;
+
 
   if (Ctrl is TLabel) and Json.TryGetValue<TJSONArray>('FontStyle', FontStyles) then
   begin

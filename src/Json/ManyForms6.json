@@ -84,6 +84,7 @@
           "Width": 300,
           "Height": 30,
           "FontSize": 16,
+          "FontColor": "#E3E3E3",          
           "FontStyle": ["Bold"]
         },
         {

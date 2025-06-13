@@ -182,8 +182,8 @@ begin
 
   // C# WinForms  Designer.cs
   Result := 'partial class ' + FormName + sLineBreak +
-  Indent + '{' + sLineBreak +
-  Indent + ' ///  Required designer variable.' + sLineBreak + #13#10+
+  '{' + sLineBreak +
+  Indent + '///  Required designer variable.' + sLineBreak + #13#10+
   Indent + 'private System.ComponentModel.IContainer components = null; '+ sLineBreak  + #13#10+
   Fields + sLineBreak +
   Indent + '    private void InitializeComponent()' + sLineBreak +
@@ -193,6 +193,28 @@ begin
   '}' ;
 
   SetGUIText(Result);
+end;
+
+function TCsharp.DelphiToWinFormsType(const DelphiType: string): string;
+begin
+  if SameText(DelphiType, 'TEdit') then Exit('TextBox');
+  if SameText(DelphiType, 'TImage') then Exit('PictureBox');
+  if SameText(DelphiType, 'TLabel') then Exit('Label');
+  if SameText(DelphiType, 'TButton') then Exit('Button');
+  if SameText(DelphiType, 'TPanel') then Exit('Panel');
+  if SameText(DelphiType, 'TComboBox') then Exit('ComboBox');
+  if SameText(DelphiType, 'TCheckBox') then Exit('CheckBox');
+  if SameText(DelphiType, 'TListBox') then Exit('ListBox');
+  if SameText(DelphiType, 'TDateTimePicker') then Exit('DateTimePicker');
+  if SameText(DelphiType, 'TBitBtn') then Exit('Button');
+  if SameText(DelphiType, 'TSpeedButton') then Exit('Button');
+  if SameText(DelphiType, 'TMemo') then Exit('TextBox');
+  if SameText(DelphiType, 'TDBGrid') then Exit('DataGridView');
+  if SameText(DelphiType, 'TStringGrid') then Exit('DataGridView');
+  if SameText(DelphiType, 'TGroupBox') then Exit('GroupBox');
+  if SameText(DelphiType, 'TRadioGroup') then Exit('RadioButton');
+
+  Result := DelphiType;
 end;
 
 function TCsharp.GetCodeText: string;
@@ -215,22 +237,5 @@ begin
   FGUIText := Value;
 end;
 
-function TCsharp.DelphiToWinFormsType(const DelphiType: string): string;
-begin
-  if SameText(DelphiType, 'TEdit') then Exit('TextBox');
-  if SameText(DelphiType, 'TLabel') then Exit('Label');
-  if SameText(DelphiType, 'TButton') then Exit('Button');
-  if SameText(DelphiType, 'TPanel') then Exit('Panel');
-  if SameText(DelphiType, 'TComboBox') then Exit('ComboBox');
-  if SameText(DelphiType, 'TCheckBox') then Exit('CheckBox');
-  if SameText(DelphiType, 'TListBox') then Exit('ListBox');
-  if SameText(DelphiType, 'TDateTimePicker') then Exit('DateTimePicker');
-  if SameText(DelphiType, 'TBitBtn') then Exit('Button');
-  if SameText(DelphiType, 'TSpeedButton') then Exit('Button');
-  if SameText(DelphiType, 'TMemo') then Exit('TextBox');
-  if SameText(DelphiType, 'TDBGrid') then Exit('DataGridView');
-  if SameText(DelphiType, 'TGroupBox') then Exit('GroupBox');
-  Result := DelphiType;
-end;
 
 end.

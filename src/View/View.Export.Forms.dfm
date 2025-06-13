@@ -262,8 +262,8 @@ object FormExports: TFormExports
   end
   object LabelInfo: TLabel
     Left = 8
-    Top = 325
-    Width = 498
+    Top = 333
+    Width = 481
     Height = 19
     AutoSize = False
     Caption = 'Waiting...'
@@ -279,19 +279,36 @@ object FormExports: TFormExports
     Left = 184
     Top = 49
     Width = 361
-    Height = 259
+    Height = 267
     Caption = 'Options Forms'
+    PopupMenu = PopupMenuOptions
     TabOrder = 0
     object LabelInfoExportPath: TLabel
       Left = 28
-      Top = 157
+      Top = 172
       Width = 75
       Height = 15
       Caption = 'Path to export'
     end
+    object Label1: TLabel
+      Left = 10
+      Top = 9
+      Width = 342
+      Height = 14
+      Alignment = taRightJustify
+      AutoSize = False
+      Caption = 'Right-click to check/uncheck forms'#13#10#13#10'  '
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowFrame
+      Font.Height = -11
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+      Transparent = True
+    end
     object EditPath: TEdit
       Left = 42
-      Top = 178
+      Top = 193
       Width = 245
       Height = 23
       TabOrder = 0
@@ -300,7 +317,7 @@ object FormExports: TFormExports
     end
     object ButtonSelectFolder: TButton
       Left = 295
-      Top = 178
+      Top = 193
       Width = 34
       Height = 23
       Caption = '...'
@@ -315,7 +332,7 @@ object FormExports: TFormExports
     end
     object CheckBoxOnlyGUI: TCheckBox
       Left = 42
-      Top = 207
+      Top = 222
       Width = 97
       Height = 17
       Hint = 'Export just the GUI form'
@@ -324,7 +341,7 @@ object FormExports: TFormExports
     end
     object CheckBoxShowFolder: TCheckBox
       Left = 42
-      Top = 230
+      Top = 245
       Width = 158
       Height = 17
       Hint = 'Show folder before export'
@@ -333,7 +350,7 @@ object FormExports: TFormExports
     end
     object ButtonStartProcess: TButton
       Left = 254
-      Top = 218
+      Top = 233
       Width = 75
       Height = 25
       Caption = 'Start'
@@ -342,15 +359,16 @@ object FormExports: TFormExports
       OnClick = ButtonStartProcessClick
     end
     object TreeViewForms: TTreeView
-      Left = 11
-      Top = 19
+      Left = 14
+      Top = 27
       Width = 342
-      Height = 129
+      Height = 132
       BorderStyle = bsNone
       CheckBoxes = True
       Indent = 19
       ReadOnly = True
       TabOrder = 5
+      OnClick = TreeViewFormsClick
     end
   end
   object RadioButtonDelphi: TRadioButton
@@ -391,7 +409,19 @@ object FormExports: TFormExports
     TabOrder = 5
   end
   object ActivityIndicatorLoading: TActivityIndicator
-    Left = 513
-    Top = 314
+    Left = 516
+    Top = 317
+  end
+  object PopupMenuOptions: TPopupMenu
+    Left = 352
+    Top = 97
+    object CheckAll1: TMenuItem
+      Caption = 'Check All'
+      OnClick = CheckAll1Click
+    end
+    object UncheckAll1: TMenuItem
+      Caption = 'Uncheck All'
+      OnClick = UncheckAll1Click
+    end
   end
 end

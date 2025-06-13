@@ -186,7 +186,7 @@ begin
     end;
   end;
 
-  // C# WinForms  .cs
+  // C# WinForms  FormName.cs
   var CodeText :=
     'public partial class ' + FormName + ' : Form' + sLineBreak +
     '{' + sLineBreak +
@@ -205,7 +205,7 @@ end;
 
 function TCsharp.GenerateDesignerCode(const Json: TJSONObject; const Indent: string): string;
 var
-  FormName: string;
+  FormName,FormCaption: string;
   Children: TJSONArray;
   Fields, InitCode: string;
   FormWidth, FormHeight: Integer;
@@ -234,6 +234,14 @@ var
         Continue;
       end;
 
+      if (SameText(PropName, 'FontSize') or SameText(PropName, 'Font.Size')) then
+      begin
+        var Size := Pair.JsonValue.Value;
+        InitCode := InitCode + Indent + CompName + '.Font = new System.Drawing.Font(' +
+                    CompName + '.Font.FontFamily, ' + Size + ');' + sLineBreak;
+        Continue;
+      end;
+
       if (PropName = 'Width') or (PropName = 'Height') then
       begin
         InitCode := InitCode + Indent + 'this.' + CompName + '.' + PropName + ' = ' + Pair.JsonValue.Value + ';' + sLineBreak;
@@ -243,6 +251,29 @@ var
       if (PropName = 'Caption') or (PropName = 'Text') then
       begin
         InitCode := InitCode + Indent + 'this.' + CompName + '.Text = "' + Pair.JsonValue.Value + '";' + sLineBreak;
+        Continue;
+      end;
+
+      if ((PropName = 'FontColor') or(PropName = 'Color') or PropName.EndsWith('.Color')) and (Pair.JsonValue is TJSONString) then
+      begin
+        var ColorValue := Pair.JsonValue.Value;
+        if ColorValue.StartsWith('#') then
+        begin
+          var Hex := Copy(ColorValue, 2, 6);
+          if Length(Hex) = 6 then
+          begin
+            var R := StrToInt('$' + Copy(Hex, 1, 2));
+            var G := StrToInt('$' + Copy(Hex, 3, 2));
+            var B := StrToInt('$' + Copy(Hex, 5, 2));
+
+            var TargetProp := 'BackColor';
+            if SameText(CompType, 'TLabel') or SameText(CompType, 'TEdit') or SameText(CompType, 'TextBox') then
+              TargetProp := 'ForeColor';
+
+            InitCode := InitCode + Indent + CompName + '.' + TargetProp +
+                        ' = System.Drawing.Color.FromArgb(' + R.ToString + ', ' + G.ToString + ', ' + B.ToString + ');' + sLineBreak;
+          end;
+        end;
         Continue;
       end;
     end;
@@ -288,6 +319,7 @@ begin
   FormName := Json.GetValue<string>('Name', 'MyForm');
   FormWidth := Json.GetValue<Integer>('Width', 800);
   FormHeight := Json.GetValue<Integer>('Height', 600);
+  FormCaption := Json.GetValue<string>('Caption', FormName);
 
   Fields := '';
   InitCode := '';
@@ -297,6 +329,7 @@ begin
       ProcessComponent(Children.Items[I] as TJSONObject, Indent + '    ', 'this');
   end;
 
+  // C# WinForms  FormName.Designer.cs
   Result :=
     'partial class ' + FormName + sLineBreak +
     '{' + sLineBreak +
@@ -307,7 +340,9 @@ begin
     Fields + sLineBreak +
     Indent + '    private void InitializeComponent()' + sLineBreak +
     Indent + '    {' + sLineBreak +
-             'this.ClientSize = new System.Drawing.Size(' + FormWidth.ToString + ', ' + FormHeight.ToString + ');' + sLineBreak +
+    Indent + '        this.ClientSize = new System.Drawing.Size(' + FormWidth.ToString + ', ' + FormHeight.ToString + ');' + sLineBreak +
+    Indent + '        this.ClientSize = new System.Drawing.Size(' + FormWidth.ToString + ', ' + FormHeight.ToString + ');' + sLineBreak +
+    Indent + '        this.Text = "' + FormCaption + '";' + sLineBreak +
     InitCode +
     Indent + '    }' + sLineBreak +
     '}';

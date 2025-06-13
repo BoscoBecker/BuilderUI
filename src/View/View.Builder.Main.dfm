@@ -4,7 +4,7 @@ object FormBuilderMain: TFormBuilderMain
   AlphaBlend = True
   Caption = 'Forms Builder UI - Create and Export Layout Forms Easily'
   ClientHeight = 794
-  ClientWidth = 1109
+  ClientWidth = 1117
   Color = clWhite
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
@@ -30,7 +30,7 @@ object FormBuilderMain: TFormBuilderMain
     ExplicitTop = 65
   end
   object SplitterRight: TSplitter
-    Left = 805
+    Left = 813
     Top = 57
     Height = 689
     Align = alRight
@@ -42,18 +42,19 @@ object FormBuilderMain: TFormBuilderMain
     AlignWithMargins = True
     Left = 295
     Top = 60
-    Width = 507
+    Width = 515
     Height = 683
     Align = alClient
     OnMouseMove = SkPaintBackgroundMouseMove
     OnDraw = SkPaintBackgroundDraw
     ExplicitLeft = 294
     ExplicitTop = 57
+    ExplicitWidth = 507
   end
   object StatusBarBottom: TStatusBar
     Left = 0
     Top = 775
-    Width = 1109
+    Width = 1117
     Height = 19
     Panels = <
       item
@@ -82,7 +83,7 @@ object FormBuilderMain: TFormBuilderMain
       end>
   end
   object PanelRenderJson: TPanel
-    Left = 808
+    Left = 816
     Top = 57
     Width = 301
     Height = 689
@@ -762,7 +763,7 @@ object FormBuilderMain: TFormBuilderMain
   object PanelBottomInfo: TPanel
     Left = 0
     Top = 746
-    Width = 1109
+    Width = 1117
     Height = 29
     Align = alBottom
     BevelOuter = bvNone
@@ -980,7 +981,7 @@ object FormBuilderMain: TFormBuilderMain
   object PanelTop: TPanel
     Left = 0
     Top = 0
-    Width = 1109
+    Width = 1117
     Height = 57
     Margins.Bottom = 5
     Align = alTop
@@ -1000,7 +1001,7 @@ object FormBuilderMain: TFormBuilderMain
       AlignWithMargins = True
       Left = 3
       Top = 3
-      Width = 1103
+      Width = 1111
       Height = 36
       Align = alClient
       BiDiMode = bdRightToLeft

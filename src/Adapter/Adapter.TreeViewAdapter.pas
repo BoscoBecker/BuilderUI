@@ -40,6 +40,8 @@ type
   TTreeViewAdapterHelper = class helper for TTreeView
     procedure Expand;
     procedure Colapse;
+    procedure CheckAll;
+    procedure UncheckAll;
     function GetSelectedFormNames: TArray<string>;
  end;
 
@@ -250,6 +252,18 @@ begin
   finally
     List.Free;
   end;
+end;
+
+procedure TTreeViewAdapterHelper.CheckAll;
+begin
+  for var I := 0 to Self.Items.Count - 1 do
+    Self.Items[I].Checked := true;
+end;
+
+procedure TTreeViewAdapterHelper.UncheckAll;
+begin
+  for var I := 0 to Self.Items.Count - 1 do
+    Self.Items[I].Checked := false;
 end;
 
 end.

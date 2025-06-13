@@ -127,7 +127,6 @@ begin
       Continue;
     end;
 
-    // Geração padrão para tipos conhecidos
     if Pair.JsonValue is TJSONNumber then
       Result := Result + Indent + '  ' + PropName + ' = ' + Pair.JsonValue.Value + sLineBreak
     else if Pair.JsonValue is TJSONBool then
@@ -171,7 +170,6 @@ begin
             '    object ' + PageName + ': TTabSheet' + sLineBreak +
             '      Caption = ' + QuotedStr(PageCaption) + sLineBreak;
 
-          // Renderiza os filhos da TTabSheet
           var ChildrenTabs: TJSONArray;
           if Page.TryGetValue('Children', ChildrenTabs) then
             for var J := 0 to ChildrenTabs.Count - 1 do
@@ -180,15 +178,10 @@ begin
           CompText := CompText + '    end' + sLineBreak;
         end;
       end;
-
       CompText := CompText + '  end' + sLineBreak;
       Exit(CompText);
     end;
-
-
   end;
-
-
 
   if CompJson.TryGetValue('Children', Children) then
     for var I := 0 to Children.Count - 1 do

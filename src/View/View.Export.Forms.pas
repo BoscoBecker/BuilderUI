@@ -32,7 +32,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.Json,  Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Skia, SYstem.Types, System.Generics.Collections ,Vcl.Skia,
-  Vcl.Imaging.pngimage, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.WinXCtrls, Vcl.ComCtrls;
+  Vcl.Imaging.pngimage, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.WinXCtrls, Vcl.ComCtrls,
+  Vcl.Menus;
 
 type
   TFormExports = class(TForm)
@@ -62,6 +63,10 @@ type
     ActivityIndicatorLoading: TActivityIndicator;
     LabelInfo: TLabel;
     TreeViewForms: TTreeView;
+    PopupMenuOptions: TPopupMenu;
+    CheckAll1: TMenuItem;
+    UncheckAll1: TMenuItem;
+    Label1: TLabel;
     procedure LabelDelphiMouseEnter(Sender: TObject);
     procedure LabelDelphiMouseLeave(Sender: TObject);
     procedure ButtonStartProcessClick(Sender: TObject);
@@ -69,6 +74,9 @@ type
     procedure EditPathChange(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
+    procedure TreeViewFormsClick(Sender: TObject);
+    procedure CheckAll1Click(Sender: TObject);
+    procedure UncheckAll1Click(Sender: TObject);
   private
     FJsonData: TJSONObject;
     FForms: TObjectList<TForm>;
@@ -101,11 +109,18 @@ end;
 procedure TFormExports.ButtonStartProcessClick(Sender: TObject);
 begin
   ButtonSelectFolder.Enabled:= false;
+  ButtonStartProcess.Enabled:= false;
   try
     ExportForms;
   finally
     ButtonSelectFolder.Enabled:= true;
+    ButtonStartProcess.Enabled:= true;
   end;
+end;
+
+procedure TFormExports.CheckAll1Click(Sender: TObject);
+begin
+  TreeViewForms.CheckAll;
 end;
 
 procedure TFormExports.EditPathChange(Sender: TObject);
@@ -138,9 +153,20 @@ begin
   FJsonData := AValue;
 end;
 
+procedure TFormExports.TreeViewFormsClick(Sender: TObject);
+begin
+  ButtonStartProcess.Enabled:= Length(TreeViewForms.GetSelectedFormNames) >0;
+end;
+
+procedure TFormExports.UncheckAll1Click(Sender: TObject);
+begin
+  TreeViewForms.UncheckAll;
+end;
+
 procedure TFormExports.VerifyPath;
 begin
-  ButtonStartProcess.Enabled:= DirectoryExists(EditPath.Text);
+  ButtonStartProcess.Enabled:= (DirectoryExists(EditPath.Text)) and
+                               (Length(TreeViewForms.GetSelectedFormNames) >0);
 end;
 
 procedure TFormExports.SelectFolder;
@@ -178,23 +204,31 @@ end;
 procedure TFormExports.ExportForms;
 begin
   VerifyPath;
+  LabelInfo.Visible:= true;
+  ActivityIndicatorLoading.Animate:= true;
+  ActivityIndicatorLoading.invalidate;
   try
     var Technology := GetSelectedTechnology;
     var FormNames := TreeViewForms.GetSelectedFormNames;
     for var FormName in FormNames do
+    begin
+      LabelInfo.caption:= 'Exporting: ' + FormName + ' To :' + EditPath.Text;
       TExportService.ExportForm(GetJsonData,FormName,EditPath.Text,Technology,CheckBoxOnlyGUI.Checked);
+      Sleep(1000);
+      Application.ProcessMessages;
+      ActivityIndicatorLoading.invalidate;
+    end;
   finally
     if CheckBoxShowFolder.Checked then
       ShellExecute(0, 'open', PChar(EditPath.Text), nil, nil, SW_SHOWNORMAL);
+    LabelInfo.caption:= 'Exporting Complete!';
+    ActivityIndicatorLoading.Animate:= false;
   end;
 end;
 
-
 procedure TFormExports.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  if key = VK_ESCAPE then
-    close;
-
+  if key = VK_ESCAPE then Close;
 end;
 
 procedure TFormExports.FormShow(Sender: TObject);

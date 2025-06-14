@@ -1,7 +1,7 @@
 > ⚠️ **Warning:** This project is under active development. Features, structure, and APIs may change at any time.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/ec398da9-c462-40e8-b578-c3c264965042" alt="BuilderUI">
+  <img src="https://github.com/user-attachments/assets/5589f7b6-1141-4839-b95e-1a98ff2206dd" alt="BuilderUI">
 </p>
 
 # BuilderUI - Forms Builder UI for Windows (Design Patterns Applied)

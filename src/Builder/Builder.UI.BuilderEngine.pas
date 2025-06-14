@@ -67,11 +67,12 @@ procedure TUIBuilderEngine.ControlClick(Sender: TObject);
 begin
   if Length(TControl(Sender).Name) <=0 then Exit;
   try
-//    if TTreeViewAdapter.FTreeView.CanFocus then
-//      TTreeViewAdapter.FTreeView.SetFocus;
-//    TTreeViewAdapter.FindComponentInTreeView(TControl(Sender).Name);
-//    TTreeViewAdapter.FTreeView.OnClick(Sender);
-  except
+    if TTreeViewAdapter.FTreeView.CanFocus then
+      TTreeViewAdapter.FTreeView.SetFocus;
+    TTreeViewAdapter.FindComponentInTreeView(TControl(Sender).Name);
+    TTreeViewAdapter.FTreeView.OnClick(Sender);
+  except on E: Exception do
+    ShowMessage(E.Message);
   end;
 end;
 
@@ -334,7 +335,10 @@ begin
     TShape(Ctrl).OnMouseEnter := ControlClick
   else
   if Ctrl is TImage then
-    TImage(Ctrl).OnDblClick := ControlDblClickImage
+  begin
+    TImage(Ctrl).OnClick := ControlClick;
+    TImage(Ctrl).OnDblClick := ControlDblClickImage;
+  end;
 end;
 
 

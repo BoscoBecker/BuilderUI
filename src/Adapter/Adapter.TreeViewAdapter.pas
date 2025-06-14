@@ -105,10 +105,10 @@ begin
   if not Assigned(FTreeView) or not Assigned(Sender) then Exit;
   if Sender is TForm then
   begin
+    TForm(Sender).Top:=  -5000;
+    TForm(Sender).Left:=  -5000;
     TForm(Sender).FormStyle:= fsMDIForm;
     TForm(Sender).Visible:= False;
-    TForm(Sender).Top:=  -5000;
-
     for var I := FTreeView.Items.Count - 1 downto 0 do
     begin
       Node := FTreeView.Items[I];

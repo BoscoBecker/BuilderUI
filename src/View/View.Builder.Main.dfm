@@ -93,7 +93,6 @@ object FormBuilderMain: TFormBuilderMain
     BevelOuter = bvNone
     TabOrder = 1
     Visible = False
-    ExplicitHeight = 689
     object SplitterBottomTool: TSplitter
       Left = 0
       Top = 616
@@ -174,7 +173,6 @@ object FormBuilderMain: TFormBuilderMain
       Color = clWhite
       ParentBackground = False
       TabOrder = 1
-      ExplicitTop = 580
       object ImageCopyToClipboard: TImage
         Left = 267
         Top = 0
@@ -361,7 +359,6 @@ object FormBuilderMain: TFormBuilderMain
       ScrollBars = ssBoth
       TabOrder = 2
       OnChange = MemoChange
-      ExplicitHeight = 545
     end
     object PanelInfoValidation: TPanel
       Left = 0
@@ -373,7 +370,6 @@ object FormBuilderMain: TFormBuilderMain
       Color = clWhite
       ParentBackground = False
       TabOrder = 3
-      ExplicitTop = 613
       object LabelInfoJson: TLabel
         Left = 0
         Top = 33
@@ -483,7 +479,6 @@ object FormBuilderMain: TFormBuilderMain
     Placement = svpLeft
     ShowHint = True
     TabOrder = 2
-    ExplicitHeight = 689
     object SkLabelTreeJson: TSkLabel
       AlignWithMargins = True
       Left = 3
@@ -547,7 +542,6 @@ object FormBuilderMain: TFormBuilderMain
       Padding.Right = 2
       Padding.Bottom = 2
       TabOrder = 0
-      ExplicitTop = 648
       object ImgSettings: TImage
         Left = 2
         Top = 2
@@ -747,7 +741,6 @@ object FormBuilderMain: TFormBuilderMain
       BevelOuter = bvNone
       TabOrder = 5
       Visible = False
-      ExplicitTop = 634
       object SkLabelSettings: TSkLabel
         AlignWithMargins = True
         Left = 3
@@ -840,20 +833,17 @@ object FormBuilderMain: TFormBuilderMain
     ParentBackground = False
     ParentDoubleBuffered = False
     TabOrder = 4
-    OnMouseDown = PanelToolPaletteMouseDown
-    OnMouseMove = PanelToolPaletteMouseMove
-    OnMouseUp = PanelToolPaletteMouseUp
-    object SkPaintBox1: TSkPaintBox
+    object SkPaintBoxToolPalette: TSkPaintBox
       AlignWithMargins = True
       Left = 3
       Top = 3
       Width = 377
       Height = 42
       Align = alClient
-      OnMouseDown = SkPaintBox1MouseDown
-      OnMouseMove = SkPaintBox1MouseMove
-      OnMouseUp = SkPaintBox1MouseUp
-      OnDraw = SkPaintBox1Draw
+      OnMouseDown = SkPaintBoxToolPaletteMouseDown
+      OnMouseMove = SkPaintBoxToolPaletteMouseMove
+      OnMouseUp = SkPaintBoxToolPaletteMouseUp
+      OnDraw = SkPaintBoxToolPaletteDraw
       ExplicitLeft = 2
     end
     object ImageSelectMode: TImage
@@ -1087,7 +1077,6 @@ object FormBuilderMain: TFormBuilderMain
     Caption = 'PanelTree'
     TabOrder = 6
     Visible = False
-    ExplicitHeight = 689
     object PanelExpandTree: TPanel
       Left = 0
       Top = 60
@@ -1101,7 +1090,7 @@ object FormBuilderMain: TFormBuilderMain
       ParentDoubleBuffered = False
       TabOrder = 0
       object ImageExpand: TImage
-        Left = 64
+        Left = 32
         Top = 0
         Width = 32
         Height = 32
@@ -1120,10 +1109,9 @@ object FormBuilderMain: TFormBuilderMain
           1618FA16000092DE1C19EE8DA86E0000000049454E44AE426082}
         ShowHint = True
         OnClick = ImageExpandClick
-        ExplicitLeft = 32
       end
       object ImageColapse: TImage
-        Left = 32
+        Left = 0
         Top = 0
         Width = 32
         Height = 32
@@ -1141,12 +1129,6 @@ object FormBuilderMain: TFormBuilderMain
           470A19E888BC3E0000000049454E44AE426082}
         ShowHint = True
         OnClick = ImageColapseClick
-        ExplicitLeft = 0
-      end
-      object ActivityIndicatorExplorer: TActivityIndicator
-        Left = 0
-        Top = 0
-        Align = alLeft
       end
     end
     object PanelTopExplorer: TPanel
@@ -1279,7 +1261,6 @@ object FormBuilderMain: TFormBuilderMain
       TabOrder = 3
       ToolTips = False
       OnClick = TreeViewExplorerClick
-      ExplicitHeight = 597
     end
   end
 end

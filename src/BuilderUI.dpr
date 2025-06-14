@@ -5,7 +5,7 @@ program BuilderUI;
 uses
   Vcl.Forms,
   View.Builder.Main in 'View\View.Builder.Main.pas' {FormBuilderMain},
-  Builder.UIBuilderEngine in 'Builder\Builder.UIBuilderEngine.pas',
+  Builder.UI.BuilderEngine in 'Builder\Builder.UI.BuilderEngine.pas',
   Core.IUIBuilder in 'Core\Core.IUIBuilder.pas',
   Adapter.TreeViewAdapter in 'Adapter\Adapter.TreeViewAdapter.pas',
   Vcl.Themes,
@@ -27,7 +27,9 @@ uses
   Service.Zoom in 'Service\Service.Zoom.pas',
   Service.Forms.Manager in 'Service\Service.Forms.Manager.pas',
   Service.Skia.Draw in 'Service\Service.Skia.Draw.pas',
-  Service.JsonFile in 'Service\Service.JsonFile.pas';
+  Service.JsonFile in 'Service\Service.JsonFile.pas',
+  Builder.UI.UserPreferences in 'Builder\Builder.UI.UserPreferences.pas',
+  Enum.Utils in 'Enum\Enum.Utils.pas';
 
 {$R *.res}
 

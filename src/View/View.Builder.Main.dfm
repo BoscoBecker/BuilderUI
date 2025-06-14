@@ -25,31 +25,33 @@ object FormBuilderMain: TFormBuilderMain
   object SplitterLeft: TSplitter
     Left = 289
     Top = 57
-    Height = 689
+    Height = 695
     ExplicitLeft = 772
     ExplicitTop = 65
+    ExplicitHeight = 689
   end
   object SplitterRight: TSplitter
     Left = 813
     Top = 57
-    Height = 689
+    Height = 695
     Align = alRight
     Visible = False
     ExplicitLeft = 690
     ExplicitTop = 65
+    ExplicitHeight = 689
   end
   object SkPaintBackground: TSkPaintBox
     AlignWithMargins = True
     Left = 295
     Top = 60
     Width = 515
-    Height = 683
+    Height = 689
     Align = alClient
     OnMouseMove = SkPaintBackgroundMouseMove
     OnDraw = SkPaintBackgroundDraw
     ExplicitLeft = 294
     ExplicitTop = 57
-    ExplicitWidth = 507
+    ExplicitHeight = 693
   end
   object StatusBarBottom: TStatusBar
     Left = 0
@@ -86,14 +88,15 @@ object FormBuilderMain: TFormBuilderMain
     Left = 816
     Top = 57
     Width = 301
-    Height = 689
+    Height = 695
     Align = alRight
     BevelOuter = bvNone
     TabOrder = 1
     Visible = False
+    ExplicitHeight = 689
     object SplitterBottomTool: TSplitter
       Left = 0
-      Top = 610
+      Top = 616
       Width = 301
       Height = 3
       Cursor = crVSplit
@@ -163,7 +166,7 @@ object FormBuilderMain: TFormBuilderMain
     end
     object PanelToolJsonRender: TPanel
       Left = 0
-      Top = 580
+      Top = 586
       Width = 301
       Height = 30
       Align = alBottom
@@ -171,6 +174,7 @@ object FormBuilderMain: TFormBuilderMain
       Color = clWhite
       ParentBackground = False
       TabOrder = 1
+      ExplicitTop = 580
       object ImageCopyToClipboard: TImage
         Left = 267
         Top = 0
@@ -351,16 +355,17 @@ object FormBuilderMain: TFormBuilderMain
       Left = 0
       Top = 35
       Width = 301
-      Height = 545
+      Height = 551
       Align = alClient
       BorderStyle = bsNone
       ScrollBars = ssBoth
       TabOrder = 2
       OnChange = MemoChange
+      ExplicitHeight = 545
     end
     object PanelInfoValidation: TPanel
       Left = 0
-      Top = 613
+      Top = 619
       Width = 301
       Height = 76
       Align = alBottom
@@ -368,6 +373,7 @@ object FormBuilderMain: TFormBuilderMain
       Color = clWhite
       ParentBackground = False
       TabOrder = 3
+      ExplicitTop = 613
       object LabelInfoJson: TLabel
         Left = 0
         Top = 33
@@ -463,7 +469,7 @@ object FormBuilderMain: TFormBuilderMain
     Left = 0
     Top = 57
     Width = 50
-    Height = 689
+    Height = 695
     BiDiMode = bdLeftToRight
     CloseStyle = svcCompact
     Color = clWhite
@@ -477,6 +483,7 @@ object FormBuilderMain: TFormBuilderMain
     Placement = svpLeft
     ShowHint = True
     TabOrder = 2
+    ExplicitHeight = 689
     object SkLabelTreeJson: TSkLabel
       AlignWithMargins = True
       Left = 3
@@ -530,7 +537,7 @@ object FormBuilderMain: TFormBuilderMain
     end
     object Panel6: TPanel
       Left = 0
-      Top = 648
+      Top = 654
       Width = 50
       Height = 41
       Align = alBottom
@@ -540,6 +547,7 @@ object FormBuilderMain: TFormBuilderMain
       Padding.Right = 2
       Padding.Bottom = 2
       TabOrder = 0
+      ExplicitTop = 648
       object ImgSettings: TImage
         Left = 2
         Top = 2
@@ -724,7 +732,6 @@ object FormBuilderMain: TFormBuilderMain
           46343882D12D8059A248814F402EBF0F331C9B055407A3161004007B3226199A
           A3EA8D0000000049454E44AE426082}
         ShowHint = True
-        OnClick = ImgSettingsClick
         ExplicitLeft = 4
         ExplicitTop = -64
         ExplicitWidth = 105
@@ -733,13 +740,14 @@ object FormBuilderMain: TFormBuilderMain
     end
     object PanelSettings: TPanel
       Left = 0
-      Top = 634
+      Top = 640
       Width = 50
       Height = 14
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 5
       Visible = False
+      ExplicitTop = 634
       object SkLabelSettings: TSkLabel
         AlignWithMargins = True
         Left = 3
@@ -762,14 +770,63 @@ object FormBuilderMain: TFormBuilderMain
   end
   object PanelBottomInfo: TPanel
     Left = 0
-    Top = 746
+    Top = 752
     Width = 1117
-    Height = 29
+    Height = 23
     Align = alBottom
     BevelOuter = bvNone
     Color = clWhite
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowFrame
+    Font.Height = -12
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
     ParentBackground = False
+    ParentFont = False
     TabOrder = 3
+    object LabelBottomInfo: TLabel
+      Left = 0
+      Top = 0
+      Width = 1083
+      Height = 23
+      Align = alClient
+      Caption = '  All notification show here.'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowFrame
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+      ExplicitWidth = 144
+      ExplicitHeight = 15
+    end
+    object Image1: TImage
+      Left = 1083
+      Top = 0
+      Width = 34
+      Height = 23
+      Cursor = crHandPoint
+      Align = alRight
+      Center = True
+      ParentShowHint = False
+      Picture.Data = {
+        0954506E67496D61676589504E470D0A1A0A0000000D49484452000000180000
+        00180806000000E0773DF8000000017352474200AECE1CE90000000473424954
+        080808087C086488000001244944415478DA6364A031601C0C16C800B100108B
+        03B12054EC3D10BF84D24FC9B50064A80592A1B800C8921340FC81140B748158
+        87C4D0B80CC45788B1801CC361E01C10DFC4670128583C71681605E24220E606
+        E23E207E8843DD76E4E042B7C0136A0936100CC5203003880FE150078A931DD8
+        2C00A5165B3CDE9707E20C20E602E216207E8D47ED61207E826E0125618F0E40
+        917D19DD02672016A39205AF80782FBA052140CC4A40633B10FF07E22A02EA7E
+        03F11A722C5806A5A3C8B180982022D602AC41444C24136B01D64826944C49B1
+        006B3205017C198D580B40B9783B8C434A510102ED50BA128F1ABC450508D0B4
+        B0A3C4120CC3F159000B2E4B06FC71C2000D8EE30C245638C80094BA40B59A18
+        036A95F90A4A3FC1A7795054FA140100DB0C3C199C63B3EF0000000049454E44
+        AE426082}
+      ShowHint = True
+      Transparent = True
+      ExplicitHeight = 19
+    end
   end
   object PanelToolPalette: TPanel
     Left = 364
@@ -1024,12 +1081,13 @@ object FormBuilderMain: TFormBuilderMain
     Left = 50
     Top = 57
     Width = 239
-    Height = 689
+    Height = 695
     Align = alLeft
     BevelOuter = bvNone
     Caption = 'PanelTree'
     TabOrder = 6
     Visible = False
+    ExplicitHeight = 689
     object PanelExpandTree: TPanel
       Left = 0
       Top = 60
@@ -1206,7 +1264,7 @@ object FormBuilderMain: TFormBuilderMain
       Left = 0
       Top = 92
       Width = 239
-      Height = 597
+      Height = 603
       Align = alClient
       AutoExpand = True
       BevelOuter = bvNone
@@ -1221,6 +1279,7 @@ object FormBuilderMain: TFormBuilderMain
       TabOrder = 3
       ToolTips = False
       OnClick = TreeViewExplorerClick
+      ExplicitHeight = 597
     end
   end
 end

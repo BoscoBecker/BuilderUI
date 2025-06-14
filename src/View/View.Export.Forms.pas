@@ -25,6 +25,7 @@
 { https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html }
 { }
 { João Bosco Becker - https://github.com/BoscoBecker }
+
 unit View.Export.Forms;
 
 interface
@@ -33,7 +34,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.Json,  Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Skia, SYstem.Types, System.Generics.Collections ,Vcl.Skia,
   Vcl.Imaging.pngimage, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.WinXCtrls, Vcl.ComCtrls,
-  Vcl.Menus;
+  Vcl.Menus, Enum.Utils,Builder.UI.UserPreferences;
 
 type
   TFormExports = class(TForm)
@@ -77,6 +78,7 @@ type
     procedure TreeViewFormsClick(Sender: TObject);
     procedure CheckAll1Click(Sender: TObject);
     procedure UncheckAll1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     FJsonData: TJSONObject;
     FForms: TObjectList<TForm>;
@@ -113,6 +115,8 @@ begin
   try
     ExportForms;
   finally
+    TUserPreferences.Instance.LastExportPath := EditPath.Text;
+    TUserPreferences.Instance.SavePreferences;
     ButtonSelectFolder.Enabled:= true;
     ButtonStartProcess.Enabled:= true;
   end;
@@ -224,6 +228,11 @@ begin
     LabelInfo.caption:= 'Exporting Complete!';
     ActivityIndicatorLoading.Animate:= false;
   end;
+end;
+
+procedure TFormExports.FormCreate(Sender: TObject);
+begin
+  EditPath.Text:= TUserPreferences.Instance.GetLastExportPath;
 end;
 
 procedure TFormExports.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);

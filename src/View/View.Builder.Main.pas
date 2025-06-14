@@ -33,16 +33,16 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.Generics.Collections, System.JSON, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Buttons, Vcl.ComCtrls, Vcl.StdCtrls,
-  Vcl.ExtCtrls, System.Threading, StrUtils,Clipbrd,
+  Vcl.ExtCtrls, System.Threading, StrUtils,Clipbrd,TypInfo,
 
   Adapter.TreeViewAdapter,
-  Builder.UIBuilderEngine,
+  Builder.UI.BuilderEngine,Builder.UI.UserPreferences,
   System.Skia, Vcl.Skia, System.Types, System.UITypes,
   Vcl.Imaging.pngimage, Vcl.WinXCtrls,
 
   Util.Json, Util.JSONValidator, System.Math, System.ImageList, Vcl.ImgList,
   View.Export.Forms, View.Menu.Context.Windows, View.Window.Json, SynEdit,
-  SynEditHighlighter, SynHighlighterJSON,
+  SynEditHighlighter, SynHighlighterJSON, Enum.Utils,
 
   Service.Zoom, Service.Forms.Manager, Service.Skia.Draw, Service.JsonFile;
 
@@ -51,7 +51,7 @@ type
     Left, Top, Width, Height: Integer;
   end;
 
-  TFormBuilderMain = class(TForm)
+  TFormBuilderMain = class(TForm,IPreferenceObserver)
     StatusBarBottom: TStatusBar;
     PanelRenderJson: TPanel;
     SplitterRight: TSplitter;
@@ -117,6 +117,8 @@ type
     ImageErro: TImage;
     ImageOk: TImage;
     LabelInfoJson: TLabel;
+    LabelBottomInfo: TLabel;
+    Image1: TImage;
     procedure FormCreate(Sender: TObject);
     procedure ImgSettingsClick(Sender: TObject);
     procedure ImageTreeComponentsClick(Sender: TObject);
@@ -185,6 +187,10 @@ type
     procedure ApplyZoomToCreatedForms;
   public
     destructor Destroy; override;
+    procedure OnPreferenceChanged(const Key, Value: string);
+    procedure AfterConstruction; override;
+    procedure BeforeDestruction; override;
+
     property SelectedComponent: String read FSelectedComponent write SetSelectedComponent;
     property BuilderBackground: TBuilderBackground read FBuilderBackground write SetBuilderBackground;
   end;
@@ -195,6 +201,8 @@ var
 implementation
 
 {$R *.dfm}
+
+
 
 procedure TFormBuilderMain.BuildStatusBar;
 begin
@@ -215,6 +223,7 @@ end;
 
 destructor TFormBuilderMain.Destroy;
 begin
+  TUserPreferences.Instance.Destroy;
   if FSelecionadoShape <> nil then
     FSelecionadoShape.Free;
   if FTreeViewAdapter <> nil then
@@ -250,7 +259,8 @@ procedure TFormBuilderMain.FormCreate(Sender: TObject);
 begin
   FFormManager := TFormCreatedManager.Create;
   FZoomService := TZoomService.Create;
-  SetBuilderBackground(bClear);
+  TUserPreferences.Instance.Create;
+  SetBuilderBackground(TUserPreferences.Instance.GetBackgroundEnum);
 end;
 
 procedure TFormBuilderMain.FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -293,12 +303,15 @@ begin
   if FBuilderBackground = bClear then
   begin
     FBuilderBackground := bGrid;
+    TUserPreferences.Instance.BackgroundStyle := 'bGrid';
     SkPaintBackground.Width:= SkPaintBackground.Width + 1;
   end  else
   begin
+    TUserPreferences.Instance.BackgroundStyle := 'bClear';
     FBuilderBackground := bCLear;
     SkPaintBackground.Width:= SkPaintBackground.Width - 1;
   end;
+  TUserPreferences.Instance.SavePreferences;
 end;
 
 procedure TFormBuilderMain.ImageTreeViewClick(Sender: TObject);
@@ -398,13 +411,8 @@ end;
 
 procedure TFormBuilderMain.ImageRenderJsonClick(Sender: TObject);
 begin
-  if not SplitViewmain.Opened then
-    PanelRenderJson.Visible:= True
-  else
-    PanelRenderJson.Visible:= False;
-
-  SplitViewmain.Opened := not SplitViewmain.Opened;
-  SplitterRight.Visible:= True;
+  PanelRenderJson.Visible:= not PanelRenderJson.Visible;
+  SplitterRight.Visible:= not SplitterRight.Visible;
 end;
 
 procedure TFormBuilderMain.ImgSettingsClick(Sender: TObject);
@@ -836,6 +844,27 @@ begin
     FFormManager.Forms[I].Width  := Round(OrigRectsForms[I].Width * FZoomService.GetZoom);
     FFormManager.Forms[I].Height := Round(OrigRectsForms[I].Height * FZoomService.GetZoom);
   end;
+end;
+
+procedure TFormBuilderMain.AfterConstruction;
+begin
+  inherited;
+  TUserPreferences.Instance.AddObserver(Self);
+end;
+
+procedure TFormBuilderMain.BeforeDestruction;
+begin
+  TUserPreferences.Instance.RemoveObserver(Self);
+  inherited;
+end;
+
+procedure TFormBuilderMain.OnPreferenceChanged(const Key, Value: string);
+begin
+  if Key = 'BackgroundStyle' then
+    LabelBottomInfo.caption:=  'New background style: ' + Value
+  else
+  if Key = 'LastExportPath' then
+    LabelBottomInfo.caption:=  'Last Path: ' + Value
 end;
 
 end.

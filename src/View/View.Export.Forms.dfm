@@ -15,6 +15,7 @@ object FormExports: TFormExports
   Font.Style = []
   KeyPreview = True
   Position = poScreenCenter
+  OnCreate = FormCreate
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   TextHeight = 15

@@ -30,9 +30,7 @@ unit Service.Skia.Draw;
 interface
 
 uses
-  System.Types, System.UITypes, System.Skia, Vcl.Skia;
-
-type  TBuilderBackground = ( bClear, bGrid);
+  System.Types, System.UITypes, System.Skia, Vcl.Skia, Enum.Utils;
 
 type
   TSkiaDrawService = class

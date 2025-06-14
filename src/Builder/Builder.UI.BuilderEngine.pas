@@ -25,7 +25,8 @@
 { https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html }
 { }
 { João Bosco Becker - https://github.com/BoscoBecker }
-unit Builder.UIBuilderEngine;
+
+unit Builder.UI.BuilderEngine;
 
 interface
 

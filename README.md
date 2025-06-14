@@ -1,7 +1,7 @@
 > ⚠️ **Warning:** This project is under active development. Features, structure, and APIs may change at any time.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/ec398da9-c462-40e8-b578-c3c264965042" alt="BuilderUI">
+  <img src="https://github.com/user-attachments/assets/5589f7b6-1141-4839-b95e-1a98ff2206dd" alt="BuilderUI">
 </p>
 
 # BuilderUI - Forms Builder UI for Windows (Design Patterns Applied)
@@ -9,7 +9,8 @@
 ## Overview
 BuilderUI is a powerful tool for creating JSON-based graphical user interfaces for Windows. The project allows dynamic creation of forms through JSON definitions, with support for export to multiple platforms.
 
-![image](https://github.com/user-attachments/assets/4c088d07-b81d-486f-b178-0a91ccc46511)
+![image](https://github.com/user-attachments/assets/25b9cdc6-50ff-4b89-9e13-9457cf8e1992)
+
 
 
 ## Features

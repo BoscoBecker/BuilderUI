@@ -9,7 +9,8 @@
 ## Overview
 BuilderUI is a powerful tool for creating JSON-based graphical user interfaces for Windows. The project allows dynamic creation of forms through JSON definitions, with support for export to multiple platforms.
 
-![image](https://github.com/user-attachments/assets/4c088d07-b81d-486f-b178-0a91ccc46511)
+![image](https://github.com/user-attachments/assets/25b9cdc6-50ff-4b89-9e13-9457cf8e1992)
+
 
 
 ## Features

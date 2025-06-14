@@ -25,13 +25,15 @@
 { https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html }
 { }
 { João Bosco Becker - https://github.com/BoscoBecker }
+
 unit Service.Export;
 
 interface
 
-uses System.Generics.Collections, System.JSON, Strategy.Export.Delphi,  Vcl.ComCtrls,
-     Strategy.Export.CSharp, Factory.ICodeGenerator, Factory.CodeGeneratorFactory,
-     Factory.CodeGenerator.CSharp;
+uses System.Generics.Collections, System.JSON,  System.SysUtils, Vcl.ComCtrls,
+
+     Strategy.Export.Delphi,  Strategy.Export.Lazarus, Strategy.Export.CSharp,
+     Factory.ICodeGenerator, Factory.CodeGeneratorFactory, Factory.CodeGenerator.CSharp;
 
 type
   TExportService = class
@@ -49,13 +51,9 @@ begin
     var Components := Generator.FindFormByName(Json, FormName);
     try
       Generator.GenerateCode(Components);
-      if OnlyGUI then
-        DelphiFiles.ExportData(Path + '\' + FormName + '.dfm', Generator.GUIText)
-      else
-      begin
-        DelphiFiles.ExportData(Path + '\' + FormName + '.dfm', Generator.GUIText);
-        DelphiFiles.ExportData(Path + '\' + FormName + '.pas', Generator.CodeText);
-      end;
+      DelphiFiles.ExportData(IncludeTrailingPathDelimiter(Path) + FormName + '.dfm', Generator.GUIText);
+      if not OnlyGUI then
+        DelphiFiles.ExportData(IncludeTrailingPathDelimiter(Path) + FormName + '.pas', Generator.CodeText);
     finally
       DelphiFiles.Free;
     end;
@@ -64,25 +62,33 @@ begin
   begin
     var Generator := TCodeGeneratorFactory.CreateGenerator(Technology);
     var CSharpFile := TCSharpExport.Create;
-    var CSharpFileGUI := TCSharp.Create;
+    var CSharpFileGUI := TCSharpGenerator.Create;
     var Components := Generator.FindFormByName(Json, FormName);
     try
       Generator.GenerateCode(Components);
-      if OnlyGUI then
-      begin
-        CSharpFileGUI.GenerateDesignerCode(Components);
-        CSharpFile.ExportData(Path + '\' + FormName + '.Designer.cs', CSharpFileGUI.GUIText);
-      end else
-      begin
-        CSharpFileGUI.GenerateDesignerCode(Components);
-        CSharpFile.ExportData(Path + '\' + FormName + '.Designer.cs', CSharpFileGUI.GUIText);
-        CSharpFile.ExportData(Path + '\' + FormName + '.cs', Generator.CodeText);
-      end;
+      CSharpFileGUI.GenerateDesignerCode(Components);
+      CSharpFile.ExportData(IncludeTrailingPathDelimiter(Path) + FormName + '.Designer.cs', CSharpFileGUI.GUIText);
+      if not OnlyGUI then
+        CSharpFile.ExportData(IncludeTrailingPathDelimiter(Path) + FormName + '.cs', Generator.CodeText);
     finally
       CSharpFile.Free;
       CSharpFileGUI.Free;
     end;
-  end;
+  end else
+  if Technology = 'Lazarus' then
+  begin
+    var Generator := TCodeGeneratorFactory.CreateGenerator(Technology);
+    var LazarusFiles := TLazarusExport.Create;
+    var Components := Generator.FindFormByName(Json, FormName);
+    try
+      Generator.GenerateCode(Components);
+      LazarusFiles.ExportData(IncludeTrailingPathDelimiter(Path) + FormName + '.lfm', Generator.GUIText);
+      if not OnlyGUI then
+        LazarusFiles.ExportData(IncludeTrailingPathDelimiter(Path) + FormName + '.pas', Generator.CodeText);
+    finally
+      LazarusFiles.Free;
+    end;
+  end
 end;
 
 

@@ -171,9 +171,12 @@
         <DCCReference Include="Service\Service.JsonFile.pas"/>
         <DCCReference Include="Builder\Builder.UI.UserPreferences.pas"/>
         <DCCReference Include="Enum\Enum.Utils.pas"/>
+        <DCCReference Include="Factory\Technology\Lazarus\Factory.CodeGenerator.Lazarus.pas"/>
+        <DCCReference Include="Strategy\Technology\Lazarus\Strategy.Export.Lazarus.pas"/>
         <None Include=".gitignore"/>
         <None Include="BuilderUI.dpr"/>
         <None Include="LICENSE.txt"/>
+        <None Include="..\README.md"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -261,6 +264,12 @@
                         <RemoteDir>.\</RemoteDir>
                         <Operation>0</Operation>
                         <RemoteName>sk4d.dll</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\README.md" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

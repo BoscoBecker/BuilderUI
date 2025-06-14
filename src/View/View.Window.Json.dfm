@@ -55,7 +55,7 @@ object FormJson: TFormJson
     Gutter.Font.Height = -11
     Gutter.Font.Name = 'Courier New'
     Gutter.Font.Style = []
-    Gutter.ShowLineNumbers = True
+    Gutter.LeftOffset = 0
     Gutter.ZeroStart = True
     Gutter.LineNumberStart = 0
     Highlighter = SynJSON

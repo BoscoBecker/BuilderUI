@@ -1,10 +1,10 @@
-Ôªø{}
+{}
 { Project: BuilderUI Forms for Windows }
 { A visual form builder for Windows based on Delphi }
 { }
-{ Copyright (c) 2024 Jo√£o Bosco Becker }
+{ Copyright (c) 2024 Jo„o Bosco Becker }
 { }
-{ Contributors to this file: Jo√£o Bosco Becker }
+{ Contributors to this file: Jo„o Bosco Becker }
 { }
 { You can get the latest version of this file at: }
 { https://github.com/BoscoBecker/BuilderUI }
@@ -24,9 +24,9 @@
 { You may also obtain a copy of the license at: }
 { https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html }
 { }
-{ Jo√£o Bosco Becker - https://github.com/BoscoBecker }
+{ Jo„o Bosco Becker - https://github.com/BoscoBecker }
 
-unit Factory.CodeGenerator.Delphi;
+unit Factory.CodeGenerator.Lazarus;
 
 interface
 
@@ -42,7 +42,7 @@ type
     Name, CompType: string;
   end;
 
-  TDelphiGenerator = class(TInterfacedObject,ICodeGenerator)
+  TLazarusGenerator = class(TInterfacedObject,ICodeGenerator)
   private
     ComponentFields: TArray<TComponentField>;
     FGUIText: string;
@@ -65,7 +65,7 @@ type
 implementation
 
 
-function TDelphiGenerator.GenerateComponent(const CompJson: TJSONObject; const Indent: string = '  '): string;
+function TLazarusGenerator.GenerateComponent(const CompJson: TJSONObject; const Indent: string = '  '): string;
 begin
   var Children: TJSONArray;
   var Invalids: TArray<string>;
@@ -137,10 +137,10 @@ begin
         Result := Result + Indent + '  ' + PropName + ' = False' + sLineBreak
     else if Pair.JsonValue is TJSONString then
     begin
-      if ((CompType = 'TShape') and (PropName = 'Shape')) or 
+      if ((CompType = 'TShape') and (PropName = 'Shape')) or
          ((CompType = 'TBitBtn') and (PropName = 'Kind')) then
         Result := Result + Indent + '  ' + PropName + ' = ' + Pair.JsonValue.Value +  sLineBreak
-      else        
+      else
         Result := Result + Indent + '  ' + PropName + ' = ''' + Pair.JsonValue.Value + '''' + sLineBreak;
     end
     else if Pair.JsonValue is TJSONArray then
@@ -191,7 +191,7 @@ begin
   Result := Result + Indent + 'end' + sLineBreak;
 end;
 
-function TDelphiGenerator.GenerateDfmText(const Json: TJSONObject): string;
+function TLazarusGenerator.GenerateDfmText(const Json: TJSONObject): string;
 begin
   var CompText, CompType, pages, FormType: string;
 
@@ -204,7 +204,7 @@ begin
   var Width := Json.GetValue<integer>('Width');
   var Height:= Json.GetValue<integer>('Height');
 
-  /// Unit.dfm
+  /// Unit.lfm
   var GUIText := 'object ' + 'U'+FormName + ': ' + 'T'+FormName+ sLineBreak +
                  '  Left = 0'  +sLineBreak +
                  '  Top =  0'   +sLineBreak +
@@ -223,7 +223,7 @@ begin
   result:= GUIText;
 end;
 
-function TDelphiGenerator.GeneratePasText(const Json: TJSONObject): string;
+function TLazarusGenerator.GeneratePasText(const Json: TJSONObject): string;
 begin
   var FormType: string;
   Json.TryGetValue<string>('Type',FormType);
@@ -249,27 +249,25 @@ begin
   /// Unit.pas
   CodeText := 'unit ' + 'U'+FormName + ';' + sLineBreak + #13#10+
 
-             'interface' + sLineBreak + #13#10+
+              'interface' + sLineBreak + #13#10+
 
-             'uses  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,'+ sLineBreak +
-	           '      Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons, Vcl.ComCtrls, Vcl.Grids, '+ sLineBreak +
-             '      Data.DB, Vcl.DBGrids; '+ sLineBreak +  #13#10 + #13#10+
+              'uses  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls, ComCtrls, Grids, DBGrids, DB;' + sLineBreak +  #13#10+ #13#10+
 
-             'type' + sLineBreak +
-             '  ' + 'T'+FormName + ' = class(TForm)' + sLineBreak +
-              FieldsBlock + '  end;' + sLineBreak  + #13#10+ #13#10 +
+              'type' + sLineBreak +
+              '  ' + 'T'+FormName + ' = class(TForm)' + sLineBreak +
+               FieldsBlock + '  end;' + sLineBreak  + #13#10+ #13#10 +
 
-             'var '+ #13#10 + '   '+FormName + ': ' + 'T'+FormName + ';' + sLineBreak +  #13#10+
+              'var '+ #13#10 + '   '+FormName + ': ' + 'T'+FormName + ';' + sLineBreak +  #13#10+
 
-             'implementation' + sLineBreak + #13#10+
+              'implementation' + sLineBreak + #13#10+
 
-             '{$R *.dfm} '  + sLineBreak +   #13#10+
+              '{$R *.lfm} '  + sLineBreak +   #13#10+
 
-             'end.';
-  result:= CodeText;
+              'end.';
+    result:= CodeText;
 end;
 
-procedure TDelphiGenerator.CollectComponentFields(const CompJson: TJSONObject);
+procedure TLazarusGenerator.CollectComponentFields(const CompJson: TJSONObject);
 var
   Children: TJSONArray;
   CompType, CompName: string;
@@ -311,7 +309,7 @@ begin
   end;
 end;
 
-function TDelphiGenerator.FindFormByName(Json: TJSONObject; const AName: string): TJSONObject;
+function TLazarusGenerator.FindFormByName(Json: TJSONObject; const AName: string): TJSONObject;
 begin
   Result := nil;
   var FormObj:= Json;
@@ -331,30 +329,29 @@ begin
   end;
 end;
 
-function TDelphiGenerator.GenerateCode(const Json: TJSONObject; const Indent: string = '  '): string;
+function TLazarusGenerator.GenerateCode(const Json: TJSONObject; const Indent: string = '  '): string;
 begin
-  //var SafeJson:= Json;
   SetGUIText(GenerateDfmText(Json));
   SetCodeText(GeneratePasText(Json));
   Result := FGUIText + sLineBreak + ' ; ' + sLineBreak + FCodeText;
 end;
 
-function TDelphiGenerator.GetGUIText: string;
+function TLazarusGenerator.GetGUIText: string;
 begin
   result:= FGUIText;
 end;
 
-function TDelphiGenerator.GetCodeText: string;
+function TLazarusGenerator.GetCodeText: string;
 begin
   result:= FCodeText;
 end;
 
-procedure TDelphiGenerator.SetGUIText(const Value: string);
+procedure TLazarusGenerator.SetGUIText(const Value: string);
 begin
   FGUIText := Value;
 end;
 
-procedure TDelphiGenerator.SetCodeText(const Value: string);
+procedure TLazarusGenerator.SetCodeText(const Value: string);
 begin
   FCodeText := Value;
 end;

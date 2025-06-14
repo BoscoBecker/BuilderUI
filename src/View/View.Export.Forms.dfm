@@ -386,6 +386,7 @@ object FormExports: TFormExports
     Top = 239
     Width = 21
     Height = 17
+    Enabled = False
     TabOrder = 2
   end
   object RadioButtonLazarus: TRadioButton
@@ -407,6 +408,7 @@ object FormExports: TFormExports
     Top = 203
     Width = 21
     Height = 17
+    Enabled = False
     TabOrder = 5
   end
   object ActivityIndicatorLoading: TActivityIndicator

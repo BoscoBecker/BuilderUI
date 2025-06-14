@@ -1,4 +1,4 @@
-﻿> ⚠️ **Warning:** This project is under active development. Features, structure, and APIs may change at any time.
+> ⚠️ **Warning:** This project is under active development. Features, structure, and APIs may change at any time.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/5589f7b6-1141-4839-b95e-1a98ff2206dd" alt="BuilderUI">
@@ -22,9 +22,9 @@ BuilderUI is a powerful tool for creating JSON-based graphical user interfaces f
 
 - **Multi-Platform Export**
   - Delphi Forms 100% 
-  - Lazarus Forms 100%
-  - C# Windows Forms - dotnet 9 : 100%
+  - C# Windows Forms - dotnet 9 : 100% 
   - Java Swing/AWT
+  - Lazarus Forms
 
 - **Visual Design Tools**
   - Component palette

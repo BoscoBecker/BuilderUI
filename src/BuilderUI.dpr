@@ -29,7 +29,9 @@ uses
   Service.Skia.Draw in 'Service\Service.Skia.Draw.pas',
   Service.JsonFile in 'Service\Service.JsonFile.pas',
   Builder.UI.UserPreferences in 'Builder\Builder.UI.UserPreferences.pas',
-  Enum.Utils in 'Enum\Enum.Utils.pas';
+  Enum.Utils in 'Enum\Enum.Utils.pas',
+  Factory.CodeGenerator.Lazarus in 'Factory\Technology\Lazarus\Factory.CodeGenerator.Lazarus.pas',
+  Strategy.Export.Lazarus in 'Strategy\Technology\Lazarus\Strategy.Export.Lazarus.pas';
 
 {$R *.res}
 

@@ -33,7 +33,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.Generics.Collections, System.JSON, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Buttons, Vcl.ComCtrls, Vcl.StdCtrls,
-  Vcl.ExtCtrls, System.Threading, StrUtils,Clipbrd,TypInfo,
+  Vcl.ExtCtrls, System.Threading, StrUtils,Clipbrd,TypInfo,  SynEditTypes,
 
   Adapter.TreeViewAdapter,
   Builder.UI.BuilderEngine,Builder.UI.UserPreferences,
@@ -44,7 +44,8 @@ uses
   View.Export.Forms, View.Menu.Context.Windows, View.Window.Json, SynEdit,
   SynEditHighlighter, SynHighlighterJSON, Enum.Utils,
 
-  Service.Zoom, Service.Forms.Manager, Service.Skia.Draw, Service.JsonFile;
+  Service.Zoom, Service.Forms.Manager, Service.Skia.Draw, Service.JsonFile,
+  Vcl.Menus;
 
 type
   TOrigRect = record
@@ -56,19 +57,19 @@ type
     PanelRenderJson: TPanel;
     SplitterRight: TSplitter;
     SplitViewMain: TSplitView;
-    Panel6: TPanel;
+    PanelMainSettings: TPanel;
     ImgSettings: TImage;
     PanelTreeComponents: TPanel;
     ImageTreeComponents: TImage;
-    Panel10: TPanel;
-    Image10: TImage;
+    PanelMain: TPanel;
+    ImageMain: TImage;
     PanelLoad: TPanel;
     ImageRenderJson: TImage;
     PanelOpenTemplate: TPanel;
     ImageOpenTemplate: TImage;
     PanelTopRender: TPanel;
     ImageCloseRender: TImage;
-    SkLabel3: TSkLabel;
+    SkLabelInfoRenderJson: TSkLabel;
     SplitterLeft: TSplitter;
     PanelBottomInfo: TPanel;
     PanelToolPalette: TPanel;
@@ -82,7 +83,7 @@ type
     SkLabelSettings: TSkLabel;
     SkPaintBoxToolPalette: TSkPaintBox;
     PanelTop: TPanel;
-    SkLabel1: TSkLabel;
+    SkLabelTittleMain: TSkLabel;
     PanelToolJsonRender: TPanel;
     ImageCopyToClipboard: TImage;
     ImageLoadJson: TImage;
@@ -110,14 +111,18 @@ type
     ImageClearJson: TImage;
     ImageZoomIn: TImage;
     ImageZoomOut: TImage;
-    Memo: TMemo;
     PanelInfoValidation: TPanel;
     PanelInfoRenderToForms: TPanel;
     ImageErro: TImage;
     ImageOk: TImage;
     LabelInfoJson: TLabel;
     LabelBottomInfo: TLabel;
-    Image1: TImage;
+    ImageInfoBottom: TImage;
+    Memo: TSynEdit;
+    PopupMenuOptions: TPopupMenu;
+    CopyText: TMenuItem;
+    Cut: TMenuItem;
+    Paste: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure ImgSettingsClick(Sender: TObject);
     procedure ImageTreeComponentsClick(Sender: TObject);
@@ -132,9 +137,6 @@ type
     procedure ImageColapseClick(Sender: TObject);
     procedure ImageFilterExplorerClick(Sender: TObject);
     procedure SkPaintBoxToolPaletteDraw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
-    procedure SkPaintBoxToolPaletteMouseMove(Sender: TObject; Shift: TShiftState; X,Y: Integer);
-    procedure SkPaintBoxToolPaletteMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    procedure SkPaintBoxToolPaletteMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure FormShow(Sender: TObject);
     procedure SkPaintBackgroundMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
     procedure FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -157,6 +159,9 @@ type
     procedure ImageZoomOutClick(Sender: TObject);
     procedure ImageHighSizeClick(Sender: TObject);
     procedure ImageOkClick(Sender: TObject);
+    procedure CopyTextClick(Sender: TObject);
+    procedure CutClick(Sender: TObject);
+    procedure PasteClick(Sender: TObject);
   private
     FBuilderBackground: TBuilderBackground;
     FTreeViewAdapter: TTreeViewAdapter;
@@ -164,8 +169,6 @@ type
     FBuilder: TUIBuilderEngine;
     FSelectedComponent: String;
     FSelectedShape: TShape;
-    FDragging: Boolean;
-    FDragOffset: TPoint;
     FPaint: ISkPaint;
     FZoomService: TZoomService;
     FFormManager: TFormCreatedManager;
@@ -183,7 +186,6 @@ type
     procedure OnPreferenceChanged(const Key, Value: string);
     procedure AfterConstruction; override;
     procedure BeforeDestruction; override;
-
     property SelectedComponent: String read FSelectedComponent write SetSelectedComponent;
     property BuilderBackground: TBuilderBackground read FBuilderBackground write SetBuilderBackground;
   end;
@@ -253,7 +255,7 @@ end;
 
 procedure TFormBuilderMain.FormShow(Sender: TObject);
 begin
-  BuildStatusBar();
+  BuildStatusBar;
 end;
 
 procedure TFormBuilderMain.ImageArrangeWindowsClick(Sender: TObject);
@@ -375,7 +377,7 @@ end;
 
 procedure TFormBuilderMain.ImageClearJsonClick(Sender: TObject);
 begin
-  TJsonFileService.ClearMemoJson(Memo);
+  Memo.Text:= '';
 end;
 
 procedure TFormBuilderMain.ImageRenderClick(Sender: TObject);
@@ -479,6 +481,8 @@ begin
       end;
     end;
   finally
+    Memo.CaretXY := BufferCoord(1, 1);
+    Memo.TopLine := 1;
   end;
 end;
 
@@ -487,7 +491,7 @@ begin
   if String(SearchBoxComponents.Text).Equals('') then Exit;
     if  FSelectedShape <> nil then
       FSelectedShape.Visible:= False;
-    FTreeViewAdapter.FindComponentInTreeView(SearchBoxComponents.Text);
+  FTreeViewAdapter.FindComponentInTreeView(SearchBoxComponents.Text);
 end;
 
 procedure TFormBuilderMain.SetBuilderBackground(const Value: TBuilderBackground);
@@ -514,27 +518,6 @@ end;
 procedure TFormBuilderMain.SkPaintBoxToolPaletteDraw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
 begin
   TSkiaDrawService.DrawGradientBox(ACanvas, ADest, AOpacity, FPaint);
-end;
-
-procedure TFormBuilderMain.SkPaintBoxToolPaletteMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-begin
-  FDragging := True;
-  FDragOffset := Point(Round(X), Round(Y));
-end;
-
-procedure TFormBuilderMain.SkPaintBoxToolPaletteMouseMove(Sender: TObject; Shift: TShiftState; X,  Y: Integer);
-begin
-  if FDragging then
-  begin
-    var NewLeft := SkPaintBoxToolPalette.Left + Round(X) - FDragOffset.X;
-    var NewTop := SkPaintBoxToolPalette.Top + Round(Y) - FDragOffset.Y;
-    SkPaintBoxToolPalette.SetBounds(NewLeft, NewTop, SkPaintBoxToolPalette.Width, SkPaintBoxToolPalette.Height);
-  end;
-end;
-
-procedure TFormBuilderMain.SkPaintBoxToolPaletteMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-begin
-  FDragging := False;
 end;
 
 procedure TFormBuilderMain.SkPaintBoxExplorerDraw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
@@ -666,7 +649,6 @@ begin
   end;
 end;
 
-
 procedure TFormBuilderMain.ValidateAndProcessJSON(const AJSON: string);
 begin
   var ErrorMsg: string;
@@ -775,11 +757,24 @@ end;
 
 procedure TFormBuilderMain.OnPreferenceChanged(const Key, Value: string);
 begin
-  if Key = 'BackgroundStyle' then
-    LabelBottomInfo.caption:=  'New background style: ' + Value
-  else
-  if Key = 'LastExportPath' then
-    LabelBottomInfo.caption:=  'Last Path: ' + Value
+  LabelBottomInfo.caption:=  Format('Updated preference: %s : %s at date: %s ',[key, value,FormatDateTime('YYY/MM/DD HH:mm:ss',Now())]);
+end;
+
+procedure TFormBuilderMain.PasteClick(Sender: TObject);
+begin
+  Memo.PasteFromClipboard;
+end;
+
+procedure TFormBuilderMain.CopyTextClick(Sender: TObject);
+begin
+  if Memo.SelLength > 0 then
+    Memo.CopyToClipboard;
+end;
+
+procedure TFormBuilderMain.CutClick(Sender: TObject);
+begin
+  if Memo.SelLength > 0 then
+    Memo.CutToClipboard;
 end;
 
 end.

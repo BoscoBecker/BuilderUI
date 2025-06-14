@@ -31,7 +31,7 @@ object FormBuilderMain: TFormBuilderMain
     ExplicitHeight = 689
   end
   object SplitterRight: TSplitter
-    Left = 813
+    Left = 765
     Top = 57
     Height = 695
     Align = alRight
@@ -44,13 +44,14 @@ object FormBuilderMain: TFormBuilderMain
     AlignWithMargins = True
     Left = 295
     Top = 60
-    Width = 515
+    Width = 467
     Height = 689
     Align = alClient
     OnMouseMove = SkPaintBackgroundMouseMove
     OnDraw = SkPaintBackgroundDraw
     ExplicitLeft = 294
     ExplicitTop = 57
+    ExplicitWidth = 515
     ExplicitHeight = 693
   end
   object StatusBarBottom: TStatusBar
@@ -85,9 +86,9 @@ object FormBuilderMain: TFormBuilderMain
       end>
   end
   object PanelRenderJson: TPanel
-    Left = 816
+    Left = 768
     Top = 57
-    Width = 301
+    Width = 349
     Height = 695
     Align = alRight
     BevelOuter = bvNone
@@ -96,7 +97,7 @@ object FormBuilderMain: TFormBuilderMain
     object SplitterBottomTool: TSplitter
       Left = 0
       Top = 616
-      Width = 301
+      Width = 349
       Height = 3
       Cursor = crVSplit
       Align = alBottom
@@ -107,17 +108,18 @@ object FormBuilderMain: TFormBuilderMain
     object PanelTopRender: TPanel
       Left = 0
       Top = 0
-      Width = 301
+      Width = 349
       Height = 35
       Align = alTop
       BevelOuter = bvNone
       Color = clWhite
       ParentBackground = False
       TabOrder = 0
+      ExplicitWidth = 301
       object SkPaintBoxRenderJson: TSkPaintBox
         Left = 0
         Top = 0
-        Width = 301
+        Width = 349
         Height = 35
         Align = alClient
         OnDraw = SkPaintBoxRenderJsonDraw
@@ -149,8 +151,8 @@ object FormBuilderMain: TFormBuilderMain
         ShowHint = True
         OnClick = ImageCloseRenderClick
       end
-      object SkLabel3: TSkLabel
-        Left = 211
+      object SkLabelInfoRenderJson: TSkLabel
+        Left = 259
         Top = 8
         Width = 75
         Height = 19
@@ -166,15 +168,16 @@ object FormBuilderMain: TFormBuilderMain
     object PanelToolJsonRender: TPanel
       Left = 0
       Top = 586
-      Width = 301
+      Width = 349
       Height = 30
       Align = alBottom
       BevelOuter = bvNone
       Color = clWhite
       ParentBackground = False
       TabOrder = 1
+      ExplicitWidth = 301
       object ImageCopyToClipboard: TImage
-        Left = 267
+        Left = 315
         Top = 0
         Width = 34
         Height = 30
@@ -293,7 +296,7 @@ object FormBuilderMain: TFormBuilderMain
         ExplicitHeight = 28
       end
       object ImageHighSize: TImage
-        Left = 233
+        Left = 281
         Top = 0
         Width = 34
         Height = 30
@@ -349,31 +352,21 @@ object FormBuilderMain: TFormBuilderMain
         ExplicitTop = 6
       end
     end
-    object Memo: TMemo
-      Left = 0
-      Top = 35
-      Width = 301
-      Height = 551
-      Align = alClient
-      BorderStyle = bsNone
-      ScrollBars = ssBoth
-      TabOrder = 2
-      OnChange = MemoChange
-    end
     object PanelInfoValidation: TPanel
       Left = 0
       Top = 619
-      Width = 301
+      Width = 349
       Height = 76
       Align = alBottom
       BevelOuter = bvNone
       Color = clWhite
       ParentBackground = False
-      TabOrder = 3
+      TabOrder = 2
+      ExplicitWidth = 301
       object LabelInfoJson: TLabel
         Left = 0
         Top = 33
-        Width = 301
+        Width = 349
         Height = 43
         Align = alClient
         Color = clWhite
@@ -392,7 +385,7 @@ object FormBuilderMain: TFormBuilderMain
       object PanelInfoRenderToForms: TPanel
         Left = 0
         Top = 0
-        Width = 301
+        Width = 349
         Height = 33
         Align = alTop
         BevelOuter = bvNone
@@ -406,8 +399,9 @@ object FormBuilderMain: TFormBuilderMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 0
+        ExplicitWidth = 301
         object ImageErro: TImage
-          Left = 242
+          Left = 290
           Top = 0
           Width = 59
           Height = 33
@@ -435,7 +429,7 @@ object FormBuilderMain: TFormBuilderMain
           ExplicitLeft = 216
         end
         object ImageOk: TImage
-          Left = 183
+          Left = 231
           Top = 0
           Width = 59
           Height = 33
@@ -459,6 +453,49 @@ object FormBuilderMain: TFormBuilderMain
           ExplicitLeft = 168
         end
       end
+    end
+    object Memo: TSynEdit
+      Left = 0
+      Top = 35
+      Width = 349
+      Height = 551
+      Align = alClient
+      Color = clWhite
+      Ctl3D = True
+      ParentCtl3D = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Courier New'
+      Font.Style = []
+      PopupMenu = PopupMenuOptions
+      TabOrder = 3
+      CodeFolding.GutterShapeSize = 11
+      CodeFolding.CollapsedLineColor = clGrayText
+      CodeFolding.FolderBarLinesColor = clGrayText
+      CodeFolding.IndentGuidesColor = clGray
+      CodeFolding.IndentGuides = True
+      CodeFolding.ShowCollapsedLine = False
+      CodeFolding.ShowHintMark = True
+      UseCodeFolding = False
+      BorderStyle = bsNone
+      Gutter.BorderStyle = gbsNone
+      Gutter.DigitCount = 2
+      Gutter.Font.Charset = DEFAULT_CHARSET
+      Gutter.Font.Color = clWindowText
+      Gutter.Font.Height = -11
+      Gutter.Font.Name = 'Courier New'
+      Gutter.Font.Style = []
+      Gutter.LeftOffset = 0
+      Gutter.RightOffset = 0
+      Gutter.RightMargin = 0
+      Gutter.LineNumberStart = 0
+      Highlighter = FormJson.SynJSON
+      RightEdge = 0
+      ScrollBars = ssVertical
+      OnChange = MemoChange
+      FontSmoothing = fsmClearType
+      ExplicitWidth = 301
     end
   end
   object SplitViewMain: TSplitView
@@ -530,7 +567,7 @@ object FormBuilderMain: TFormBuilderMain
       ExplicitLeft = 5
       ExplicitTop = 41
     end
-    object Panel6: TPanel
+    object PanelMainSettings: TPanel
       Left = 0
       Top = 654
       Width = 50
@@ -615,7 +652,7 @@ object FormBuilderMain: TFormBuilderMain
         ExplicitHeight = 105
       end
     end
-    object Panel10: TPanel
+    object PanelMain: TPanel
       Left = 0
       Top = 0
       Width = 50
@@ -629,7 +666,7 @@ object FormBuilderMain: TFormBuilderMain
       Padding.Bottom = 2
       ParentBackground = False
       TabOrder = 2
-      object Image10: TImage
+      object ImageMain: TImage
         Left = 2
         Top = 2
         Width = 46
@@ -793,7 +830,7 @@ object FormBuilderMain: TFormBuilderMain
       ExplicitWidth = 144
       ExplicitHeight = 15
     end
-    object Image1: TImage
+    object ImageInfoBottom: TImage
       Left = 1083
       Top = 0
       Width = 34
@@ -840,9 +877,6 @@ object FormBuilderMain: TFormBuilderMain
       Width = 377
       Height = 42
       Align = alClient
-      OnMouseDown = SkPaintBoxToolPaletteMouseDown
-      OnMouseMove = SkPaintBoxToolPaletteMouseMove
-      OnMouseUp = SkPaintBoxToolPaletteMouseUp
       OnDraw = SkPaintBoxToolPaletteDraw
       ExplicitLeft = 2
     end
@@ -1044,7 +1078,7 @@ object FormBuilderMain: TFormBuilderMain
     ParentBackground = False
     ParentFont = False
     TabOrder = 5
-    object SkLabel1: TSkLabel
+    object SkLabelTittleMain: TSkLabel
       AlignWithMargins = True
       Left = 3
       Top = 3
@@ -1261,6 +1295,22 @@ object FormBuilderMain: TFormBuilderMain
       TabOrder = 3
       ToolTips = False
       OnClick = TreeViewExplorerClick
+    end
+  end
+  object PopupMenuOptions: TPopupMenu
+    Left = 928
+    Top = 193
+    object CopyText: TMenuItem
+      Caption = 'Copy'
+      OnClick = CopyTextClick
+    end
+    object Cut: TMenuItem
+      Caption = 'Cut'
+      OnClick = CutClick
+    end
+    object Paste: TMenuItem
+      Caption = 'Paste'
+      OnClick = PasteClick
     end
   end
 end

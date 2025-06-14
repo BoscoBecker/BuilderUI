@@ -32,7 +32,7 @@ interface
 uses System.Json, System.SysUtils, System.Generics.Collections, Factory.ICodeGenerator;
 
 type
-  TCsharp = class(TInterfacedObject,ICodeGenerator)
+  TCsharpGenerator = class(TInterfacedObject,ICodeGenerator)
   private
     FGUIText: string;
     FCodeText: string;
@@ -53,7 +53,7 @@ type
 implementation
 
 
-function TCsharp.FindFormByName(Json: TJSONObject; const AName: string): TJSONObject;
+function TCsharpGenerator.FindFormByName(Json: TJSONObject; const AName: string): TJSONObject;
 begin
   Result := nil;
   var FormObj:= Json;
@@ -73,7 +73,7 @@ begin
   end;
 end;
 
-function TCsharp.GenerateComponent(const CompJson: TJSONObject; const Indent: string): string;
+function TCsharpGenerator.GenerateComponent(const CompJson: TJSONObject; const Indent: string): string;
 var
   CompType, CompName, PropName, Line: string;
   Children, Pages, ChildrenTabs: TJSONArray;
@@ -168,7 +168,7 @@ begin
   Result := Line;
 end;
 
-function TCsharp.GenerateCode(const Json: TJSONObject; const Indent: string): string;
+function TCsharpGenerator.GenerateCode(const Json: TJSONObject; const Indent: string): string;
 begin
   var FormName := Json.GetValue<string>('Name', 'MyForm');
   var Caption := Json.GetValue<string>('Caption', FormName);
@@ -203,7 +203,7 @@ begin
   Result := FGUIText;
 end;
 
-function TCsharp.GenerateDesignerCode(const Json: TJSONObject; const Indent: string): string;
+function TCsharpGenerator.GenerateDesignerCode(const Json: TJSONObject; const Indent: string): string;
 var
   FormName,FormCaption: string;
   Children: TJSONArray;
@@ -350,7 +350,7 @@ begin
   SetGUIText(Result);
 end;
 
-function TCsharp.DelphiToWinFormsType(const DelphiType: string): string;
+function TCsharpGenerator.DelphiToWinFormsType(const DelphiType: string): string;
 begin
   if SameText(DelphiType, 'TEdit') then Exit('TextBox');
   if SameText(DelphiType, 'TImage') then Exit('PictureBox');
@@ -374,22 +374,22 @@ begin
   Result := DelphiType;
 end;
 
-function TCsharp.GetCodeText: string;
+function TCsharpGenerator.GetCodeText: string;
 begin
   Result := FCodeText;
 end;
 
-function TCsharp.GetGUIText: string;
+function TCsharpGenerator.GetGUIText: string;
 begin
   Result := FGUIText;
 end;
 
-procedure TCsharp.SetCodeText(const Value: string);
+procedure TCsharpGenerator.SetCodeText(const Value: string);
 begin
   FCodeText := Value;
 end;
 
-procedure TCsharp.SetGUIText(const Value: string);
+procedure TCsharpGenerator.SetGUIText(const Value: string);
 begin
   FGUIText := Value;
 end;

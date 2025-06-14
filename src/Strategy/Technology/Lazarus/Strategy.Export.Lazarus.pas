@@ -26,35 +26,29 @@
 { }
 { João Bosco Becker - https://github.com/BoscoBecker }
 
-unit Factory.CodeGeneratorFactory;
+unit Strategy.Export.Lazarus;
 
 interface
 
-uses System.Classes, System.SysUtils,
-     Factory.ICodeGenerator, Factory.CodeGenerator.Delphi, Factory.CodeGenerator.Lazarus,
-     Factory.CodeGenerator.CSharp;
+uses Strategy.IExport, System.Classes, System.SysUtils, System.Json;
 
 type
-  TCodeGeneratorFactory = class
-    class function CreateGenerator(Language: string): ICodeGenerator;
+  TLazarusExport = class(TInterfacedObject, IExportData)
+  public
+    procedure ExportData(const APath, ATextAJson: string);
   end;
 
 implementation
 
-{ TCodeGeneratorFactory }
-
-class function TCodeGeneratorFactory.CreateGenerator(Language: string): ICodeGenerator;
+procedure TLazarusExport.ExportData(const APath, ATextAJson: string);
 begin
-    if SameText(Language, 'Delphi') then
-      Result := TDelphiGenerator.Create
-    else
-    if SameText(Language,'CSharp') then
-      result:= TCsharpGenerator.Create
-    else
-    if SameText(Language,'Lazarus') then
-      result:= TLazarusGenerator.Create
-    else raise Exception.Create('Not Supported Language yet.');
-
+  var FileStream := TStringList.Create;
+  try
+    FileStream.Text := ATextAJson;
+    FileStream.SaveToFile(APath, TEncoding.UTF8);
+  finally
+    FileStream.Free;
+  end;
 end;
 
 end.

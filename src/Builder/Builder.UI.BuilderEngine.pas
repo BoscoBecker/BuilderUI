@@ -70,6 +70,7 @@ begin
     if TTreeViewAdapter.FTreeView.CanFocus then
       TTreeViewAdapter.FTreeView.SetFocus;
     TTreeViewAdapter.FindComponentInTreeView(TControl(Sender).Name);
+    TTreeViewAdapter.FindRootFormNode(TControl(Sender).Name);
     TTreeViewAdapter.FTreeView.OnClick(Sender);
   except on E: Exception do
     ShowMessage(E.Message);
@@ -80,7 +81,7 @@ procedure TUIBuilderEngine.ControlDblClickImage(Sender: TObject);
 begin
   var Open := TOpenDialog.Create(nil);
   try
-    Open.Filter:= 'Images .PNG|.PNG';
+    Open.Filter:= 'Images (*.png)| *.png';
     if Open.Execute(Application.Handle) then
       if not String(open.FileName).trim.Equals('') then
         TImage(Sender).Picture.LoadFromFile(open.FileName);

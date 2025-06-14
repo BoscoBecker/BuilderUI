@@ -56,6 +56,9 @@ type
     public class procedure FindComponentInTreeView(const Aterm : string); static;
     public class function FindNodeByComponent(TreeView: TTreeView;const ComponentName: string): TTreeNode; static;
     public class procedure AddFormsToTreeView(Forms: TObjectList<TForm>; TreeView: TTreeView); static;
+    public class function FindComponentNode(const AComponentName: string): TTreeNode;
+    public class function FindRootFormNode(const AComponentName: string) : TTreeNode;
+
   end;
 
 implementation
@@ -150,6 +153,23 @@ begin
   end;
 end;
 
+class function TTreeViewAdapter.FindComponentNode( const AComponentName: string): TTreeNode;
+
+  function GetNodeComponentName(Node: TTreeNode): string;
+  begin
+    Result := Node.Text.Split([' '])[0];
+  end;
+
+begin
+  Result := nil;
+  var Node := FTreeView.Items.GetFirstNode;
+  while Node <> nil do
+  begin
+    if SameText(GetNodeComponentName(Node), AComponentName) then Exit(Node);
+    Node := Node.GetNext;
+  end;
+end;
+
 class function TTreeViewAdapter.FindNodeByComponent(TreeView: TTreeView;  const ComponentName: string): TTreeNode;
 begin
   Result := nil;
@@ -173,6 +193,17 @@ begin
       end;
     end;
   end;
+end;
+
+class function TTreeViewAdapter.FindRootFormNode(const AComponentName: string): TTreeNode;
+begin
+  Result := nil;
+  var ComponentNode := FindComponentNode(AComponentName);
+  if not Assigned(ComponentNode) then Exit;
+
+  Result := ComponentNode;
+  while Assigned(Result.Parent) do
+    Result := Result.Parent;
 end;
 
 class procedure TTreeViewAdapter.AddFormsToTreeView(Forms: TObjectList<TForm>; TreeView: TTreeView);

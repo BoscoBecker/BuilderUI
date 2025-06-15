@@ -1,13 +1,26 @@
-﻿> ⚠️ **Warning:** This project is under active development. Features, structure, and APIs may change at any time.
+> ⚠️ **BuilderUI is under active development.** Features, structure, and APIs may change frequently.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/5589f7b6-1141-4839-b95e-1a98ff2206dd" alt="BuilderUI">
 </p>
 
-# BuilderUI - Forms Builder UI for Windows (Design Patterns Applied)
+# 🧩 BuilderUI - (Design Patterns Applied)
+### A JSON-based Form Designer for Windows with Modern Design Patterns
 
-## Overview
-BuilderUI is a powerful tool for creating JSON-based graphical user interfaces for Windows. The project allows dynamic creation of forms through JSON definitions, with support for export to multiple platforms.
+## 📌 Overview
+
+**BuilderUI** is a dynamic UI builder that empowers developers to design, preview, and manage Windows Forms entirely through structured JSON definitions. With an intuitive visual editor and real-time rendering, it simplifies the creation of complex forms without manual coding.
+
+Key capabilities include:
+
+- 🔧 **Visual Design Tools**: inspection and live form preview  
+- 📄 **JSON-Driven UI**: Define entire form structures and components declaratively via JSON  
+- 🚀 **Multi-Platform Export**: Export your forms to Delphi, Lazarus, C# (.NET 9), and Java (Swing/AWT)  
+- 🧩 **Component Customization**: Full control over properties, styles, and layout  
+- 📐 **Modern Architecture**: Clean structure using patterns like Factory, Strategy, SRP, and Adapter  
+
+> Whether you're prototyping UIs or building full applications, BuilderUI offers flexibility, portability, and extensibility — all powered by JSON.
+
 
 ![image](https://github.com/user-attachments/assets/ec46c849-19e0-4781-bbc8-21b6d1f65e9f)
 
@@ -42,32 +55,74 @@ BuilderUI is a powerful tool for creating JSON-based graphical user interfaces f
   - Component search functionality
   - Syntax Highlighting with SynEdit
 
-## Architecture
+## 📐 Design Patterns & Project Architecture
+BuilderUI applies several classic and modern design patterns to maintain a clean, scalable, and maintainable architecture. The system is modular and organized into well-defined layers, each with a specific responsibility, embracing SOLID principles.
 
-The project follows a clean architecture pattern with the following main components and now adopts additional modern design patterns:
+🔧 Applied Patterns
 
-- **Core Layer**
-  - `Core.IUIBuilder`: Core interface for form building operations
-  - `Builder.UIBuilderEngine`: Main engine for form creation and manipulation
+| Pattern                  | Description                                                                            | Examples / Files                                                                                                     |
+| ------------------------ | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **Factory Pattern**      | Encapsulates the instantiation of code generators per platform.                        | `Factory.ICodeGenerator`, `Factory.CodeGeneratorFactory`, `Factory.CodeGenerator.Delphi/CSharp/Lazarus`              |
+| **Strategy Pattern**     | Decouples export logic into swappable algorithms per target platform.                  | `Strategy.IExport`, `Strategy.Export.Delphi`, `Strategy.Export.CSharp`, `Strategy.Export.Lazarus`                    |
+| **Builder Pattern**      | Builds complex form structures from JSON definitions step by step.                     | `Builder.UIBuilderEngine`, `Core.IUIBuilder`                                                                         |
+| **Adapter Pattern**      | Adapts third-party or incompatible APIs like TreeView and SynEdit into the system.     | `Adapter.TreeViewAdapter`, `Adapter.SynEditAdapter`                                                                  |
+| **Service Layer**        | Isolates business logic into independent services.                                     | `Service.Zoom`, `Service.Export`, `Service.Json.Validation`, `Service.Component.Search`, `Service.StatusBar.Manager` |
+| **Singleton (manual)**   | Provides a single shared instance for user configuration or global settings.           | `Builder.UI.UserPreferences`                                                                                         |
+| **Decorator (implicit)** | Enhances or extends component behavior through wrapping or helpers.                    | Applied via class helpers and component managers                                                                     |
+| **Observer (partial)**   | Used in form lifecycle handling (e.g., `OnClose`) and UI updates (e.g., zoom display). | `FormBuilderMain`, `Service.Forms.Manager`, `Service.StatusBar.Manager`                                              |
+| **Facade (technical)**   | Central point of coordination between services, forms, adapters, and UI.               | `FormBuilderMain` acts as the entry point and orchestrator                                                           |
 
-- **Adapters**
-  - `Adapter.TreeViewAdapter`: Handles component tree visualization
-  - `Adapter.SynEditAdapter`: Integrates SynEdit for advanced code editing and syntax highlighting (new!)
+## 🗂️ Layered Architecture Overview
 
-- **Services**
-  - `Services.AIService`: AI integration for form generation
-  - `Services.ExportService`: Handles export logic, decoupled from UI (new!)
+### 🔹 Core Layer
+Defines interfaces and base contracts  
+- `Core.IUIBuilder`
 
-- **Utils**
-  - `Util.JSON`: JSON handling and validation utilities
-  - `Utils.TreeViewHelper`: Helper for TreeView operations (new!)
+### 🔹 Builder Layer
+Main engine to create forms  
+- `Builder.UIBuilderEngine`  
+- `Builder.UI.UserPreferences`
 
-- **Patterns**
-  - **Factory Pattern**: For code generator instantiation
-  - **Strategy Pattern**: For export logic per technology
-  - **Class Helpers**: For extending VCL/FMX components
-  - **Service Layer**: For business logic separation
-  - **SRP (Single Responsibility Principle)**: Enforced in recent refactors
+### 🔹 Adapter Layer
+Integrates third-party or GUI systems  
+- `Adapter.TreeViewAdapter`  
+- `Adapter.SynEditAdapter`
+
+### 🔹 Service Layer
+Independent business logic and tools  
+- `Service.Zoom`  
+- `Service.Export`  
+- `Service.Forms.Manager`  
+- `Service.Json.Validation`  
+- `Service.StatusBar.Manager`  
+- *(and others)*
+
+### 🔹 Utility Layer
+Shared helpers and tools  
+- `Util.JSON`  
+- `Util.Form.Arranger`  
+- `Util.JSONValidator`  
+- `Enum.Utils`
+
+### 🔹 Factory Layer
+Platform-specific form generators  
+- `Factory.CodeGenerator.Delphi`  
+- `Factory.CodeGenerator.CSharp`  
+- `Factory.CodeGenerator.Lazarus`
+
+### 🔹 Strategy Layer
+Export logic for each platform  
+- `Strategy.Export.Delphi`  
+- `Strategy.Export.CSharp`  
+- `Strategy.Export.Lazarus`
+
+### 🔹 View Layer
+Application interface and screens  
+- `View.Builder.Main`  
+- `View.Export.Forms`  
+- `View.Menu.Context.Windows`  
+- `View.Window.Json`
+
 
 ## JSON Structure Example
 

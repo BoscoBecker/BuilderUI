@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{55F51F6E-5311-4EC4-9B16-D20432CEA279}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="BuilderUI.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Tests\DUnitTest.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="BuilderUI">
+        <MSBuild Projects="BuilderUI.dproj"/>
+    </Target>
+    <Target Name="BuilderUI:Clean">
+        <MSBuild Projects="BuilderUI.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="BuilderUI:Make">
+        <MSBuild Projects="BuilderUI.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="DUnitTest">
+        <MSBuild Projects="Tests\DUnitTest.dproj"/>
+    </Target>
+    <Target Name="DUnitTest:Clean">
+        <MSBuild Projects="Tests\DUnitTest.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DUnitTest:Make">
+        <MSBuild Projects="Tests\DUnitTest.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="BuilderUI;DUnitTest"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="BuilderUI:Clean;DUnitTest:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="BuilderUI:Make;DUnitTest:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

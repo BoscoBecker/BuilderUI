@@ -34,7 +34,9 @@ uses
   Strategy.Export.Lazarus in 'Strategy\Technology\Lazarus\Strategy.Export.Lazarus.pas',
   Service.Json.Validation in 'Service\Service.Json.Validation.pas',
   Service.Component.Search in 'Service\Service.Component.Search.pas',
-  Service.Component.Manager.Highlighter in 'Service\Service.Component.Manager.Highlighter.pas';
+  Service.Component.Manager.Highlighter in 'Service\Service.Component.Manager.Highlighter.pas',
+  Service.StatusBar.Manager in 'Service\Service.StatusBar.Manager.pas',
+  Service.Component in 'Service\Service.Component.pas';
 
 {$R *.res}
 

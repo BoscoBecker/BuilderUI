@@ -45,7 +45,7 @@ uses
   SynEditHighlighter, SynHighlighterJSON, Enum.Utils, Service.JsonFile,
 
   Service.Zoom, Service.Forms.Manager, Service.Skia.Draw, Service.Json.Validation,
-  Service.Component.Search,Service.Component.Manager.Highlighter,
+  Service.Component, Service.Component.Search,Service.Component.Manager.Highlighter, Service.StatusBar.Manager,
 
   Vcl.Menus;
 
@@ -179,6 +179,7 @@ type
     FFormManager: TFormCreatedManager;
     FOrigRectsForms: array of TOrigRect;
     FHighlighter: TShapeHighlighter;
+    FStatusBarManager: TStatusBarManager;
     procedure RenderJson(const Atext : string);
     procedure ValidateAndProcessJSON(const AJSON: string);
     procedure BuildStatusBar;
@@ -204,40 +205,6 @@ implementation
 
 {$R *.dfm}
 
-
-procedure TFormBuilderMain.BuildStatusBar;
-begin
-  StatusBarBottom.Panels[0].Text:= 'X: 0 Y: 0';
-  StatusBarBottom.Panels[1].Text := 'Selected: Nenhum';
-  StatusBarBottom.Panels[2].Text := 'Size: 0x0';
-  StatusBarBottom.Panels[3].Text := 'Date: ' +FormatDateTime('YYYY/MM/DD',now());
-  StatusBarBottom.Panels[4].Text := 'Zoom: 100%';
-  StatusBarBottom.Panels[5].Text := 'Mode: Mouse';
-  StatusBarBottom.Panels[6].Text := 'Project: (None)';
-  StatusBarBottom.Panels[7].Text := '';
-end;
-
-destructor TFormBuilderMain.Destroy;
-begin
-  TUserPreferences.Instance.Destroy;
-  if FSelectedShape <> nil then
-    FSelectedShape.Free;
-  if FTreeViewAdapter <> nil then
-    FTreeViewAdapter.Free;
-  if FJsonStructure <> nil then
-    FJsonStructure.Free;
-  if FFormManager <> nil then
-    FFormManager.Free;
-  if FZoomService <> nil then
-    FZoomService.Free;
-  if FHighlighter <> nil then
-    FHighlighter.Free;
-  if FBuilder <> nil then
-    FBuilder.Free;
-  FPaint:= nil;
-  inherited;
-end;
-
 procedure TFormBuilderMain.FormCanResize(Sender: TObject; var NewWidth,  NewHeight: Integer; var Resize: Boolean);
 begin
   PanelToolPalette.Left := (ClientWidth - PanelToolPalette.Width) div 2;
@@ -254,13 +221,15 @@ begin
   FFormManager := TFormCreatedManager.Create;
   FZoomService := TZoomService.Create;
   FHighlighter:= TShapeHighlighter.Create;
+  FStatusBarManager:= TStatusBarManager.Create(StatusBarBottom);
+
   TUserPreferences.Instance.Create;
   SetBuilderBackground(TUserPreferences.Instance.GetBackgroundEnum);
 end;
 
 procedure TFormBuilderMain.FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
 begin
-  StatusBarBottom.Panels[0].Text := Format('X: %d Y: %d', [X, Y]);
+  FStatusBarManager.SetPosition(X, Y);
 end;
 
 procedure TFormBuilderMain.FormShow(Sender: TObject);
@@ -464,6 +433,7 @@ end;
 procedure TFormBuilderMain.ImageOkClick(Sender: TObject);
 begin
   RenderJson(memo.text);
+  FStatusBarManager.SetComponentCount(TComponentService.CountComponents(SkPaintBackground).ToString);
 end;
 
 procedure TFormBuilderMain.MemoChange(Sender: TObject);
@@ -546,7 +516,7 @@ end;
 procedure TFormBuilderMain.SetSelectedComponent(const Value: String);
 begin
   FSelectedComponent := Value;
-  StatusBarBottom.Panels[1].Text := 'Selected: '+ FSelectedComponent;
+  FStatusBarManager.SetSelected(FSelectedComponent);
 end;
 
 procedure TFormBuilderMain.SkPaintBackgroundDraw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
@@ -556,7 +526,7 @@ end;
 
 procedure TFormBuilderMain.SkPaintBackgroundMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
 begin
-  StatusBarBottom.Panels[0].Text := Format('X: %d Y: %d', [X, Y]);
+  FStatusBarManager.SetPosition(X, Y);
 end;
 
 procedure TFormBuilderMain.SkPaintBoxToolPaletteDraw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
@@ -600,7 +570,7 @@ end;
 procedure TFormBuilderMain.ZoomIn;
 begin
   FZoomService.ZoomIn;
-  StatusBarBottom.Panels[4].Text := Format('Zoom: %d%%', [Round(FZoomService.GetZoom * 100)]);
+  FStatusBarManager.SetZoom(Round(FZoomService.GetZoom * 100));
   ApplyZoomToCreatedForms;
   SkPaintBackground.Invalidate;
 end;
@@ -608,7 +578,7 @@ end;
 procedure TFormBuilderMain.ZoomOut;
 begin
   FZoomService.ZoomOut;
-  StatusBarBottom.Panels[4].Text := Format('Zoom: %d%%', [Round(FZoomService.GetZoom * 100)]);
+  FStatusBarManager.SetZoom(Round(FZoomService.GetZoom * 100));
   ApplyZoomToCreatedForms;
   SkPaintBackground.Invalidate;
 end;
@@ -660,6 +630,41 @@ end;
 procedure TFormBuilderMain.SelectAll1Click(Sender: TObject);
 begin
   TJsonFileService.SelectAll(Memo);
+end;
+
+procedure TFormBuilderMain.BuildStatusBar;
+begin
+  StatusBarBottom.Panels[0].Text:= 'X: 0 Y: 0';
+  StatusBarBottom.Panels[1].Text := 'Selected: none';
+  StatusBarBottom.Panels[2].Text := 'Component count: 0';
+  StatusBarBottom.Panels[3].Text := 'Date: ' +FormatDateTime('YYYY/MM/DD',now());
+  StatusBarBottom.Panels[4].Text := 'Zoom: 100%';
+  StatusBarBottom.Panels[5].Text := 'Mode: Mouse';
+  StatusBarBottom.Panels[6].Text := 'Project: (None)';
+  StatusBarBottom.Panels[7].Text := '';
+end;
+
+destructor TFormBuilderMain.Destroy;
+begin
+  TUserPreferences.Instance.Destroy;
+  if FSelectedShape <> nil then
+    FSelectedShape.Free;
+  if FTreeViewAdapter <> nil then
+    FTreeViewAdapter.Free;
+  if FStatusBarManager <> nil then
+    FStatusBarManager.Free;
+  if FJsonStructure <> nil then
+    FJsonStructure.Free;
+  if FFormManager <> nil then
+    FFormManager.Free;
+  if FZoomService <> nil then
+    FZoomService.Free;
+  if FHighlighter <> nil then
+    FHighlighter.Free;
+  if FBuilder <> nil then
+    FBuilder.Free;
+  FPaint:= nil;
+  inherited;
 end;
 
 end.

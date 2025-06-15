@@ -26,50 +26,29 @@
 { }
 { João Bosco Becker - https://github.com/BoscoBecker }
 
-unit Service.Component.Search;
+unit Service.Component;
 
 interface
 
-uses
-  System.Classes;
+uses System.Classes, Vcl.Controls, System.SysUtils;
 
 type
-  TComponentSearchService = class
+  TComponentService = class
   public
-    class function FindComponentByName(Root: TComponent; const Name: string): TComponent;
+    class function CountComponents(Root: TComponent): Integer;
   end;
 
 implementation
 
-uses
-  Vcl.Controls, System.SysUtils;
 
-class function TComponentSearchService.FindComponentByName(Root: TComponent; const Name: string): TComponent;
-
-  function RecursiveFindComponent(Comp: TComponent): TComponent;
-  var
-    I: Integer;
-  begin
-    Result := nil;
-    if SameText(Comp.Name, Name) then Exit(Comp);
-
-    if Comp is TWinControl then
-      for I := 0 to TWinControl(Comp).ControlCount - 1 do
-      begin
-        Result := RecursiveFindComponent(TWinControl(Comp).Controls[I]);
-        if Assigned(Result) then Exit;
-      end;
-
-    for I := 0 to Comp.ComponentCount - 1 do
-    begin
-      Result := RecursiveFindComponent(Comp.Components[I]);
-      if Assigned(Result) then Exit;
-    end;
-  end;
-
+class function TComponentService.CountComponents(Root: TComponent): Integer;
 begin
-  Result := RecursiveFindComponent(Root);
+  Result := 0;
+  for var I := 0 to Root.ComponentCount - 1 do
+  begin
+    Inc(Result);
+    Result := Result + CountComponents(Root.Components[I]);
+  end;
 end;
 
 end.
-

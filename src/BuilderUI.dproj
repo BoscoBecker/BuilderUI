@@ -4,7 +4,7 @@
         <ProjectVersion>20.3</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <ProjectName Condition="'$(ProjectName)'==''">BuilderUI</ProjectName>
         <TargetedPlatforms>3</TargetedPlatforms>
@@ -176,6 +176,8 @@
         <DCCReference Include="Service\Service.Json.Validation.pas"/>
         <DCCReference Include="Service\Service.Component.Search.pas"/>
         <DCCReference Include="Service\Service.Component.Manager.Highlighter.pas"/>
+        <DCCReference Include="Service\Service.StatusBar.Manager.pas"/>
+        <DCCReference Include="Service\Service.Component.pas"/>
         <None Include=".gitignore"/>
         <None Include="BuilderUI.dpr"/>
         <None Include="LICENSE.txt"/>
@@ -276,6 +278,12 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="..\README.md" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName=".gitignore" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
@@ -284,6 +292,12 @@
                 </DeployFile>
                 <DeployFile LocalName=".gitignore" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName=".gitignore" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
@@ -307,6 +321,12 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="BuilderUI.dpr" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="BuilderUI.dpr" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win64">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
@@ -318,7 +338,19 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="LICENSE.txt" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="Win32\Debug\BuilderUI.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>BuilderUI.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="Win32\Release\BuilderUI.exe" Configuration="Release" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>BuilderUI.exe</RemoteName>
                         <Overwrite>true</Overwrite>

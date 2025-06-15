@@ -31,7 +31,10 @@ uses
   Builder.UI.UserPreferences in 'Builder\Builder.UI.UserPreferences.pas',
   Enum.Utils in 'Enum\Enum.Utils.pas',
   Factory.CodeGenerator.Lazarus in 'Factory\Technology\Lazarus\Factory.CodeGenerator.Lazarus.pas',
-  Strategy.Export.Lazarus in 'Strategy\Technology\Lazarus\Strategy.Export.Lazarus.pas';
+  Strategy.Export.Lazarus in 'Strategy\Technology\Lazarus\Strategy.Export.Lazarus.pas',
+  Service.Json.Validation in 'Service\Service.Json.Validation.pas',
+  Service.Component.Search in 'Service\Service.Component.Search.pas',
+  Service.Component.Manager.Highlighter in 'Service\Service.Component.Manager.Highlighter.pas';
 
 {$R *.res}
 
@@ -40,6 +43,5 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TFormBuilderMain, FormBuilderMain);
-  Application.CreateForm(TFormJson, FormJson);
   Application.Run;
 end.

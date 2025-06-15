@@ -141,7 +141,7 @@ object FormJson: TFormJson
     NumberAttri.Foreground = clTeal
     SymbolAttri.Foreground = clFuchsia
     ValueAttri.Foreground = 25284
-    Left = 1016
-    Top = 632
+    Left = 928
+    Top = 256
   end
 end

@@ -25,20 +25,23 @@
 { https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html }
 { }
 { João Bosco Becker - https://github.com/BoscoBecker }
+
 unit Service.JsonFile;
 
 interface
 
 uses
-  System.Classes, System.SysUtils, Vcl.Dialogs, Vcl.StdCtrls, Clipbrd;
+  System.Classes, System.SysUtils, Vcl.Dialogs, Vcl.StdCtrls, Clipbrd, SynEdit;
 
 type
   TJsonFileService = class
-  public
-    class function OpenJsonFromFile(var AJson: string): Boolean; static;
-    class function SaveJsonToFile(const AJson: string): Boolean; static;
-    class procedure CopyJsonToClipboard(const AJson: string); static;
-    class procedure ClearMemoJson(AMemo: TMemo); static;
+   public class function OpenJsonFromFile(var AJson: string): Boolean; static;
+   public class function SaveJsonToFile(const AJson: string): Boolean; static;
+   public class procedure CopyJsonToClipboard(const AJson: string); static;
+   public class procedure CutJsonToClipboard(const ASynEdit: TSynEdit); static;
+   public class procedure PasteJsonToClipboard(const ASynEdit: TSynEdit); static;
+   public class procedure SelectAll(const ASynEdit: TSynEdit); static;
+   public class procedure ClearMemoJson(const ASynEdit: TSynEdit); static;
   end;
 
 implementation
@@ -88,14 +91,29 @@ begin
   end;
 end;
 
+class procedure TJsonFileService.SelectAll(const ASynEdit: TSynEdit);
+begin
+  ASynEdit.SelectAll;
+end;
+
 class procedure TJsonFileService.CopyJsonToClipboard(const AJson: string);
 begin
   Clipboard.AsText := AJson;
 end;
 
-class procedure TJsonFileService.ClearMemoJson(AMemo: TMemo);
+class procedure TJsonFileService.CutJsonToClipboard(const ASynEdit: TSynEdit);
 begin
-  AMemo.Lines.Clear;
+  ASynEdit.CutToClipboard;
+end;
+
+class procedure TJsonFileService.ClearMemoJson(const ASynEdit: TSynEdit);
+begin
+  ASynEdit.Lines.Clear;
+end;
+
+class procedure TJsonFileService.PasteJsonToClipboard(const ASynEdit: TSynEdit);
+begin
+  ASynEdit.PasteFromClipboard;
 end;
 
 end.

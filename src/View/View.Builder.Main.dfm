@@ -115,7 +115,6 @@ object FormBuilderMain: TFormBuilderMain
       Color = clWhite
       ParentBackground = False
       TabOrder = 0
-      ExplicitWidth = 301
       object SkPaintBoxRenderJson: TSkPaintBox
         Left = 0
         Top = 0
@@ -175,7 +174,6 @@ object FormBuilderMain: TFormBuilderMain
       Color = clWhite
       ParentBackground = False
       TabOrder = 1
-      ExplicitWidth = 301
       object ImageCopyToClipboard: TImage
         Left = 315
         Top = 0
@@ -362,7 +360,6 @@ object FormBuilderMain: TFormBuilderMain
       Color = clWhite
       ParentBackground = False
       TabOrder = 2
-      ExplicitWidth = 301
       object LabelInfoJson: TLabel
         Left = 0
         Top = 33
@@ -399,7 +396,6 @@ object FormBuilderMain: TFormBuilderMain
         ParentBackground = False
         ParentFont = False
         TabOrder = 0
-        ExplicitWidth = 301
         object ImageErro: TImage
           Left = 290
           Top = 0
@@ -489,13 +485,13 @@ object FormBuilderMain: TFormBuilderMain
       Gutter.LeftOffset = 0
       Gutter.RightOffset = 0
       Gutter.RightMargin = 0
+      Gutter.ZeroStart = True
       Gutter.LineNumberStart = 0
-      Highlighter = FormJson.SynJSON
+      Highlighter = SynJSON
       RightEdge = 0
       ScrollBars = ssVertical
       OnChange = MemoChange
       FontSmoothing = fsmClearType
-      ExplicitWidth = 301
     end
   end
   object SplitViewMain: TSplitView
@@ -1312,5 +1308,20 @@ object FormBuilderMain: TFormBuilderMain
       Caption = 'Paste'
       OnClick = PasteClick
     end
+    object SelectAll1: TMenuItem
+      Caption = 'Select All'
+      OnClick = SelectAll1Click
+    end
+  end
+  object SynJSON: TSynJSONSyn
+    Options.AutoDetectEnabled = False
+    Options.AutoDetectLineLimit = 0
+    Options.Visible = False
+    AttributeAttri.Foreground = 16744448
+    NumberAttri.Foreground = clTeal
+    SymbolAttri.Foreground = clFuchsia
+    ValueAttri.Foreground = 25284
+    Left = 928
+    Top = 256
   end
 end

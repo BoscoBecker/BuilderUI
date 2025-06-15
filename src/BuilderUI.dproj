@@ -4,7 +4,7 @@
         <ProjectVersion>20.3</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <ProjectName Condition="'$(ProjectName)'==''">BuilderUI</ProjectName>
         <TargetedPlatforms>3</TargetedPlatforms>
@@ -173,6 +173,9 @@
         <DCCReference Include="Enum\Enum.Utils.pas"/>
         <DCCReference Include="Factory\Technology\Lazarus\Factory.CodeGenerator.Lazarus.pas"/>
         <DCCReference Include="Strategy\Technology\Lazarus\Strategy.Export.Lazarus.pas"/>
+        <DCCReference Include="Service\Service.Json.Validation.pas"/>
+        <DCCReference Include="Service\Service.Component.Search.pas"/>
+        <DCCReference Include="Service\Service.Component.Manager.Highlighter.pas"/>
         <None Include=".gitignore"/>
         <None Include="BuilderUI.dpr"/>
         <None Include="LICENSE.txt"/>

@@ -42,9 +42,11 @@ uses
 
   Util.Json, Util.JSONValidator, System.Math, System.ImageList, Vcl.ImgList,
   View.Export.Forms, View.Menu.Context.Windows, View.Window.Json, SynEdit,
-  SynEditHighlighter, SynHighlighterJSON, Enum.Utils,
+  SynEditHighlighter, SynHighlighterJSON, Enum.Utils, Service.JsonFile,
 
-  Service.Zoom, Service.Forms.Manager, Service.Skia.Draw, Service.JsonFile,
+  Service.Zoom, Service.Forms.Manager, Service.Skia.Draw, Service.Json.Validation,
+  Service.Component.Search,Service.Component.Manager.Highlighter,
+
   Vcl.Menus;
 
 type
@@ -123,6 +125,8 @@ type
     CopyText: TMenuItem;
     Cut: TMenuItem;
     Paste: TMenuItem;
+    SynJSON: TSynJSONSyn;
+    SelectAll1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure ImgSettingsClick(Sender: TObject);
     procedure ImageTreeComponentsClick(Sender: TObject);
@@ -162,6 +166,7 @@ type
     procedure CopyTextClick(Sender: TObject);
     procedure CutClick(Sender: TObject);
     procedure PasteClick(Sender: TObject);
+    procedure SelectAll1Click(Sender: TObject);
   private
     FBuilderBackground: TBuilderBackground;
     FTreeViewAdapter: TTreeViewAdapter;
@@ -173,6 +178,7 @@ type
     FZoomService: TZoomService;
     FFormManager: TFormCreatedManager;
     FOrigRectsForms: array of TOrigRect;
+    FHighlighter: TShapeHighlighter;
     procedure RenderJson(const Atext : string);
     procedure ValidateAndProcessJSON(const AJSON: string);
     procedure BuildStatusBar;
@@ -181,6 +187,7 @@ type
     procedure ZoomIn;
     procedure ZoomOut;
     procedure ApplyZoomToCreatedForms;
+    procedure HandleTreeSelection;
   public
     destructor Destroy; override;
     procedure OnPreferenceChanged(const Key, Value: string);
@@ -223,6 +230,8 @@ begin
     FFormManager.Free;
   if FZoomService <> nil then
     FZoomService.Free;
+  if FHighlighter <> nil then
+    FHighlighter.Free;
   if FBuilder <> nil then
     FBuilder.Free;
   FPaint:= nil;
@@ -244,6 +253,7 @@ procedure TFormBuilderMain.FormCreate(Sender: TObject);
 begin
   FFormManager := TFormCreatedManager.Create;
   FZoomService := TZoomService.Create;
+  FHighlighter:= TShapeHighlighter.Create;
   TUserPreferences.Instance.Create;
   SetBuilderBackground(TUserPreferences.Instance.GetBackgroundEnum);
 end;
@@ -256,6 +266,40 @@ end;
 procedure TFormBuilderMain.FormShow(Sender: TObject);
 begin
   BuildStatusBar;
+end;
+
+procedure TFormBuilderMain.HandleTreeSelection;
+begin
+  var Node := TreeViewExplorer.Selected;
+  if not Assigned(Node) then Exit;
+
+  var RealName := Node.Text.Trim;
+  if RealName.StartsWith('Name: ') then
+  begin
+    RealName := RealName.Substring(6);
+    if RealName.IsEmpty then Exit;
+    SetSelectedComponent(RealName);
+    var C := TComponentSearchService.FindComponentByName(SkPaintBackground, RealName);
+
+    if Assigned(C) and (C is TControl) then
+    begin
+      if TWinControl(C) is TForm then
+      begin
+        if Assigned(FHighlighter) then
+          FHighlighter.Hide;
+        TWinControl(C).BringToFront;
+      end
+      else
+      begin
+        if Assigned(FHighlighter) then
+          FHighlighter.Highlight(TControl(C), Self);
+      end;
+    end
+    else if Assigned(FHighlighter) then
+      FHighlighter.Hide;
+  end
+  else if Assigned(FHighlighter) then
+    FHighlighter.Hide;
 end;
 
 procedure TFormBuilderMain.ImageArrangeWindowsClick(Sender: TObject);
@@ -531,188 +575,26 @@ begin
 end;
 
 procedure TFormBuilderMain.TreeViewExplorerClick(Sender: TObject);
-var
-  Node: TTreeNode;
-  RealName: string;
-  C: TComponent;
-
-  function FindComponentByName(Root: TComponent; const Name: string): TComponent;
-
-    function RecursiveFindComponent(Comp: TComponent): TComponent;
-    begin
-      Result := nil;
-      if SameText(Comp.Name, Name) then Exit(Comp);
-      if Comp is TWinControl then
-      begin
-        for var I := 0 to TWinControl(Comp).ControlCount - 1 do
-        begin
-          Result := RecursiveFindComponent(TWinControl(Comp).Controls[I]);
-          if Assigned(Result) then Exit;
-        end;
-      end;
-      for var I := 0 to Comp.ComponentCount - 1 do
-      begin
-        Result := RecursiveFindComponent(Comp.Components[I]);
-        if Assigned(Result) then Exit;
-      end;
-    end;
-
-  begin
-    Result := RecursiveFindComponent(Root);
-  end;
-
-  procedure CreateHighlighter(AOwner: TForm);
-  begin
-    if FSelectedShape <> nil then
-    begin
-      if FSelectedShape.Parent is TForm then
-      begin
-        FSelectedShape.Free;
-        FSelectedShape := TShape.Create(AOwner);
-        FSelectedShape.Parent := AOwner;
-        FSelectedShape.Visible := False;
-      end;
-    end else
-    if not Assigned(FSelectedShape) then
-    begin
-      FSelectedShape := TShape.Create(AOwner);
-      FSelectedShape.Parent := AOwner;
-      FSelectedShape.Visible := False;
-    end else
-      FSelectedShape.Parent := AOwner;
-  end;
-
-  procedure HighlightSelectedComponent(Control: TControl);
-  begin
-    CreateHighlighter(Self);
-    FSelectedShape.Parent := Control.Parent;
-    FSelectedShape.SetBounds(
-      Control.Left - 2,
-      Control.Top - 2,
-      Control.Width + 4,
-      Control.Height + 4
-    );
-    if FSelectedShape.Pen <> nil then
-    begin
-      FSelectedShape.Brush.Style := bsClear;
-      FSelectedShape.Pen.Color := clGrayText;
-      FSelectedShape.Pen.Width := 1;
-      FSelectedShape.Pen.Mode := pmMask;
-      FSelectedShape.Pen.Style := psDot;
-      FSelectedShape.Visible := True;
-      FSelectedShape.SendToBack;
-    end;
-  end;
-
 begin
-  try
-    if TreeViewExplorer.CanFocus then
-      TreeViewExplorer.SetFocus;
-    TreeViewExplorer.BringToFront;
-
-    Node := TreeViewExplorer.Selected;
-    if Node <> nil then
-    begin
-      RealName := Node.Text;
-      if Pos('Name: ', RealName) = 1 then
-      begin
-        if Length(RealName.Trim) <= 0 then Exit;
-
-        RealName := Copy(RealName, 7, Length(RealName));
-        SetSelectedComponent(RealName);
-        C := FindComponentByName(SkPaintBackground, RealName);
-        if Assigned(C) then
-        begin
-          if C is TControl then
-          begin
-            if TWinControl(C) is TForm then
-            begin
-              if Assigned(FSelectedShape) then
-                TWinControl(C).BringToFront;
-              if Assigned(FSelectedShape) then
-              begin
-                FSelectedShape.Visible := False;
-                FSelectedShape := nil;
-              end;
-            end else
-              HighlightSelectedComponent(TControl(C));
-          end;
-        end;
-      end else
-      if Assigned(FSelectedShape) then
-      begin
-        FSelectedShape.Visible := False;
-        FSelectedShape := nil;
-      end;
-    end;
-  finally
-  end;
+  HandleTreeSelection;
 end;
 
 procedure TFormBuilderMain.ValidateAndProcessJSON(const AJSON: string);
 begin
-  var ErrorMsg: string;
-  var DupForms: TArray<TDuplicateInfo>;
-  try
-    var Invalids: TArray<string>;
-    var IsValid := TTask.Future<Boolean>(function: Boolean
-                                         begin
-                                           Result := Util.JSONValidator
-                                                           .TJSONHelper
-                                                             .ValidateBuilderUIPattern(AJSON, Invalids);
-                                         end).Value;
-                    if not IsValid then
-    begin
-      LabelInfoJson.Caption := 'Invalid properties: ' + string.Join(sLineBreak, Invalids);
-      ImageOk.Visible := False;
-      ImageErro.Visible := True;
-      FFormManager.CloseAll;
-      TreeViewExplorer.Items.Clear;
-      Exit;
-    end;
-
-    LabelInfoJson.Caption:= 'Analizing Json ';
-    var ValidJson:= TTask.Future<Boolean>(function: Boolean
-                                          begin
-                                            Result := Util.JSONValidator
-                                                            .TJSONHelper
-                                                              .ValidateJSON(AJSON, ErrorMsg);
-                                          end).Value;
-    if not (ValidJson) or (AJSON.Trim.Equals('')) then
-    begin
-      LabelInfoJson.Caption:='Invalid json :'+ErrorMsg ;
-      ImageOk.Visible:= False;
-      ImageErro.Visible:= True;
-      FFormManager.CloseAll;
-      TreeViewExplorer.Items.Clear;
-      Exit;
-    end;
-
-    var ValidNamesComponents:= TTask.Future<Boolean>(function: Boolean
-                                                     begin
-                                                       Result:= Util.Json
-                                                                      .TJSONHelper
-                                                                        .HasDuplicateNamesPerForm(AJSON, DupForms);
-                                                     end).Value;
-    if ValidNamesComponents then
-    begin
-      var duplicatenames: string;
-      for var Info in DupForms do
-        duplicatenames:= duplicatenames + string.Join(', ',  Info.DuplicatedNames);
-      LabelInfoJson.Caption:='Invalid json, Duplicate Names : ' +duplicatenames;
-      ImageOk.Visible:= False;
-      ImageErro.Visible:= True;
-      FFormManager.CloseAll;
-      TreeViewExplorer.Items.Clear;
-      Exit;
-    end;
-
-    LabelInfoJson.Caption:= 'Valid json';
-    ImageOk.Visible:= True;
-    ImageErro.Visible:= False;
-  finally
-    LabelInfoJson.Repaint;
+  var Result := TBuilderUIValidatorService.Validate(AJSON);
+  if not Result.IsValid then
+  begin
+    LabelInfoJson.Caption := Result.ErrorMessage;
+    ImageOk.Visible := False;
+    ImageErro.Visible := True;
+    FFormManager.CloseAll;
+    TreeViewExplorer.Items.Clear;
+    Exit;
   end;
+
+  LabelInfoJson.Caption := 'Valid JSON';
+  ImageOk.Visible := True;
+  ImageErro.Visible := False;
 end;
 
 procedure TFormBuilderMain.ZoomIn;
@@ -762,19 +644,22 @@ end;
 
 procedure TFormBuilderMain.PasteClick(Sender: TObject);
 begin
-  Memo.PasteFromClipboard;
+  TJsonFileService.PasteJsonToClipboard(Memo);
 end;
 
 procedure TFormBuilderMain.CopyTextClick(Sender: TObject);
 begin
-  if Memo.SelLength > 0 then
-    Memo.CopyToClipboard;
+  TJsonFileService.CopyJsonToClipboard(Memo.text);
 end;
 
 procedure TFormBuilderMain.CutClick(Sender: TObject);
 begin
-  if Memo.SelLength > 0 then
-    Memo.CutToClipboard;
+  TJsonFileService.CutJsonToClipboard(Memo)
+end;
+
+procedure TFormBuilderMain.SelectAll1Click(Sender: TObject);
+begin
+  TJsonFileService.SelectAll(Memo);
 end;
 
 end.

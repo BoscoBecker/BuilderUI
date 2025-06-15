@@ -25,6 +25,7 @@
 { https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html }
 { }
 { João Bosco Becker - https://github.com/BoscoBecker }
+
 unit View.Window.Json;
 
 interface
@@ -38,12 +39,12 @@ uses
 
 type
   TFormJson = class(TForm)
-    SynJSON: TSynJSONSyn;
     SynEditJson: TSynEdit;
     Panel1: TPanel;
     SkLabelTitle: TSkLabel;
     Splitter1: TSplitter;
     SynEditMiniMap: TSynEdit;
+    SynJSON: TSynJSONSyn;
     procedure FormShow(Sender: TObject);
     procedure SynEditJsonChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);

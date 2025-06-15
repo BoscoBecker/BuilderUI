@@ -186,6 +186,100 @@ You can Using https://chatgpt.com/g/g-bIMOi37Fy-json
 
 > The idea is to use an integrated chat to assist users in generating, editing, and refactoring JSON UI definitions. This chat-based AI can help automate repetitive tasks, provide instant suggestions, and accelerate the UI design process directly within your development environment. Coming soon, need help.
 
+
+
+# 🧪 Unit Testing with DUnitX ![Tested](https://img.shields.io/badge/tests-passing-brightgreen) 
+
+BuilderUI uses [**DUnitX**](https://github.com/VSoftTechnologies/DUnitX), a modern and extensible unit testing framework for Delphi, to ensure the correctness of core logic like JSON validation, export behavior, and form structure rules.
+
+### ✅ Test Structure
+
+Tests are located in the `/tests` folder and follow the standard DUnitX pattern using `[TestFixture]` and `[Test]` attributes.
+
+### 🧩 Example Test Class
+
+
+```pascal
+unit Test.Service.Json.Validation;
+
+interface
+
+uses
+  DUnitX.TestFramework,
+  TestFramework,            // DUnit compatibility
+  Service.Json.Validation,  // Class under test
+  System.SysUtils;
+
+type
+  [TestFixture]
+  TestTBuilderUIValidatorService = class(TTestCase)
+  published
+    [Test]
+    procedure TestValidJSON;
+
+    [Test]
+    procedure TestInvalidJSON;
+
+    [Test]
+    procedure TestJSONWithDuplicateNames;
+  end;
+
+implementation
+
+procedure TestTBuilderUIValidatorService.TestValidJSON;
+var
+  JSON: string;
+  Result: TBuilderUIValidationResult;
+begin
+  JSON := '{ "Forms": [ { "Type": "TForm", "Name": "MainForm", "Caption": "Test" } ] }';
+  Result := TBuilderUIValidatorService.Validate(JSON);
+  CheckTrue(Result.IsValid, 'Expected JSON to be valid');
+end;
+
+procedure TestTBuilderUIValidatorService.TestInvalidJSON;
+var
+  JSON: string;
+  Result: TBuilderUIValidationResult;
+begin
+  JSON := '{ invalid json... ';
+  Result := TBuilderUIValidatorService.Validate(JSON);
+  CheckFalse(Result.IsValid, 'Expected invalid JSON');
+end;
+
+procedure TestTBuilderUIValidatorService.TestJSONWithDuplicateNames;
+var
+  JSON: string;
+  Result: TBuilderUIValidationResult;
+begin
+  JSON := '{ "Forms": [ { "Type": "TForm", "Name": "Form1", "Children": [ ' +
+          '{ "Type": "TEdit", "Name": "Edit1" }, { "Type": "TEdit", "Name": "Edit1" } ] } ] }';
+  Result := TBuilderUIValidatorService.Validate(JSON);
+  CheckFalse(Result.IsValid, 'Expected failure due to duplicate component names');
+end;
+
+initialization
+  RegisterTest(TestTBuilderUIValidatorService.Suite);
+
+end.
+```
+
+🛠 ⚠️Test Configuration⚠️
+Add relative paths to the test project in Project > Options > Delphi Compiler > Search Path:
+
+..\src\Service;
+..\src\Utils;
+$(DUnitX)
+
+▶️ Running Tests
+Run from Delphi IDE (F9 on test project)
+
+DUnitX command-line runner (optional)
+
+Future: CI integration
+
+⚠️ Tip: If you see No Test Fixtures found, make sure to register your tests using RegisterTest(...) or TDUnitX.RegisterTestFixture(...).
+
+
 ## Getting Started
 
 1. Clone the repository

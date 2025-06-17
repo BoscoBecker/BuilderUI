@@ -855,9 +855,9 @@ object FormBuilderMain: TFormBuilderMain
     end
   end
   object PanelToolPalette: TPanel
-    Left = 364
+    Left = 312
     Top = 675
-    Width = 383
+    Width = 435
     Height = 48
     Cursor = crHandPoint
     BevelOuter = bvNone
@@ -870,11 +870,12 @@ object FormBuilderMain: TFormBuilderMain
       AlignWithMargins = True
       Left = 3
       Top = 3
-      Width = 377
+      Width = 429
       Height = 42
       Align = alClient
       OnDraw = SkPaintBoxToolPaletteDraw
       ExplicitLeft = 2
+      ExplicitWidth = 377
     end
     object ImageSelectMode: TImage
       Left = 8
@@ -964,7 +965,7 @@ object FormBuilderMain: TFormBuilderMain
       OnClick = ImageTreeViewClick
     end
     object ImageShare: TImage
-      Left = 336
+      Left = 384
       Top = 6
       Width = 41
       Height = 36
@@ -1009,7 +1010,7 @@ object FormBuilderMain: TFormBuilderMain
       OnClick = ImageOptionsClick
     end
     object ImageZoomIn: TImage
-      Left = 244
+      Left = 292
       Top = 6
       Width = 41
       Height = 36
@@ -1033,7 +1034,7 @@ object FormBuilderMain: TFormBuilderMain
       OnClick = ImageZoomInClick
     end
     object ImageZoomOut: TImage
-      Left = 291
+      Left = 339
       Top = 6
       Width = 41
       Height = 36
@@ -1055,6 +1056,29 @@ object FormBuilderMain: TFormBuilderMain
         473619DF1CB7140000000049454E44AE426082}
       ShowHint = True
       OnClick = ImageZoomOutClick
+    end
+    object ImageRenderJsonToolPalette: TImage
+      Left = 244
+      Top = 6
+      Width = 41
+      Height = 36
+      Cursor = crHandPoint
+      Hint = 'Render JSON'
+      Center = True
+      ParentShowHint = False
+      Picture.Data = {
+        0954506E67496D61676589504E470D0A1A0A0000000D49484452000000180000
+        00180806000000E0773DF8000000017352474200AECE1CE90000000473424954
+        080808087C086488000000C44944415478DA6364A031601C36160800713D1007
+        00B10211FABE01F15A203E03C40F80F81E105FC167C10420CE27C1618B81783B
+        9AD84D203E87CB820F40CC4F8205A940FC154D0CC4DF84CB82FF24180E025138
+        C49753C307AF197007274E0B1C80780110CB1361F84C20BE46AA05C82092C4E0
+        1AB560D4822166C13228FD00881381F800AD2C8059A288CD82102066A58205E0
+        10C266812E10EB9069C174064499F610881570D56846402C03C4DC245A20C900
+        290841A57302038E38A02A18FA160000E33529192B82BF530000000049454E44
+        AE426082}
+      ShowHint = True
+      OnClick = ImageRenderJsonToolPaletteClick
     end
   end
   object PanelTop: TPanel

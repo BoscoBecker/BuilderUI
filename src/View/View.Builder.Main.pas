@@ -127,6 +127,7 @@ type
     Paste: TMenuItem;
     SynJSON: TSynJSONSyn;
     SelectAll1: TMenuItem;
+    ImageRenderJsonToolPalette: TImage;
     procedure FormCreate(Sender: TObject);
     procedure ImgSettingsClick(Sender: TObject);
     procedure ImageTreeComponentsClick(Sender: TObject);
@@ -168,6 +169,7 @@ type
     procedure PasteClick(Sender: TObject);
     procedure SelectAll1Click(Sender: TObject);
     procedure ImageOptionsClick(Sender: TObject);
+    procedure ImageRenderJsonToolPaletteClick(Sender: TObject);
   private
     FBuilderBackground: TBuilderBackground;
     FTreeViewAdapter: TTreeViewAdapter;
@@ -274,6 +276,11 @@ begin
   end
   else if Assigned(FHighlighter) then
     FHighlighter.Hide;
+end;
+
+procedure TFormBuilderMain.ImageRenderJsonToolPaletteClick(Sender: TObject);
+begin
+  PanelRenderJson.Visible:= not PanelRenderJson.Visible;
 end;
 
 procedure TFormBuilderMain.ImageArrangeWindowsClick(Sender: TObject);
@@ -544,7 +551,7 @@ end;
 procedure TFormBuilderMain.SkPaintBackgroundDraw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
 begin
   TSkiaDrawService.DrawBackground(ACanvas, ADest, AOpacity, FBuilderBackground, FPaint, FRuler, FRuler);
-  TSkiaDrawService.DrawRulers(ACanvas, ADest, 1, FRuler, FRuler);
+  TSkiaDrawService.DrawRulers(ACanvas, ADest, 1, FRuler, FRuler, FRuler);
 end;
 
 procedure TFormBuilderMain.SkPaintBackgroundMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -631,21 +638,25 @@ begin
 end;
 
 procedure TFormBuilderMain.OnPreferenceChanged(const Key, Value: string);
-begin
-  var DisplayValue: string;
-  if SameText(key, 'Ruler') then
+var
+  DisplayValue: string;
+  function ProcessRuler(KeyRuler, ValueRuler: string) : string;
   begin
-    if SameText(value, '-1') then
-      DisplayValue := 'true'
+    if SameText(KeyRuler, 'Ruler') then
+    begin
+      if SameText(ValueRuler, '-1') then
+        DisplayValue := 'true'
+      else
+        DisplayValue := 'false'
+    end
     else
-      DisplayValue := 'false'
-  end
-  else
-    DisplayValue := value;
-
+      DisplayValue := value;
+    result:= DisplayValue;
+  end;
+begin
+  ProcessRuler(Key, Value);
   LabelBottomInfo.Caption := Format('Updated preference: %s : %s at date: %s',
-    [key, DisplayValue, FormatDateTime('yyyy/mm/dd hh:nn:ss', Now)]
-  );
+             [key, DisplayValue, FormatDateTime('yyyy/mm/dd hh:nn:ss', Now)]);
 end;
 
 procedure TFormBuilderMain.PasteClick(Sender: TObject);

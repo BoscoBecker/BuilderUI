@@ -44,13 +44,13 @@ uses
 type
   TUIBuilderEngine = class(TInterfacedObject, IUIBuilder)
   private
-    function CreateControlFromJson(AOwner: TComponent; AParent: TWinControl; Json: TJSONObject): TControl;
     procedure ControlClick(Sender: TObject);
     procedure ControlDblClickImage(Sender: TObject);
     procedure SetControlEvent(Ctrl: TControl);
     procedure SetControlCaption(Ctrl: TControl; const Text: string);
     procedure SetControlWidth(Ctrl: TControl; const Text: string);
     procedure SetControlHeight(Ctrl: TControl; const Text: string);
+    function CreateControlFromJson(AOwner: TComponent; AParent: TWinControl; Json: TJSONObject): TControl;
     function SetControlColor(const Text: string): TColor;
     function SetControlType(const AOwner: TComponent;Ctrl: TControl; const CtrlType: string):TControl;
     function SetControlAling(const Text: string): TAlign;
@@ -240,6 +240,7 @@ begin
   var Form:= TForm.Create(AOwner);
   Form.Position:= poDefault;
   Form.FormStyle:= fsMDIChild;
+  Form.Align:= alNone;
   Form.BorderIcons := Form.BorderIcons - [biMaximize];
   Form.BorderStyle:= bsSizeable;
   Form.Name:= Json.GetValue<string>('Name');
@@ -499,7 +500,6 @@ begin
   Ctrl.Height:= StrToIntDef(Text,0);
 
 end;
-
 
 end.
 

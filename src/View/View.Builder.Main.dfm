@@ -36,9 +36,8 @@ object FormBuilderMain: TFormBuilderMain
     Height = 695
     Align = alRight
     Visible = False
-    ExplicitLeft = 690
-    ExplicitTop = 65
-    ExplicitHeight = 689
+    ExplicitLeft = 581
+    ExplicitTop = 45
   end
   object SkPaintBackground: TSkPaintBox
     AlignWithMargins = True
@@ -151,17 +150,16 @@ object FormBuilderMain: TFormBuilderMain
         OnClick = ImageCloseRenderClick
       end
       object SkLabelInfoRenderJson: TSkLabel
-        Left = 259
-        Top = 8
-        Width = 75
+        Left = 112
+        Top = 10
+        Width = 222
         Height = 19
         Align = alCustom
         Anchors = [akTop, akRight]
         Words = <
           item
-            Caption = 'Render Json'
+            Caption = 'Render Json/ Explore properties'
           end>
-        ExplicitLeft = 152
       end
     end
     object PanelToolJsonRender: TPanel
@@ -450,48 +448,80 @@ object FormBuilderMain: TFormBuilderMain
         end
       end
     end
-    object Memo: TSynEdit
+    object PageControlRenderExplorer: TPageControl
       Left = 0
       Top = 35
       Width = 349
       Height = 551
+      ActivePage = TabSheetRender
       Align = alClient
-      Color = clWhite
-      Ctl3D = True
-      ParentCtl3D = False
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Courier New'
-      Font.Style = []
-      PopupMenu = PopupMenuOptions
+      MultiLine = True
       TabOrder = 3
-      CodeFolding.GutterShapeSize = 11
-      CodeFolding.CollapsedLineColor = clGrayText
-      CodeFolding.FolderBarLinesColor = clGrayText
-      CodeFolding.IndentGuidesColor = clGray
-      CodeFolding.IndentGuides = True
-      CodeFolding.ShowCollapsedLine = False
-      CodeFolding.ShowHintMark = True
-      UseCodeFolding = False
-      BorderStyle = bsNone
-      Gutter.BorderStyle = gbsNone
-      Gutter.DigitCount = 2
-      Gutter.Font.Charset = DEFAULT_CHARSET
-      Gutter.Font.Color = clWindowText
-      Gutter.Font.Height = -11
-      Gutter.Font.Name = 'Courier New'
-      Gutter.Font.Style = []
-      Gutter.LeftOffset = 0
-      Gutter.RightOffset = 0
-      Gutter.RightMargin = 0
-      Gutter.ZeroStart = True
-      Gutter.LineNumberStart = 0
-      Highlighter = SynJSON
-      RightEdge = 0
-      ScrollBars = ssVertical
-      OnChange = MemoChange
-      FontSmoothing = fsmClearType
+      object TabSheetRender: TTabSheet
+        Caption = 'Render Json'
+        object Memo: TSynEdit
+          Left = 0
+          Top = 0
+          Width = 341
+          Height = 521
+          Align = alClient
+          Color = clWhite
+          Ctl3D = True
+          ParentCtl3D = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Courier New'
+          Font.Style = []
+          PopupMenu = PopupMenuOptions
+          TabOrder = 0
+          CodeFolding.GutterShapeSize = 11
+          CodeFolding.CollapsedLineColor = clGrayText
+          CodeFolding.FolderBarLinesColor = clGrayText
+          CodeFolding.IndentGuidesColor = clGray
+          CodeFolding.IndentGuides = True
+          CodeFolding.ShowCollapsedLine = False
+          CodeFolding.ShowHintMark = True
+          UseCodeFolding = False
+          BorderStyle = bsNone
+          Gutter.BorderStyle = gbsNone
+          Gutter.DigitCount = 2
+          Gutter.Font.Charset = DEFAULT_CHARSET
+          Gutter.Font.Color = clWindowText
+          Gutter.Font.Height = -11
+          Gutter.Font.Name = 'Courier New'
+          Gutter.Font.Style = []
+          Gutter.LeftOffset = 0
+          Gutter.RightOffset = 0
+          Gutter.RightMargin = 0
+          Gutter.ZeroStart = True
+          Gutter.LineNumberStart = 0
+          Highlighter = SynJSON
+          RightEdge = 0
+          ScrollBars = ssVertical
+          OnChange = MemoChange
+          FontSmoothing = fsmClearType
+        end
+      end
+      object TabSheetProperties: TTabSheet
+        Caption = 'Properties'
+        ImageIndex = 1
+        object ValueListEditor1: TValueListEditor
+          Left = 0
+          Top = 0
+          Width = 341
+          Height = 521
+          Align = alClient
+          BorderStyle = bsNone
+          TabOrder = 0
+          TitleCaptions.Strings = (
+            'Name'
+            'Value')
+          ColWidths = (
+            150
+            189)
+        end
+      end
     end
   end
   object SplitViewMain: TSplitView

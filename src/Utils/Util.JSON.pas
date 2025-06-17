@@ -61,6 +61,8 @@ type
     public class function HasDuplicateNames(const AJSON: string; out Duplicates: TArray<string>): Boolean; static;
     public class function HasDuplicateNamesPerForm(const AJSON: string; out DuplicateForms: TArray<TDuplicateInfo>): Boolean; static;
     public class procedure TraverseJSON(const JSONValue: TJSONValue;  const ATargetName: string; var Found: Boolean; const NameList: TDictionary<string, Integer>); static;
+    public class function FindComponentJsonByName(JsonObj: TJSONObject; const TargetName: string): TJSONObject; static;
+
   end;
 
   TJSONWorker<T: class, constructor> = class
@@ -70,6 +72,35 @@ type
   end;
 
 implementation
+
+class function TJSONHelper.FindComponentJsonByName(JsonObj: TJSONObject;  const TargetName: string): TJSONObject;
+begin
+  Result := nil;
+  for var Pair in JsonObj do
+  begin
+    if SameText(Pair.JsonString.Value, 'Name') and SameText(Pair.JsonValue.Value, TargetName) then
+      Exit(JsonObj);
+
+    if Pair.JsonValue is TJSONObject then
+    begin
+      Result := FindComponentJsonByName(TJSONObject(Pair.JsonValue), TargetName);
+      if Assigned(Result) then Exit;
+    end
+    else if Pair.JsonValue is TJSONArray then
+    begin
+      var ArrayVal := TJSONArray(Pair.JsonValue);
+      for var i := 0 to ArrayVal.Count - 1 do
+      begin
+        var Child := ArrayVal.Items[i];
+        if Child is TJSONObject then
+        begin
+          Result := FindComponentJsonByName(TJSONObject(Child), TargetName);
+          if Assigned(Result) then Exit;
+        end;
+      end;
+    end;
+  end;
+end;
 
 class function TJSONHelper.HasDuplicateNames(const AJSON: string; out Duplicates: TArray<string>): Boolean;
 var

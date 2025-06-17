@@ -46,8 +46,8 @@ uses
 
   Service.Zoom, Service.Forms.Manager, Service.Skia.Draw, Service.Json.Validation,
   Service.Component, Service.Component.Search,Service.Component.Manager.Highlighter, Service.StatusBar.Manager,
+  RTTI, Vcl.Grids, Vcl.ValEdit, Vcl.Menus;
 
-  Vcl.Menus;
 
 type
   TOrigRect = record
@@ -120,7 +120,6 @@ type
     LabelInfoJson: TLabel;
     LabelBottomInfo: TLabel;
     ImageInfoBottom: TImage;
-    Memo: TSynEdit;
     PopupMenuOptions: TPopupMenu;
     CopyText: TMenuItem;
     Cut: TMenuItem;
@@ -128,6 +127,11 @@ type
     SynJSON: TSynJSONSyn;
     SelectAll1: TMenuItem;
     ImageRenderJsonToolPalette: TImage;
+    PageControlRenderExplorer: TPageControl;
+    TabSheetRender: TTabSheet;
+    Memo: TSynEdit;
+    TabSheetProperties: TTabSheet;
+    ValueListEditor1: TValueListEditor;
     procedure FormCreate(Sender: TObject);
     procedure ImgSettingsClick(Sender: TObject);
     procedure ImageTreeComponentsClick(Sender: TObject);
@@ -184,6 +188,7 @@ type
     FHighlighter: TShapeHighlighter;
     FStatusBarManager: TStatusBarManager;
     FRuler: boolean;
+    FInspectedComponent: TComponent;
     procedure RenderJson(const Atext : string);
     procedure ValidateAndProcessJSON(const AJSON: string);
     procedure BuildStatusBar;
@@ -194,8 +199,11 @@ type
     procedure ZoomOut;
     procedure ApplyZoomToCreatedForms;
     procedure HandleTreeSelection;
+    procedure LoadFlatJsonObjectToValueListEditor(const JsonObj: TJSONObject; const Editor: TValueListEditor);
+    procedure PrettyJson;
   public
     destructor Destroy; override;
+    procedure LoadComponentPropertiesToValueListEditor( AComponent: TComponent; AEditor: TValueListEditor);
     procedure OnPreferenceChanged(const Key, Value: string);
     procedure AfterConstruction; override;
     procedure BeforeDestruction; override;
@@ -223,6 +231,21 @@ begin
 end;
 
 procedure TFormBuilderMain.FormCreate(Sender: TObject);
+
+  function FindFormForComponent(AComponent: TComponent): TForm;
+  var
+    I: Integer;
+    Form: TForm;
+  begin
+    Result := nil;
+    for I := 0 to FFormManager.Forms.Count - 1 do
+    begin
+      Form := FFormManager.Forms[I];
+      if Form.FindComponent(AComponent.Name) = AComponent then
+        Exit(Form);
+    end;
+  end;
+
 begin
   FFormManager := TFormCreatedManager.Create;
   FZoomService := TZoomService.Create;
@@ -273,6 +296,10 @@ begin
     end
     else if Assigned(FHighlighter) then
       FHighlighter.Hide;
+   PageControlRenderExplorer.ActivePage:= TabSheetProperties;
+   var ComponentJson := Util.JSON.TJSONHelper.FindComponentJsonByName(FJsonStructure, C.Name);
+   if Assigned(ComponentJson) then
+     LoadFlatJsonObjectToValueListEditor(ComponentJson, ValueListEditor1);
   end
   else if Assigned(FHighlighter) then
     FHighlighter.Hide;
@@ -281,6 +308,7 @@ end;
 procedure TFormBuilderMain.ImageRenderJsonToolPaletteClick(Sender: TObject);
 begin
   PanelRenderJson.Visible:= not PanelRenderJson.Visible;
+  SplitterRight.Visible:= not SplitterRight.Visible;
 end;
 
 procedure TFormBuilderMain.ImageArrangeWindowsClick(Sender: TObject);
@@ -393,10 +421,7 @@ end;
 
 procedure TFormBuilderMain.ImagePrettyJsonClick(Sender: TObject);
 begin
-  var erromessage:='';
-  if not Memo.lines.Text.Trim.Equals('') then
-    if TJSONHelper.ValidateJSON(Memo.lines.Text, erromessage ) then
-      Memo.lines.Text:= Util.Json.TJSONHelper.BeautifyJSON(Memo.lines.Text);
+  PrettyJson;
 end;
 
 procedure TFormBuilderMain.ImageClearJsonClick(Sender: TObject);
@@ -424,6 +449,33 @@ begin
 
   SplitViewmain.Opened := not SplitViewmain.Opened;
   SplitterLeft.Visible:= True;
+end;
+
+procedure TFormBuilderMain.LoadComponentPropertiesToValueListEditor( AComponent: TComponent; AEditor: TValueListEditor);
+var
+  ctx: TRttiContext;
+  typ: TRttiType;
+  prop: TRttiProperty;
+  value: TValue;
+begin
+  AEditor.Strings.Clear;
+
+  ctx := TRttiContext.Create;
+  try
+    typ := ctx.GetType(AComponent.ClassType);
+
+    for prop in typ.GetProperties do
+    begin
+      if prop.IsReadable and (prop.Visibility in [mvPublished]) then
+      begin
+        value := prop.GetValue(AComponent);
+        AEditor.InsertRow(prop.Name, value.ToString, True);
+      end;
+    end;
+
+  finally
+    ctx.Free;
+  end;
 end;
 
 procedure TFormBuilderMain.ImageTreeComponentsClick(Sender: TObject);
@@ -579,6 +631,7 @@ begin
   HandleTreeSelection;
 end;
 
+
 procedure TFormBuilderMain.ValidateAndProcessJSON(const AJSON: string);
 begin
   var Result := TBuilderUIValidatorService.Validate(AJSON);
@@ -595,6 +648,28 @@ begin
   LabelInfoJson.Caption := 'Valid JSON';
   ImageOk.Visible := True;
   ImageErro.Visible := False;
+end;
+
+procedure TFormBuilderMain.LoadFlatJsonObjectToValueListEditor(
+  const JsonObj: TJSONObject;
+  const Editor: TValueListEditor);
+var
+  Pair: TJSONPair;
+begin
+  Editor.Strings.BeginUpdate;
+  try
+    Editor.Strings.Clear;
+    for Pair in JsonObj do
+    begin
+      if not (Pair.JsonValue is TJSONObject) and
+         not (Pair.JsonValue is TJSONArray) then
+      begin
+        Editor.InsertRow(Pair.JsonString.Value, Pair.JsonValue.Value, True);
+      end;
+    end;
+  finally
+    Editor.Strings.EndUpdate;
+  end;
 end;
 
 procedure TFormBuilderMain.ZoomIn;
@@ -678,6 +753,14 @@ procedure TFormBuilderMain.SelectAll1Click(Sender: TObject);
 begin
   TJsonFileService.SelectAll(Memo);
 end;
+procedure TFormBuilderMain.PrettyJson;
+begin
+  var erromessage:='';
+  if not Memo.lines.Text.Trim.Equals('') then
+    if TJSONHelper.ValidateJSON(Memo.lines.Text, erromessage ) then
+      Memo.lines.Text:= Util.Json.TJSONHelper.BeautifyJSON(Memo.lines.Text);
+end;
+
 
 procedure TFormBuilderMain.BuildStatusBar;
 begin

@@ -107,6 +107,7 @@ begin
 
   FShape.Visible := True;
   FShape.SendToBack;
+
 end;
 
 procedure TShapeHighlighter.Hide;

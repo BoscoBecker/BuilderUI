@@ -992,7 +992,7 @@ object FormBuilderMain: TFormBuilderMain
       Top = 6
       Width = 41
       Height = 36
-      Hint = 'Options'
+      Hint = 'Ruler'
       Center = True
       ParentShowHint = False
       Picture.Data = {

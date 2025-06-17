@@ -21,7 +21,8 @@ Key capabilities include:
 
 > Whether you're prototyping UIs or building full applications, BuilderUI offers flexibility, portability, and extensibility — all powered by JSON.
 
-![image](https://github.com/user-attachments/assets/4305a881-7f14-42ed-9ec5-56981554db92)
+![image](https://github.com/user-attachments/assets/a4e9690c-204f-4fee-8079-9c79c38abb6e)
+
 
 ## Features
 
@@ -41,6 +42,7 @@ Key capabilities include:
   - Ruler
   - Component palette
   - Property inspector (TreeView)
+  - Explore property
   - Visual form designer
   - Multi-select support X not
   - Drag and drop functionality X not 

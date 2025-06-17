@@ -167,6 +167,7 @@ type
     procedure CutClick(Sender: TObject);
     procedure PasteClick(Sender: TObject);
     procedure SelectAll1Click(Sender: TObject);
+    procedure ImageOptionsClick(Sender: TObject);
   private
     FBuilderBackground: TBuilderBackground;
     FTreeViewAdapter: TTreeViewAdapter;
@@ -180,11 +181,13 @@ type
     FOrigRectsForms: array of TOrigRect;
     FHighlighter: TShapeHighlighter;
     FStatusBarManager: TStatusBarManager;
+    FRuler: boolean;
     procedure RenderJson(const Atext : string);
     procedure ValidateAndProcessJSON(const AJSON: string);
     procedure BuildStatusBar;
     procedure SetSelectedComponent(const Value: String);
     procedure SetBuilderBackground(const Value: TBuilderBackground);
+    procedure SetRuler(const value :boolean);
     procedure ZoomIn;
     procedure ZoomOut;
     procedure ApplyZoomToCreatedForms;
@@ -196,6 +199,7 @@ type
     procedure BeforeDestruction; override;
     property SelectedComponent: String read FSelectedComponent write SetSelectedComponent;
     property BuilderBackground: TBuilderBackground read FBuilderBackground write SetBuilderBackground;
+    property Ruler: boolean  read FRuler write SetRuler;
   end;
 
 var
@@ -225,6 +229,7 @@ begin
 
   TUserPreferences.Instance.Create;
   SetBuilderBackground(TUserPreferences.Instance.GetBackgroundEnum);
+  SetRuler(TUserPreferences.Instance.GetRulerEnabled);
 end;
 
 procedure TFormBuilderMain.FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -300,6 +305,7 @@ begin
     FBuilderBackground := bCLear;
     SkPaintBackground.Width:= SkPaintBackground.Width - 1;
   end;
+
   TUserPreferences.Instance.SavePreferences;
 end;
 
@@ -336,7 +342,6 @@ end;
 procedure TFormBuilderMain.ImageZoomInClick(Sender: TObject);
 begin
   ZoomIn;
-  SkPaintBackground.Width:= SkPaintBackground.Width + 1;
 end;
 
 procedure TFormBuilderMain.ImageCloseExplorerClick(Sender: TObject);
@@ -347,7 +352,6 @@ end;
 procedure TFormBuilderMain.ImageZoomOutClick(Sender: TObject);
 begin
   ZoomOut;
-  SkPaintBackground.Width:= SkPaintBackground.Width - 1;
 end;
 
 procedure TFormBuilderMain.ImageFilterExplorerClick(Sender: TObject);
@@ -436,6 +440,15 @@ begin
   FStatusBarManager.SetComponentCount(TComponentService.CountComponents(SkPaintBackground).ToString);
 end;
 
+procedure TFormBuilderMain.ImageOptionsClick(Sender: TObject);
+begin
+  SkPaintBackground.Width:= SkPaintBackground.Width - 1;
+  Ruler:= not Ruler;
+  TUserPreferences.Instance.Ruler:= not Ruler;
+  TUserPreferences.Instance.SavePreferences;
+  SkPaintBackground.Width:= SkPaintBackground.Width + 1;
+end;
+
 procedure TFormBuilderMain.MemoChange(Sender: TObject);
 begin
   ValidateAndProcessJSON(Memo.Lines.Text);
@@ -513,6 +526,11 @@ begin
   FBuilderBackground := Value;
 end;
 
+procedure TFormBuilderMain.SetRuler(const value: boolean);
+begin
+  FRuler:= value;
+end;
+
 procedure TFormBuilderMain.SetSelectedComponent(const Value: String);
 begin
   FSelectedComponent := Value;
@@ -521,7 +539,8 @@ end;
 
 procedure TFormBuilderMain.SkPaintBackgroundDraw(ASender: TObject; const ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single);
 begin
-  TSkiaDrawService.DrawBackground(ACanvas, ADest, AOpacity, FBuilderBackground, FPaint);
+  TSkiaDrawService.DrawBackground(ACanvas, ADest, AOpacity, FBuilderBackground, FPaint, FRuler, FRuler);
+  TSkiaDrawService.DrawRulers(ACanvas, ADest, 1, FRuler, FRuler);
 end;
 
 procedure TFormBuilderMain.SkPaintBackgroundMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
@@ -609,7 +628,20 @@ end;
 
 procedure TFormBuilderMain.OnPreferenceChanged(const Key, Value: string);
 begin
-  LabelBottomInfo.caption:=  Format('Updated preference: %s : %s at date: %s ',[key, value,FormatDateTime('YYY/MM/DD HH:mm:ss',Now())]);
+  var DisplayValue: string;
+  if SameText(value, '-1') or SameText(value, '0') then
+  begin
+    if SameText(value, '-1') then
+      DisplayValue := 'False'
+    else
+      DisplayValue := 'True'
+  end
+  else
+    DisplayValue := value;
+
+  LabelBottomInfo.Caption := Format('Updated preference: %s : %s at date: %s',
+    [key, DisplayValue, FormatDateTime('yyyy/mm/dd hh:nn:ss', Now)]
+  );
 end;
 
 procedure TFormBuilderMain.PasteClick(Sender: TObject);

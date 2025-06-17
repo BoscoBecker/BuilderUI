@@ -43,8 +43,7 @@ uses
 
 type
   TUIBuilderEngine = class(TInterfacedObject, IUIBuilder)
-  public
-    function CreateFormFromJson(AOwner: TComponent; Json: TJSONObject): TForm;
+  private
     function CreateControlFromJson(AOwner: TComponent; AParent: TWinControl; Json: TJSONObject): TControl;
     procedure ControlClick(Sender: TObject);
     procedure ControlDblClickImage(Sender: TObject);
@@ -57,6 +56,8 @@ type
     function SetControlAling(const Text: string): TAlign;
     function SetControlBevelCut(const Text: string): TBevelCut;
     function SetControlBorderStyle(const Text: string): TBorderStyle;
+  public
+    function CreateFormFromJson(AOwner: TComponent; Json: TJSONObject): TForm;
     destructor Destroy; override;
   end;
 
@@ -66,15 +67,11 @@ procedure TUIBuilderEngine.ControlClick(Sender: TObject);
 
 begin
   if Length(TControl(Sender).Name) <=0 then Exit;
-  try
-    if TTreeViewAdapter.FTreeView.CanFocus then
-      TTreeViewAdapter.FTreeView.SetFocus;
-    TTreeViewAdapter.FindComponentInTreeView(TControl(Sender).Name);
-    TTreeViewAdapter.FindRootFormNode(TControl(Sender).Name);
-    TTreeViewAdapter.FTreeView.OnClick(Sender);
-  except on E: Exception do
-    ShowMessage(E.Message);
-  end;
+  if TTreeViewAdapter.FTreeView.CanFocus then
+    TTreeViewAdapter.FTreeView.SetFocus;
+  TTreeViewAdapter.FindComponentInTreeView(TControl(Sender).Name);
+  TTreeViewAdapter.FindRootFormNode(TControl(Sender).Name);
+  TTreeViewAdapter.FTreeView.OnClick(Sender);
 end;
 
 procedure TUIBuilderEngine.ControlDblClickImage(Sender: TObject);
@@ -92,7 +89,6 @@ end;
 
 function TUIBuilderEngine.CreateControlFromJson(AOwner: TComponent; AParent: TWinControl; Json: TJSONObject): TControl;
 var
-  CtrlType : string;
   Ctrl: TControl;
   PositionObj: TJSONObject;
   ChildrenArr: TJSONArray;
@@ -101,11 +97,10 @@ var
   Style: TFontStyles;
   ColorStr: string;
 begin
-
   Result := nil;
   Ctrl:= nil;
   if Trim(Json.GetValue<string>('Type', '')).Equals('') then Exit;
-  CtrlType := Json.GetValue<string>('Type');
+  var CtrlType := Json.GetValue<string>('Type');
   Ctrl:= SetControlType(AOwner, Ctrl, Json.GetValue<string>('Type', ''));
   Ctrl.Name := Json.GetValue<string>('Name','');
   Ctrl.Visible:= False;
@@ -151,7 +146,6 @@ begin
         ItemsArray:= Nil;
       end;
     end;
-
     if Ctrl is TListBox then
     begin
       var itemsArray := TJSONArray(items);
@@ -164,7 +158,6 @@ begin
       end;
     end;
   end;
-
   var lines:= Json.GetValue('Lines');
   if (lines <> nil) and (lines is TJSONArray) then
   begin
@@ -183,16 +176,10 @@ begin
 
   var FontColor: String;
   if (Ctrl is TLabel) and Json.TryGetValue<string>('FontColor', FontColor) then
-  begin
     TLabel(Ctrl).Font.Color:= SetControlColor(Json.GetValue<string>('FontColor', FontColor));
-  end;
-
   var ColorLabel: String;
   if (Ctrl is TLabel) and Json.TryGetValue<string>('Color', ColorLabel) then
-  begin
     TLabel(Ctrl).Font.Color:= SetControlColor(Json.GetValue<string>('Color', ColorLabel));
-  end;
-
 
   if (Ctrl is TLabel) and Json.TryGetValue<TJSONArray>('FontStyle', FontStyles) then
   begin
@@ -207,7 +194,6 @@ begin
     end;
     TLabel(Ctrl).Font.Style := Style;
   end;
-
   if (Ctrl is TPageControl) and Json.TryGetValue<TJSONArray>('Pages', ChildrenArr) then
   begin
     for var I := 0 to ChildrenArr.Count - 1 do
@@ -227,8 +213,6 @@ begin
       end;
     end;
   end;
-
-
   if Json.TryGetValue<TJSONArray>('Children', ChildrenArr) or Json.TryGetValue<TJSONArray>('children', ChildrenArr) then
   begin
     for var I := 0 to ChildrenArr.Count - 1 do
@@ -242,12 +226,9 @@ begin
 end;
 
 function TUIBuilderEngine.CreateFormFromJson(AOwner: TComponent;   Json: TJSONObject): TForm;
-var
-  Form: TForm;
-  ControlsArray: TJSONArray;
-  ControlJson: TJSONObject;
 begin
-  Form:= TForm.Create(AOwner);
+  var ControlsArray: TJSONArray;
+  var Form:= TForm.Create(AOwner);
   Form.Position:= poDefault;
   Form.FormStyle:= fsMDIChild;
   Form.BorderIcons := Form.BorderIcons - [biMaximize];
@@ -261,7 +242,7 @@ begin
   begin
     for var newarray in ControlsArray do
     begin
-      ControlJson := newarray as TJSONObject;
+      var ControlJson := newarray as TJSONObject;
       CreateControlFromJson(Form, Form, ControlJson);
     end;
   end;
@@ -269,7 +250,6 @@ begin
   Form.BringToFront;
   Result:= Form;
 end;
-
 
 destructor TUIBuilderEngine.Destroy;
 begin
@@ -341,7 +321,6 @@ begin
     TImage(Ctrl).OnDblClick := ControlDblClickImage;
   end;
 end;
-
 
 function TUIBuilderEngine.SetControlAling(const Text: string): TAlign;
 begin

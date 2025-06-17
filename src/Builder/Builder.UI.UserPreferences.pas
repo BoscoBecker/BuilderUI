@@ -46,13 +46,14 @@ type
      FBackgroundStyle: string;
      FLastExportPath: string;
      FConfigFile: string;
+     FRuler: boolean;
      class var FInstance: TUserPreferences;
      class constructor Create;
      class destructor Destroy;
-
      procedure Load;
      procedure Save;
      procedure NotifyObservers(const key, Value : string);
+     procedure SetRuler(const Value: boolean);
    public
      class function Instance:  TUserPreferences;
      procedure SetLastExportPath(const Value: string);
@@ -64,10 +65,11 @@ type
      procedure SetBackgroundEnum(const Value: TBuilderBackground);
      function GetBackgroundEnum: TBuilderBackground;
      function GetLastExportPath: string;
-
+     function GetRulerEnabled: boolean;
      property BackgroundStyle: string read FBackgroundStyle write SetBackgroundStyle;
      property LastExportPath: string read FLastExportPath write SetLastExportPath;
      property ConfigFile: string read FConfigFile write SetConfigFile;
+     property Ruler : boolean read FRuler write SetRuler;
  end;
 
 
@@ -109,6 +111,7 @@ begin
     try
       FBackgroundStyle := JSON.GetValue<string>('BackgroundStyle', 'bClear');
       FLastExportPath := JSON.GetValue<string>('LastExportPath', '');
+      FRuler := JSON.GetValue<Boolean>('Ruler', False);
     finally
       JSON.Free;
     end;
@@ -134,6 +137,7 @@ begin
   try
     JSON.AddPair('BackgroundStyle', FBackgroundStyle);
     JSON.AddPair('LastExportPath', FLastExportPath);
+    JSON.AddPair('Ruler', FRuler);
     var JSONString := TStringList.Create;
     try
       JSONString.Text := JSON.ToJSON;
@@ -166,6 +170,11 @@ begin
   Result := FLastExportPath;
 end;
 
+function TUserPreferences.GetRulerEnabled: boolean;
+begin
+  result:= FRuler;
+end;
+
 procedure TUserPreferences.SetBackgroundStyle(const Value: string);
 begin
   if FBackgroundStyle <> Value then
@@ -186,6 +195,15 @@ begin
   begin
     FLastExportPath := Value;
     NotifyObservers('LastExportPath', Value);
+  end;
+end;
+
+procedure TUserPreferences.SetRuler(const Value: boolean);
+begin
+  if FRuler <> value then
+  begin
+    FRuler := Value;
+    NotifyObservers('Ruler', value.ToString);
   end;
 end;
 

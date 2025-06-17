@@ -25,18 +25,20 @@
 { https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html }
 { }
 { João Bosco Becker - https://github.com/BoscoBecker }
+
 unit Service.Skia.Draw;
 
 interface
 
 uses
-  System.Types, System.UITypes, System.Skia, Vcl.Skia, Enum.Utils;
+  System.Types, System.UITypes, System.Skia, Vcl.Skia, Enum.Utils, SysUtils;
 
 type
   TSkiaDrawService = class
-    public class procedure DrawBackground(ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single; Background: TBuilderBackground; var FPaint: ISkPaint);static;
+    public class procedure DrawBackground( ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single; Background: TBuilderBackground; var FPaint: ISkPaint; const ShowHorizontal, ShowVertical: Boolean );
     public class procedure DrawGradientBox(ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single; var FPaint: ISkPaint);static;
     public class procedure DrawExplorerBorder(ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single; var FPaint: ISkPaint);static;
+    public class procedure DrawRulers(ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single; const ShowHorizontal, ShowVertical: Boolean); static;
     public class procedure DrawBoxRenderJsonBorder(ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single; var FPaint: ISkPaint); static;
   end;
 
@@ -45,34 +47,56 @@ implementation
 uses
   System.Math;
 
-class procedure TSkiaDrawService.DrawBackground(ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single; Background: TBuilderBackground; var FPaint: ISkPaint);
+class procedure TSkiaDrawService.DrawBackground(
+  ACanvas: ISkCanvas;
+  const ADest: TRectF;
+  const AOpacity: Single;
+  Background: TBuilderBackground;
+  var FPaint: ISkPaint;
+  const ShowHorizontal, ShowVertical: Boolean);
 const
   GridSize = 20;
+  RulerThickness = 24;
+var
+  GridArea: TRectF;
 begin
   ACanvas.Save;
+
   case Background of
-    bClear: ACanvas.Clear(TAlphaColors.White);
+    bClear:
+      ACanvas.Clear(TAlphaColors.White);
+
     bGrid:
     begin
       ACanvas.Clear($FFF5F5F5);
+
       FPaint := TSkPaint.Create;
       FPaint.Style := TSkPaintStyle.Stroke;
-      FPaint.Color := $FFDDDDDD;
+      FPaint.Color := $FFDFDFDF;
       FPaint.StrokeWidth := 1;
-      var X := ADest.Left;
-      while X <= ADest.Right do
+
+      GridArea := ADest;
+      if ShowHorizontal then
+        GridArea.Top := GridArea.Top + RulerThickness;
+      if ShowVertical then
+        GridArea.Left := GridArea.Left + RulerThickness;
+
+      var X := GridArea.Left;
+      while X <= GridArea.Right do
       begin
-        ACanvas.DrawLine(X, ADest.Top, X, ADest.Bottom, FPaint);
+        ACanvas.DrawLine(X, GridArea.Top, X, GridArea.Bottom, FPaint);
         X := X + GridSize;
       end;
-      var Y := ADest.Top;
-      while Y <= ADest.Bottom do
+
+      var Y := GridArea.Top;
+      while Y <= GridArea.Bottom do
       begin
-        ACanvas.DrawLine(ADest.Left, Y, ADest.Right, Y, FPaint);
+        ACanvas.DrawLine(GridArea.Left, Y, GridArea.Right, Y, FPaint);
         Y := Y + GridSize;
       end;
     end;
   end;
+
   ACanvas.Restore;
 end;
 
@@ -120,6 +144,91 @@ begin
 
   InflateRect(BorderRect, -FPaint.StrokeWidth / 2, -FPaint.StrokeWidth / 2);
   ACanvas.DrawRect(BorderRect, FPaint);
+end;
+
+
+class procedure TSkiaDrawService.DrawRulers(
+  ACanvas: ISkCanvas;
+  const ADest: TRectF;
+  const AOpacity: Single;
+  const ShowHorizontal, ShowVertical: Boolean
+);
+const
+  RulerThickness = 24;
+  TickSizeMajor = 10;
+  TickSizeMinor = 5;
+  TickStep = 10;
+var
+  TextPaint: ISkPaint;
+  Text: string;
+  RulerPaint: ISkPaint;
+begin
+  var Font := TSkFont.Create(nil, 9);
+  RulerPaint := TSkPaint.Create;
+  try
+    RulerPaint.Style := TSkPaintStyle.Stroke;
+    RulerPaint.Color := $FF8A8A8A;
+    RulerPaint.StrokeWidth := 1;
+
+    TextPaint := TSkPaint.Create;
+    TextPaint.Color := $FF404040;
+    TextPaint.Style := TSkPaintStyle.Fill;
+
+    ACanvas.Save;
+    if ShowHorizontal then
+    begin
+      ACanvas.DrawRect(RectF(ADest.Left, ADest.Top, ADest.Right, ADest.Top + RulerThickness), RulerPaint);
+
+      var i := Trunc(ADest.Left) div TickStep * TickStep;
+      while i < ADest.Right do
+      begin
+        if (i mod 50 = 0) then
+        begin
+          ACanvas.DrawLine(i, ADest.Top, i, ADest.Top + TickSizeMajor, RulerPaint);
+          Text := i.ToString;
+          ACanvas.DrawSimpleText(
+            Text,
+            i + 2,
+            ADest.Top + TickSizeMajor + 8,
+            Font,
+            TextPaint
+          );
+        end
+        else
+          ACanvas.DrawLine(i, ADest.Top, i, ADest.Top + TickSizeMinor, RulerPaint);
+
+        Inc(i, TickStep);
+      end;
+    end;
+
+    if ShowVertical then
+    begin
+      ACanvas.DrawRect(RectF(ADest.Left, ADest.Top, ADest.Left + RulerThickness, ADest.Bottom), RulerPaint);
+      var i := Trunc(ADest.Top) div TickStep * TickStep;
+      while i < ADest.Bottom do
+      begin
+        if (i mod 50 = 0) then
+        begin
+          ACanvas.DrawLine(ADest.Left, i, ADest.Left + TickSizeMajor, i, RulerPaint);
+          Text := i.ToString;
+          ACanvas.DrawSimpleText(
+            Text,
+            ADest.Left + TickSizeMajor + 2,
+            i + 5,
+            Font,
+            TextPaint
+          );
+        end
+        else
+          ACanvas.DrawLine(ADest.Left, i, ADest.Left + TickSizeMinor, i, RulerPaint);
+
+        Inc(i, TickStep);
+      end;
+    end;
+  finally
+    ACanvas.Restore;
+    Font.Free;
+  end;
 end;
 
 end.

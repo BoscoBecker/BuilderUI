@@ -21,9 +21,7 @@ Key capabilities include:
 
 > Whether you're prototyping UIs or building full applications, BuilderUI offers flexibility, portability, and extensibility — all powered by JSON.
 
-
-![image](https://github.com/user-attachments/assets/ec46c849-19e0-4781-bbc8-21b6d1f65e9f)
-
+![image](https://github.com/user-attachments/assets/433b9453-395f-49e6-b029-6425a7d93ee7)
 
 
 ## Features
@@ -41,6 +39,7 @@ Key capabilities include:
   - Java Swing/AWT
 
 - **Visual Design Tools**
+  - Ruler
   - Component palette
   - Property inspector (TreeView)
   - Visual form designer

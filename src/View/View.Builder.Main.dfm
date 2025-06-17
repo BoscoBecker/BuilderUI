@@ -158,7 +158,7 @@ object FormBuilderMain: TFormBuilderMain
         Anchors = [akTop, akRight]
         Words = <
           item
-            Caption = 'Render Json/ Explore properties'
+            Caption = 'Render Json/ Explore property'
           end>
       end
     end

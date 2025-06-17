@@ -188,7 +188,6 @@ type
     FHighlighter: TShapeHighlighter;
     FStatusBarManager: TStatusBarManager;
     FRuler: boolean;
-    FInspectedComponent: TComponent;
     procedure RenderJson(const Atext : string);
     procedure ValidateAndProcessJSON(const AJSON: string);
     procedure BuildStatusBar;

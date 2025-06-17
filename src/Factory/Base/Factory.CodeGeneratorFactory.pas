@@ -36,12 +36,10 @@ uses System.Classes, System.SysUtils,
 
 type
   TCodeGeneratorFactory = class
-    class function CreateGenerator(Language: string): ICodeGenerator;
+    public class function CreateGenerator(Language: string): ICodeGenerator; static;
   end;
 
 implementation
-
-{ TCodeGeneratorFactory }
 
 class function TCodeGeneratorFactory.CreateGenerator(Language: string): ICodeGenerator;
 begin

@@ -443,8 +443,12 @@ end;
 procedure TFormBuilderMain.ImageOptionsClick(Sender: TObject);
 begin
   SkPaintBackground.Width:= SkPaintBackground.Width - 1;
-  Ruler:= not Ruler;
-  TUserPreferences.Instance.Ruler:= not Ruler;
+  if FRuler then
+    TUserPreferences.Instance.Ruler:= False
+  else
+    TUserPreferences.Instance.Ruler:= True;
+
+  SetRuler(TUserPreferences.Instance.Ruler);
   TUserPreferences.Instance.SavePreferences;
   SkPaintBackground.Width:= SkPaintBackground.Width + 1;
 end;
@@ -629,12 +633,12 @@ end;
 procedure TFormBuilderMain.OnPreferenceChanged(const Key, Value: string);
 begin
   var DisplayValue: string;
-  if SameText(value, '-1') or SameText(value, '0') then
+  if SameText(key, 'Ruler') then
   begin
     if SameText(value, '-1') then
-      DisplayValue := 'False'
+      DisplayValue := 'true'
     else
-      DisplayValue := 'True'
+      DisplayValue := 'false'
   end
   else
     DisplayValue := value;

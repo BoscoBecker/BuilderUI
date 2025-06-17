@@ -333,7 +333,6 @@ end;
 
 function TDelphiGenerator.GenerateCode(const Json: TJSONObject; const Indent: string = '  '): string;
 begin
-  //var SafeJson:= Json;
   SetGUIText(GenerateDfmText(Json));
   SetCodeText(GeneratePasText(Json));
   Result := FGUIText + sLineBreak + ' ; ' + sLineBreak + FCodeText;

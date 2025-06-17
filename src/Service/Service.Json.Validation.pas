@@ -6,12 +6,13 @@ uses System.SysUtils, System.Generics.Collections;
 
 type
   TBuilderUIValidationResult = record
-    IsValid: Boolean;
-    ErrorMessage: string;
-    DuplicatedNames: string;
-    InvalidProperties: TArray<string>;
-    class function Success: TBuilderUIValidationResult; static;
-    class function Fail(const Msg: string): TBuilderUIValidationResult; static;
+    public
+      IsValid: Boolean;
+      ErrorMessage: string;
+      DuplicatedNames: string;
+      InvalidProperties: TArray<string>;
+      class function Success: TBuilderUIValidationResult; static;
+      class function Fail(const Msg: string): TBuilderUIValidationResult; static;
   end;
 
   TBuilderUIValidatorService = class

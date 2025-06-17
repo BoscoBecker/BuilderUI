@@ -30,12 +30,11 @@ unit Service.Skia.Draw;
 
 interface
 
-uses
-  System.Types, System.UITypes, System.Skia, Vcl.Skia, Enum.Utils, SysUtils;
+uses System.Types, System.UITypes, System.Skia,  System.Math, Vcl.Skia, Enum.Utils, SysUtils;
 
 type
   TSkiaDrawService = class
-    public class procedure DrawBackground( ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single; Background: TBuilderBackground; var FPaint: ISkPaint; const ShowHorizontal, ShowVertical: Boolean );
+    public class procedure DrawBackground(ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single; Background: TBuilderBackground; var FPaint: ISkPaint; const ShowHorizontal, ShowVertical: Boolean );
     public class procedure DrawGradientBox(ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single; var FPaint: ISkPaint);static;
     public class procedure DrawExplorerBorder(ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single; var FPaint: ISkPaint);static;
     public class procedure DrawRulers(ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single; const ShowHorizontal, ShowVertical: Boolean); static;
@@ -44,16 +43,9 @@ type
 
 implementation
 
-uses
-  System.Math;
-
-class procedure TSkiaDrawService.DrawBackground(
-  ACanvas: ISkCanvas;
-  const ADest: TRectF;
-  const AOpacity: Single;
-  Background: TBuilderBackground;
-  var FPaint: ISkPaint;
-  const ShowHorizontal, ShowVertical: Boolean);
+class procedure TSkiaDrawService.DrawBackground(ACanvas: ISkCanvas; const ADest: TRectF; const AOpacity: Single;
+                                                Background: TBuilderBackground; var FPaint: ISkPaint; const ShowHorizontal,
+                                                ShowVertical: Boolean);
 const
   GridSize = 20;
   RulerThickness = 24;

@@ -120,6 +120,15 @@ begin
     Ctrl.Top := Round(PositionObj.GetValue<Single>('Y', -100));
   end;
 
+
+  if Ctrl is TImage then
+  begin
+    TImage(Ctrl).Center:= True;
+    TImage(Ctrl).BringToFront;
+    TImage(Ctrl).ShowHint:= true;
+    TImage(Ctrl).Hint:= 'Double-click to load Image';
+  end;
+
   if Ctrl is TPanel then
   begin
     TPanel(Ctrl).Align:= SetControlAling(Json.GetValue<string>('Align', 'alNone'));
@@ -129,9 +138,6 @@ begin
     TPanel(Ctrl).ParentColor := False;
     TPanel(Ctrl).ParentBackground := False;
   end;
-
-  if Ctrl is TImage then
-    TImage(Ctrl).Center:= True;
 
   var items:= Json.GetValue('Items');
   if (items <> nil) and (items is TJSONArray) then
@@ -180,6 +186,9 @@ begin
   var ColorLabel: String;
   if (Ctrl is TLabel) and Json.TryGetValue<string>('Color', ColorLabel) then
     TLabel(Ctrl).Font.Color:= SetControlColor(Json.GetValue<string>('Color', ColorLabel));
+  var FontSize: integer;
+  if (Ctrl is TLabel) and Json.TryGetValue<integer>('FontSize', FontSize) then
+    TLabel(Ctrl).Font.Size := Json.GetValue<integer>('FontSize', FontSize);
 
   if (Ctrl is TLabel) and Json.TryGetValue<TJSONArray>('FontStyle', FontStyles) then
   begin
@@ -361,8 +370,6 @@ end;
 
 procedure TUIBuilderEngine.SetControlCaption(Ctrl: TControl; const Text: string);
 begin
-  if Trim(Text) = '' then Exit;
-
   if Ctrl is TLabel then
     TLabel(Ctrl).Caption := Text
   else if Ctrl is TButton then

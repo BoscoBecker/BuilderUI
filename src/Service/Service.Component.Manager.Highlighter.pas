@@ -41,10 +41,8 @@ type
   public
     constructor Create;
     destructor Destroy; override;
-
     procedure Highlight(Control: TControl; Owner: TForm);
     procedure Hide;
-
     property Shape: TShape read FShape;
   end;
 

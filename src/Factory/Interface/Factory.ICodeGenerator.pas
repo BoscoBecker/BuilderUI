@@ -25,6 +25,7 @@
 { https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html }
 { }
 { João Bosco Becker - https://github.com/BoscoBecker }
+
 unit Factory.ICodeGenerator;
 
 interface
@@ -38,7 +39,6 @@ type
     function FindFormByName(Json: TJSONObject; const AName: string): TJSONObject;
     function GetGUIText: string;
     function GetCodeText: string;
-
     property GUIText: string read GetGUIText;
     property CodeText: string read GetCodeText;
   end;

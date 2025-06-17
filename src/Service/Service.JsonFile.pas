@@ -30,8 +30,7 @@ unit Service.JsonFile;
 
 interface
 
-uses
-  System.Classes, System.SysUtils, Vcl.Dialogs, Vcl.StdCtrls, Clipbrd, SynEdit;
+uses System.Classes, System.SysUtils, System.IOUtils, Vcl.Dialogs, Vcl.StdCtrls, Clipbrd, SynEdit;
 
 type
   TJsonFileService = class
@@ -45,9 +44,6 @@ type
   end;
 
 implementation
-
-uses
-  System.IOUtils;
 
 class function TJsonFileService.OpenJsonFromFile(var AJson: string): Boolean;
 var

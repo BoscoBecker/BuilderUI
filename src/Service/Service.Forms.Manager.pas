@@ -25,6 +25,7 @@
 { https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html }
 { }
 { João Bosco Becker - https://github.com/BoscoBecker }
+
 unit Service.Forms.Manager;
 
 interface
@@ -45,8 +46,6 @@ type
   end;
 
 implementation
-
-{ TFormCreatedManager }
 
 procedure TFormCreatedManager.AddForm(AForm: TForm);
 begin

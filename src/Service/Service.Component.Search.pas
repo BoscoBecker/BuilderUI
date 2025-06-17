@@ -30,20 +30,14 @@ unit Service.Component.Search;
 
 interface
 
-uses
-  System.Classes;
+uses System.Classes, System.SysUtils, Vcl.Controls;
 
 type
   TComponentSearchService = class
-  public
-    class function FindComponentByName(Root: TComponent; const Name: string): TComponent;
+    public class function FindComponentByName(Root: TComponent; const Name: string): TComponent; static;
   end;
 
 implementation
-
-uses
-  Vcl.Controls, System.SysUtils;
-
 class function TComponentSearchService.FindComponentByName(Root: TComponent; const Name: string): TComponent;
 
   function RecursiveFindComponent(Comp: TComponent): TComponent;

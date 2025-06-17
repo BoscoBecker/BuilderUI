@@ -58,7 +58,6 @@ begin
   FZoom:= TZoomService.Create;
 end;
 
-
 destructor TStatusBarManager.Destroy;
 begin
   if FStatusBar <> nil then

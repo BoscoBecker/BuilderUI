@@ -1,0 +1,190 @@
+                           {
+  "Forms": [
+    {
+      "Type": "TForm",
+      "Name": "FrmLoginScreen",
+      "Caption": "Login Screen",
+      "Align": "Client",
+      "Width": 900,
+      "Height": 600,
+      "Children": [
+        {
+          "Type": "TPanel",
+          "Name": "PanelLeft",
+          "Caption":"Here",
+          "Position": {
+            "X": 0,
+            "Y": 0
+          },
+          "Width": 450,
+          "Height": 600,
+          "Color": "#2E41F5",
+          "Children": [
+            {
+              "Type": "TImage",
+              "Name": "LogoImage",
+              "Position": {
+                "X": 30,
+                "Y": 160
+              },
+              "Width": 150,
+              "Height": 300
+            },
+            {
+              "Type": "TLabel",
+              "Name": "LblWelcome",
+              "Position": {
+                "X": 30,
+                "Y": 160
+              },
+              "Caption": "Hello,\nwelcome!",
+              "FontSize": 24,
+              "FontColor": "#FFFFFF",
+              "FontStyle": ["fsBold"]
+            },
+            {
+              "Type": "TLabel",
+              "Name": "LblDescription",
+              "Position": {
+                "X": 30,
+                "Y": 240
+              },
+              "Width": 380,
+              "Caption": "Lorem ipsum dolor sit amet,\nconsectetur adipiscing elit. Phasellus nisi risus.",
+              "FontSize": 12,
+              "FontColor": "#D0D0FF"
+            }
+          ]
+        },
+        {
+          "Type": "TPanel",
+          "Name": "PanelRight",
+          "Position": {
+            "X": 450,
+            "Y": 0
+          },
+          "Width": 450,
+          "Height": 600,
+          "Color": "#FFFFFF",
+          "Children": [
+            {
+              "Type": "TEdit",
+              "Name": "EditEmail",
+              "Position": {
+                "X": 80,
+                "Y": 120
+              },
+              "Width": 300,
+              "Text": "name@mail.com"
+            },
+            {
+              "Type": "TEdit",
+              "Name": "EditPassword",
+              "Position": {
+                "X": 80,
+                "Y": 170
+              },
+              "Width": 300,
+              "PasswordChar": "*"
+            },
+            {
+              "Type": "TCheckBox",
+              "Name": "ChkRememberMe",
+              "Position": {
+                "X": 80,
+                "Y": 220
+              },
+              "Caption": "Remember me"
+            },
+            {
+              "Type": "TLabel",
+              "Name": "LblForgotPassword",
+              "Position": {
+                "X": 270,
+                "Y": 222
+              },
+              "Caption": "Forgot password?",
+              "FontColor": "#2E41F5",
+              "FontStyle": [
+                "fsUnderline"
+              ]
+            },
+            {
+              "Type": "TButton",
+              "Name": "BtnLogin",
+              "Position": {
+                "X": 80,
+                "Y": 270
+              },
+              "Width": 100,
+              "Caption": "Login"
+            },
+            {
+              "Type": "TButton",
+              "Name": "BtnSignUp",
+              "Position": {
+                "X": 190,
+                "Y": 270
+              },
+              "Width": 100,
+              "Caption": "Sign up"
+            },
+            {
+              "Type": "TLabel",
+              "Name": "LblFollow",
+              "Position": {
+                "X": 80,
+                "Y": 330
+              },
+              "Caption": "FOLLOW"
+            },
+            {
+              "Type": "TPanel",
+              "Color": "clgray",
+              "Name": "PanelSocialIcons",
+              "Caption": "  .  ",
+              "Position": {
+                "X": 80,
+                "Y": 360
+              },
+              "Width": 150,
+              "Height": 30,
+              "Children": [
+                {
+                  "Type": "TImage",
+                  "Name": "IconFacebook",
+                  "Position": {
+                    "X": 0,
+                    "Y": 0
+                  },
+                  "Width": 30,
+                  "Height": 30
+                },
+                {
+                  "Type": "TImage",
+                  "Name": "IconTwitter",
+                  "Position": {
+                    "X": 40,
+                    "Y": 0
+                  },
+                  "Width": 30,
+                  "Height": 30
+                },
+                {
+                  "Type": "TImage",
+                  "Name": "IconInstagram",
+                  "Position": {
+                    "X": 80,
+                    "Y": 0
+                  },
+                  "Width": 30,
+                  "Height": 30
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -25,6 +25,7 @@
 { https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html }
 { }
 { João Bosco Becker - https://github.com/BoscoBecker }
+
 unit Adapter.TreeViewAdapter;
 
 interface
@@ -58,7 +59,6 @@ type
     public class procedure AddFormsToTreeView(Forms: TObjectList<TForm>; TreeView: TTreeView); static;
     public class function FindComponentNode(const AComponentName: string): TTreeNode;
     public class function FindRootFormNode(const AComponentName: string) : TTreeNode;
-
   end;
 
 implementation

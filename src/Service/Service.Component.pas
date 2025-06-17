@@ -40,7 +40,6 @@ type
 
 implementation
 
-
 class function TComponentService.CountComponents(Root: TComponent): Integer;
 begin
   Result := 0;

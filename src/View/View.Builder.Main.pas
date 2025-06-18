@@ -131,7 +131,7 @@ type
     TabSheetRender: TTabSheet;
     Memo: TSynEdit;
     TabSheetProperties: TTabSheet;
-    ValueListEditor1: TValueListEditor;
+    ValueListEditorRenderJson: TValueListEditor;
     procedure FormCreate(Sender: TObject);
     procedure ImgSettingsClick(Sender: TObject);
     procedure ImageTreeComponentsClick(Sender: TObject);

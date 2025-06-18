@@ -506,7 +506,7 @@ object FormBuilderMain: TFormBuilderMain
       object TabSheetProperties: TTabSheet
         Caption = 'Properties'
         ImageIndex = 1
-        object ValueListEditor1: TValueListEditor
+        object ValueListEditorRenderJson: TValueListEditor
           Left = 0
           Top = 0
           Width = 341

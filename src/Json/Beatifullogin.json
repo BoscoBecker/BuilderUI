@@ -57,7 +57,8 @@
               "Name": "LblEmail",
               "Position": { "X": 80, "Y": 100 },
               "Caption": "Email address",
-              "FontSize": 10
+              "FontSize": 10,
+              "FontColor": "#000000"
             },
             {
               "Type": "TEdit",
@@ -77,7 +78,6 @@
             {
               "Type": "TEdit",
               "Name": "EditPassword",
-              "Text": "*******",
               "Position": { "X": 80, "Y": 170 },
               "Width": 300,
               "PasswordChar": "*"
@@ -114,7 +114,7 @@
               "Type": "TLabel",
               "Name": "LblFollow",
               "Position": { "X": 80, "Y": 330 },
-              "Caption": "Follow us"
+              "Caption": "FOLLOW"
             },
             {
               "Type": "TPanel",

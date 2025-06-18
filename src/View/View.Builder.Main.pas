@@ -45,8 +45,13 @@ uses
   SynEditHighlighter, SynHighlighterJSON, Enum.Utils, Service.JsonFile,
 
   Service.Zoom, Service.Forms.Manager, Service.Skia.Draw, Service.Json.Validation,
-  Service.Component, Service.Component.Search,Service.Component.Manager.Highlighter, Service.StatusBar.Manager,
-  RTTI, Vcl.Grids, Vcl.ValEdit, Vcl.Menus;
+  Service.Component, Service.Component.Search,Service.Component.Manager.Highlighter,
+  Service.StatusBar.Manager, Service.Component.PropertyExplorer,
+
+  Vcl.Grids, Vcl.ValEdit, Vcl.Menus, Data.DB, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client, Vcl.DBGrids ;
 
 
 type
@@ -131,7 +136,11 @@ type
     TabSheetRender: TTabSheet;
     Memo: TSynEdit;
     TabSheetProperties: TTabSheet;
-    ValueListEditorRenderJson: TValueListEditor;
+    DBGridPropertyExplorer: TDBGrid;
+    FDMemTablePropertyExplorer: TFDMemTable;
+    DataSourcePropertyExplorer: TDataSource;
+    FDMemTablePropertyExplorerKey: TStringField;
+    FDMemTablePropertyExplorervalue: TStringField;
     procedure FormCreate(Sender: TObject);
     procedure ImgSettingsClick(Sender: TObject);
     procedure ImageTreeComponentsClick(Sender: TObject);
@@ -188,6 +197,7 @@ type
     FHighlighter: TShapeHighlighter;
     FStatusBarManager: TStatusBarManager;
     FRuler: boolean;
+    FPropertyExplorer: TComponentPropertyExplorer;
     procedure RenderJson(const Atext : string);
     procedure ValidateAndProcessJSON(const AJSON: string);
     procedure BuildStatusBar;
@@ -198,11 +208,9 @@ type
     procedure ZoomOut;
     procedure ApplyZoomToCreatedForms;
     procedure HandleTreeSelection;
-    procedure LoadFlatJsonObjectToValueListEditor(const JsonObj: TJSONObject; const Editor: TValueListEditor);
     procedure PrettyJson;
   public
     destructor Destroy; override;
-    procedure LoadComponentPropertiesToValueListEditor( AComponent: TComponent; AEditor: TValueListEditor);
     procedure OnPreferenceChanged(const Key, Value: string);
     procedure AfterConstruction; override;
     procedure BeforeDestruction; override;
@@ -250,6 +258,7 @@ begin
   FZoomService := TZoomService.Create;
   FHighlighter:= TShapeHighlighter.Create;
   FStatusBarManager:= TStatusBarManager.Create(StatusBarBottom);
+  FPropertyExplorer := TComponentPropertyExplorer.Create(DBGridPropertyExplorer, Memo);
 
   TUserPreferences.Instance.Create;
   SetBuilderBackground(TUserPreferences.Instance.GetBackgroundEnum);
@@ -297,8 +306,9 @@ begin
       FHighlighter.Hide;
    PageControlRenderExplorer.ActivePage:= TabSheetProperties;
    var ComponentJson := Util.JSON.TJSONHelper.FindComponentJsonByName(FJsonStructure, C.Name);
-   if Assigned(ComponentJson) then
-     LoadFlatJsonObjectToValueListEditor(ComponentJson, ValueListEditor1);
+   FPropertyExplorer.JsonStructure := FJsonStructure;
+   FPropertyExplorer.SelectComponent(C.Name);
+   FPropertyExplorer.LoadJsonToDBGrid(ComponentJson);
   end
   else if Assigned(FHighlighter) then
     FHighlighter.Hide;
@@ -448,33 +458,6 @@ begin
 
   SplitViewmain.Opened := not SplitViewmain.Opened;
   SplitterLeft.Visible:= True;
-end;
-
-procedure TFormBuilderMain.LoadComponentPropertiesToValueListEditor( AComponent: TComponent; AEditor: TValueListEditor);
-var
-  ctx: TRttiContext;
-  typ: TRttiType;
-  prop: TRttiProperty;
-  value: TValue;
-begin
-  AEditor.Strings.Clear;
-
-  ctx := TRttiContext.Create;
-  try
-    typ := ctx.GetType(AComponent.ClassType);
-
-    for prop in typ.GetProperties do
-    begin
-      if prop.IsReadable and (prop.Visibility in [mvPublished]) then
-      begin
-        value := prop.GetValue(AComponent);
-        AEditor.InsertRow(prop.Name, value.ToString, True);
-      end;
-    end;
-
-  finally
-    ctx.Free;
-  end;
 end;
 
 procedure TFormBuilderMain.ImageTreeComponentsClick(Sender: TObject);
@@ -630,7 +613,6 @@ begin
   HandleTreeSelection;
 end;
 
-
 procedure TFormBuilderMain.ValidateAndProcessJSON(const AJSON: string);
 begin
   var Result := TBuilderUIValidatorService.Validate(AJSON);
@@ -649,27 +631,6 @@ begin
   ImageErro.Visible := False;
 end;
 
-procedure TFormBuilderMain.LoadFlatJsonObjectToValueListEditor(
-  const JsonObj: TJSONObject;
-  const Editor: TValueListEditor);
-var
-  Pair: TJSONPair;
-begin
-  Editor.Strings.BeginUpdate;
-  try
-    Editor.Strings.Clear;
-    for Pair in JsonObj do
-    begin
-      if not (Pair.JsonValue is TJSONObject) and
-         not (Pair.JsonValue is TJSONArray) then
-      begin
-        Editor.InsertRow(Pair.JsonString.Value, Pair.JsonValue.Value, True);
-      end;
-    end;
-  finally
-    Editor.Strings.EndUpdate;
-  end;
-end;
 
 procedure TFormBuilderMain.ZoomIn;
 begin
@@ -790,6 +751,8 @@ begin
     FZoomService.Free;
   if FHighlighter <> nil then
     FHighlighter.Free;
+  if FPropertyExplorer <> nil then
+    FPropertyExplorer.Free;
   if FBuilder <> nil then
     FBuilder.Free;
   FPaint:= nil;

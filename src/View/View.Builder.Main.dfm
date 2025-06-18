@@ -506,21 +506,39 @@ object FormBuilderMain: TFormBuilderMain
       object TabSheetProperties: TTabSheet
         Caption = 'Properties'
         ImageIndex = 1
-        object ValueListEditorRenderJson: TValueListEditor
+        object DBGridPropertyExplorer: TDBGrid
           Left = 0
           Top = 0
           Width = 341
           Height = 521
           Align = alClient
           BorderStyle = bsNone
+          DataSource = DataSourcePropertyExplorer
           TabOrder = 0
-          TitleCaptions.Strings = (
-            'Name'
-            'Value')
-          ColWidths = (
-            150
-            189)
+          TitleFont.Charset = DEFAULT_CHARSET
+          TitleFont.Color = clWindowText
+          TitleFont.Height = -12
+          TitleFont.Name = 'Segoe UI'
+          TitleFont.Style = []
+          Columns = <
+            item
+              Expanded = False
+              FieldName = 'Key'
+              ReadOnly = True
+              Title.Caption = 'Property'
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'value'
+              Title.Caption = 'Name'
+              Visible = True
+            end>
         end
+      end
+      object TabSheet1: TTabSheet
+        Caption = 'IA Chat'
+        ImageIndex = 2
       end
     end
   end
@@ -1130,6 +1148,8 @@ object FormBuilderMain: TFormBuilderMain
     ParentBackground = False
     ParentFont = False
     TabOrder = 5
+    ExplicitLeft = -48
+    ExplicitTop = 240
     object SkLabelTittleMain: TSkLabel
       AlignWithMargins = True
       Left = 3
@@ -1351,7 +1371,7 @@ object FormBuilderMain: TFormBuilderMain
   end
   object PopupMenuOptions: TPopupMenu
     Left = 928
-    Top = 193
+    Top = 393
     object CopyText: TMenuItem
       Caption = 'Copy'
       OnClick = CopyTextClick
@@ -1378,6 +1398,31 @@ object FormBuilderMain: TFormBuilderMain
     SymbolAttri.Foreground = clFuchsia
     ValueAttri.Foreground = 25284
     Left = 928
-    Top = 256
+    Top = 336
+  end
+  object FDMemTablePropertyExplorer: TFDMemTable
+    FieldDefs = <>
+    IndexDefs = <>
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    StoreDefs = True
+    Left = 928
+    Top = 280
+    object FDMemTablePropertyExplorerKey: TStringField
+      FieldName = 'Key'
+    end
+    object FDMemTablePropertyExplorervalue: TStringField
+      FieldName = 'value'
+    end
+  end
+  object DataSourcePropertyExplorer: TDataSource
+    DataSet = FDMemTablePropertyExplorer
+    Left = 924
+    Top = 222
   end
 end

@@ -178,6 +178,8 @@
         <DCCReference Include="Service\Service.Component.Manager.Highlighter.pas"/>
         <DCCReference Include="Service\Service.StatusBar.Manager.pas"/>
         <DCCReference Include="Service\Service.Component.pas"/>
+        <DCCReference Include="Service\Service.Load.ListEditor.pas"/>
+        <DCCReference Include="Service\Service.Component.PropertyExplorer.pas"/>
         <None Include=".gitignore"/>
         <None Include="BuilderUI.dpr"/>
         <None Include="LICENSE.txt"/>
@@ -284,6 +286,12 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="..\README.md" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName=".gitignore" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
@@ -340,6 +348,12 @@
                 </DeployFile>
                 <DeployFile LocalName="LICENSE.txt" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="LICENSE.txt" Configuration="Release" Class="ProjectFile">
+                    <Platform Name="Win64">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>

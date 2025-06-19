@@ -25,10 +25,8 @@ type
     procedure SaveDBGridToJson(JsonObj: TJSONObject);
     procedure SelectComponent(ComponentName: string);
 
-    // Event handlers
     procedure DBGridCellClick(Column: TColumn);
     procedure DBGridKeyPress(Sender: TObject; var Key: Char);
-
     property JsonStructure: TJSONObject read FJsonStructure write SetJsonStructure;
   end;
 
@@ -71,12 +69,11 @@ begin
     Clear;
     Add('Key', ftString, 50);
     Add('Value', ftString, 255);
-
   end;
 
   FMemTable.CreateDataSet;
   FMemTable.FieldByName('Key').DisplayWidth :=10;
-  FMemTable.FieldByName('Value').DisplayWidth := 80;
+  FMemTable.FieldByName('Value').DisplayWidth := 50;
   FMemTable.Active := True;
   FDataSource.DataSet := FMemTable;
 end;
@@ -113,17 +110,12 @@ begin
         var PropName := FMemTable.FieldByName('key').AsString;
         var PropValue := FMemTable.FieldByName('Value').AsString;
 
-        // Encontra e atualiza o par no JSON
         var Pair := JsonObj.Get(PropName);
         if Assigned(Pair) then
         begin
-          // Remove o valor antigo
           JsonObj.RemovePair(PropName).Free;
-
-          // Adiciona o novo valor mantendo a mesma inst�ncia do JSONObject
           JsonObj.AddPair(PropName, PropValue);
         end;
-
         FMemTable.Next;
       end;
 
@@ -167,17 +159,16 @@ end;
 
 procedure TComponentPropertyExplorer.DBGridKeyPress(Sender: TObject; var Key: Char);
 begin
-  if Key = #13 then  // Enter key
+  if Key = #13 then
   begin
-    if (FSelectedComponent = '') or (not Assigned(FJsonStructure)) then Exit;
-    try
-      var ComponentJson := TJSONHelper.FindComponentJsonByName(FJsonStructure, FSelectedComponent);
-      if not Assigned(ComponentJson) then Exit;
-      SaveDBGridToJson(ComponentJson);
-    except
-      on E: Exception do
-        ShowMessage('Erro ao salvar: ' + E.Message);
-    end;
+//    if (FSelectedComponent = '') or (not Assigned(FJsonStructure)) then Exit;
+//    try
+//      var ComponentJson := TJSONHelper.FindComponentJsonByName(FJsonStructure, FSelectedComponent);
+//      if not Assigned(ComponentJson) then Exit;
+//      SaveDBGridToJson(ComponentJson);
+//    except
+//      on E: Exception do ShowMessage('Erro ao salvar: ' + E.Message);
+//    end;
   end;
 end;
 

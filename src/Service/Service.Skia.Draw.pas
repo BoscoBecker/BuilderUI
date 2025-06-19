@@ -138,7 +138,6 @@ begin
   ACanvas.DrawRect(BorderRect, FPaint);
 end;
 
-
 class procedure TSkiaDrawService.DrawRulers(
   ACanvas: ISkCanvas;
   const ADest: TRectF;
@@ -218,30 +217,30 @@ begin
       end;
     end;
 
-    if ShowVerticalRigth then
-    begin
-      ACanvas.DrawRect(RectF(ADest.Right - RulerThickness, ADest.Top, ADest.Right, ADest.Bottom), RulerPaint);
-      var i := Trunc(ADest.Top) div TickStep * TickStep;
-      while i < ADest.Bottom do
-      begin
-        if (i mod 50 = 0) then
-        begin
-          ACanvas.DrawLine(ADest.Right - TickSizeMajor, i, ADest.Right, i, RulerPaint);
-          Text := i.ToString;
-          ACanvas.DrawSimpleText(
-            Text,
-            ADest.Right - RulerThickness + 2,
-            i + 5,
-            Font,
-            TextPaint
-          );
-        end
-        else
-          ACanvas.DrawLine(ADest.Right - TickSizeMinor, i, ADest.Right, i, RulerPaint);
-
-        Inc(i, TickStep);
-      end;
-    end;
+//    if ShowVerticalRigth then
+//    begin
+//      ACanvas.DrawRect(RectF(ADest.Right - RulerThickness, ADest.Top, ADest.Right, ADest.Bottom), RulerPaint);
+//      var i := Trunc(ADest.Top) div TickStep * TickStep;
+//      while i < ADest.Bottom do
+//      begin
+//        if (i mod 50 = 0) then
+//        begin
+//          ACanvas.DrawLine(ADest.Right - TickSizeMajor, i, ADest.Right, i, RulerPaint);
+//          Text := i.ToString;
+//          ACanvas.DrawSimpleText(
+//            Text,
+//            ADest.Right - RulerThickness + 2,
+//            i + 5,
+//            Font,
+//            TextPaint
+//          );
+//        end
+//        else
+//          ACanvas.DrawLine(ADest.Right - TickSizeMinor, i, ADest.Right, i, RulerPaint);
+//
+//        Inc(i, TickStep);
+//      end;
+//    end;
 
 
   finally

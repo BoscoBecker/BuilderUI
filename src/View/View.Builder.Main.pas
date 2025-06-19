@@ -33,7 +33,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, System.Generics.Collections, System.JSON, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Buttons, Vcl.ComCtrls, Vcl.StdCtrls,
-  Vcl.ExtCtrls, System.Threading, StrUtils,Clipbrd,TypInfo,  SynEditTypes,
+  Vcl.ExtCtrls, System.Threading, StrUtils,Clipbrd,TypInfo,  SynEditTypes, system.DateUtils,
 
   Adapter.TreeViewAdapter,
   Builder.UI.BuilderEngine,Builder.UI.UserPreferences,
@@ -51,7 +51,7 @@ uses
   Vcl.Grids, Vcl.ValEdit, Vcl.Menus, Data.DB, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Comp.DataSet,
-  FireDAC.Comp.Client, Vcl.DBGrids ;
+  FireDAC.Comp.Client, Vcl.DBGrids, Vcl.Imaging.jpeg ;
 
 
 type
@@ -141,6 +141,10 @@ type
     DataSourcePropertyExplorer: TDataSource;
     FDMemTablePropertyExplorerKey: TStringField;
     FDMemTablePropertyExplorervalue: TStringField;
+    LabelComingSoon: TLabel;
+    ImageComingSoon: TImage;
+    PastandRun: TMenuItem;
+    Image1: TImage;
     procedure FormCreate(Sender: TObject);
     procedure ImgSettingsClick(Sender: TObject);
     procedure ImageTreeComponentsClick(Sender: TObject);
@@ -183,6 +187,9 @@ type
     procedure SelectAll1Click(Sender: TObject);
     procedure ImageOptionsClick(Sender: TObject);
     procedure ImageRenderJsonToolPaletteClick(Sender: TObject);
+    procedure PastandRunClick(Sender: TObject);
+    procedure ImageSelectModeMouseEnter(Sender: TObject);
+    procedure ImageSelectModeMouseLeave(Sender: TObject);
   private
     FBuilderBackground: TBuilderBackground;
     FTreeViewAdapter: TTreeViewAdapter;
@@ -198,8 +205,9 @@ type
     FStatusBarManager: TStatusBarManager;
     FRuler: boolean;
     FPropertyExplorer: TComponentPropertyExplorer;
+    FMouse: TPointF;
     procedure RenderJson(const Atext : string);
-    procedure ValidateAndProcessJSON(const AJSON: string);
+    function ValidateAndProcessJSON(const AJSON: string): boolean;
     procedure BuildStatusBar;
     procedure SetSelectedComponent(const Value: String);
     procedure SetBuilderBackground(const Value: TBuilderBackground);
@@ -268,6 +276,7 @@ end;
 procedure TFormBuilderMain.FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
 begin
   FStatusBarManager.SetPosition(X, Y);
+  FMouse := PointF(X, Y);
 end;
 
 procedure TFormBuilderMain.FormShow(Sender: TObject);
@@ -304,8 +313,10 @@ begin
     end
     else if Assigned(FHighlighter) then
       FHighlighter.Hide;
+
    PageControlRenderExplorer.ActivePage:= TabSheetProperties;
    var ComponentJson := Util.JSON.TJSONHelper.FindComponentJsonByName(FJsonStructure, C.Name);
+
    FPropertyExplorer.JsonStructure := FJsonStructure;
    FPropertyExplorer.SelectComponent(C.Name);
    FPropertyExplorer.LoadJsonToDBGrid(ComponentJson);
@@ -423,6 +434,16 @@ begin
     Screen.Cursor:= crHandPoint;
 end;
 
+procedure TFormBuilderMain.ImageSelectModeMouseEnter(Sender: TObject);
+begin
+  TImage(Sender).Top:= TImage(Sender).Top - 5;
+end;
+
+procedure TFormBuilderMain.ImageSelectModeMouseLeave(Sender: TObject);
+begin
+  TImage(Sender).Top:= TImage(Sender).Top + 5;
+end;
+
 procedure TFormBuilderMain.ImageSaveJsonClick(Sender: TObject);
 begin
   TJsonFileService.SaveJsonToFile(Memo.Lines.Text);
@@ -478,7 +499,6 @@ end;
 procedure TFormBuilderMain.ImageOkClick(Sender: TObject);
 begin
   RenderJson(memo.text);
-  FStatusBarManager.SetComponentCount(TComponentService.CountComponents(SkPaintBackground).ToString);
 end;
 
 procedure TFormBuilderMain.ImageOptionsClick(Sender: TObject);
@@ -555,6 +575,8 @@ begin
   finally
     Memo.CaretXY := BufferCoord(1, 1);
     Memo.TopLine := 1;
+    PrettyJson;
+    FStatusBarManager.SetComponentCount(TComponentService.CountComponents(SkPaintBackground).ToString);
   end;
 end;
 
@@ -613,12 +635,13 @@ begin
   HandleTreeSelection;
 end;
 
-procedure TFormBuilderMain.ValidateAndProcessJSON(const AJSON: string);
+function TFormBuilderMain.ValidateAndProcessJSON(const AJSON: string): boolean;
 begin
-  var Result := TBuilderUIValidatorService.Validate(AJSON);
-  if not Result.IsValid then
+  var ResultValidation := TBuilderUIValidatorService.Validate(AJSON);
+  result:= ResultValidation.IsValid;
+  if not ResultValidation.IsValid then
   begin
-    LabelInfoJson.Caption := Result.ErrorMessage;
+    LabelInfoJson.Caption := ResultValidation.ErrorMessage;
     ImageOk.Visible := False;
     ImageErro.Visible := True;
     FFormManager.CloseAll;
@@ -630,7 +653,6 @@ begin
   ImageOk.Visible := True;
   ImageErro.Visible := False;
 end;
-
 
 procedure TFormBuilderMain.ZoomIn;
 begin
@@ -694,6 +716,13 @@ begin
              [key, DisplayValue, FormatDateTime('yyyy/mm/dd hh:nn:ss', Now)]);
 end;
 
+procedure TFormBuilderMain.PastandRunClick(Sender: TObject);
+begin
+  TJsonFileService.PasteJsonToClipboard(Memo);
+  if ValidateAndProcessJSON(Memo.Text) then
+    RenderJson(Memo.Text);
+end;
+
 procedure TFormBuilderMain.PasteClick(Sender: TObject);
 begin
   TJsonFileService.PasteJsonToClipboard(Memo);
@@ -720,7 +749,6 @@ begin
     if TJSONHelper.ValidateJSON(Memo.lines.Text, erromessage ) then
       Memo.lines.Text:= Util.Json.TJSONHelper.BeautifyJSON(Memo.lines.Text);
 end;
-
 
 procedure TFormBuilderMain.BuildStatusBar;
 begin

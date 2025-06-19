@@ -37,7 +37,6 @@ uses
   Service.Component.Manager.Highlighter in 'Service\Service.Component.Manager.Highlighter.pas',
   Service.StatusBar.Manager in 'Service\Service.StatusBar.Manager.pas',
   Service.Component in 'Service\Service.Component.pas',
-  Service.Load.ListEditor in 'Service\Service.Load.ListEditor.pas',
   Service.Component.PropertyExplorer in 'Service\Service.Component.PropertyExplorer.pas';
 
 {$R *.res}

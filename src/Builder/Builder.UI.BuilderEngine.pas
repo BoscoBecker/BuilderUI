@@ -57,8 +57,8 @@ type
     function SetControlBevelCut(const Text: string): TBevelCut;
     function SetControlBorderStyle(const Text: string): TBorderStyle;
   public
-    function CreateFormFromJson(AOwner: TComponent; Json: TJSONObject): TForm;
     destructor Destroy; override;
+    function CreateFormFromJson(AOwner: TComponent; Json: TJSONObject): TForm;
   end;
 
 implementation
@@ -396,17 +396,13 @@ begin
 end;
 
 function TUIBuilderEngine.SetControlColor(const Text: string): TColor;
-var
-  ColorStr: string;
-  ColorValue: integer;
 begin
-  Result := clNone;
-  ColorStr := Trim(Text);
+  Result := clbtnface;
+  var ColorValue: integer;
+  var ColorStr := Trim(Text);
   if ColorStr = '' then Exit;
-
   if ColorStr[1] = '#' then
   begin
-    // #RRGGBB
     if Length(ColorStr) = 7 then
     begin
       ColorValue := RGB(
@@ -417,7 +413,6 @@ begin
       Result := ColorValue;
       Exit;
     end
-    // #RGB
     else if Length(ColorStr) = 4 then
     begin
       ColorValue := RGB(
@@ -429,13 +424,11 @@ begin
       Exit;
     end;
   end
-  // Delphi color name (clRed, clBlue, etc.)
   else if SameText(Copy(ColorStr, 1, 2), 'cl') then
   begin
     Result := StringToColor(ColorStr);
     Exit;
   end
-  // decimal (0-16777215)
   else if TryStrToInt(ColorStr, ColorValue) then
   begin
     Result := ColorValue;
@@ -498,7 +491,6 @@ end;
 procedure TUIBuilderEngine.SetControlHeight(Ctrl: TControl; const Text: string);
 begin
   Ctrl.Height:= StrToIntDef(Text,0);
-
 end;
 
 end.

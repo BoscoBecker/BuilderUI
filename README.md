@@ -21,8 +21,7 @@ Key capabilities include:
 
 > Whether you're prototyping UIs or building full applications, BuilderUI offers flexibility, portability, and extensibility — all powered by JSON.
 
-![image](https://github.com/user-attachments/assets/a4e9690c-204f-4fee-8079-9c79c38abb6e)
-
+![BuilderUI](https://github.com/user-attachments/assets/3a8c57bd-9c8b-4281-9c5f-fa355cc5b722)
 
 ## Features
 
